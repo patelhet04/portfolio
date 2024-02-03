@@ -36,7 +36,7 @@ const config: Config = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["black"], // This disables DaisyUI's default themes
+    themes: ["sunset", "forest", "dark"],
   },
 };
 export default config;

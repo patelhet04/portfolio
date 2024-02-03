@@ -16,10 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="sidebar" data-theme="black">
-          <Loader />
+        {/* <Loader /> */}
+        <div className="flex" data-theme="sunset">
           <Sidebar />
-          <main className="flex-grow">
+
+          <main className="main">
             {/* Content goes here */}
             {children}
           </main>

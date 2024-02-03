@@ -17,7 +17,7 @@ body {
 
 @layer {
   .sidebar {
-    @apply sticky top-0 left-0 z-30;
+    @apply fixed top-0 left-0 z-30;
   }
 
   .flex_col {
@@ -39,6 +39,16 @@ body {
   nav {
     @apply font-fira;
   }
+  .transparent_text_home {
+    @apply font-fira absolute top-[20%] opacity-10 text-white font-bold z-0 text-[16vw] lg:top-1/4;
+  }
+
+  .transparent_text_about {
+    @apply font-fira absolute top-0 opacity-10 text-white font-bold z-0 text-[15vw];
+  }
+  .main {
+    @apply flex-1 overflow-auto max-w-full xl:ml-64;
+  }
 }
 
 .social_icon:nth-child(1) {
@@ -55,4 +65,16 @@ body {
 }
 .social_icon:nth-child(5) {
   animation-delay: 5s;
+}
+[data-theme="sunset"] .menu li a.active {
+  color: #49c5b6 !important;
+}
+
+[data-theme="sunset"] .btn {
+  color: white !important;
+}
+
+[data-theme="sunset"] .btn:hover {
+  color: #49c5b6 !important;
+  background: none !important;
 }

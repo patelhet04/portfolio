@@ -50,7 +50,7 @@ const Loader: React.FC = () => {
           Loading
         </h1>
         <div className="text-primary-blue">
-          <progress className="progress  w-56"></progress>
+          <progress className="progress  bg-primary-blue w-56"></progress>
         </div>
       </div>
     </div>
