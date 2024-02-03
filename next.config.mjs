@@ -2,8 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   output: "export",
-  basePath: "/portfolio",
-  assetPrefix: "/portfolio/",
+  distDir: "dist",
 };
 
 export default nextConfig;
