@@ -15,11 +15,11 @@ const About = () => {
           <div className="avatar">
             <div className=" w-72 md:w-96 mask mask-squircle">
               <Image
-                src="./assets/profile_pic.jpg"
+                src="/assets/profile_pic.jpg"
                 alt="profile"
                 width={244}
                 height={244}
-              />
+              ></Image>
             </div>
           </div>
           <div className="stats shadow mt-10">
