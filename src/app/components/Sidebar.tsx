@@ -39,7 +39,7 @@ const Sidebar = () => {
         {/* Image Section */}
         <div className="flex_col">
           <div className="avatar pb-5 w-32">
-            <img src="./assets/Memoji.png" alt="Profile Picture" />
+            <img src="/assets/Memoji.png" alt="Profile Picture" />
           </div>
           <a
             href="#_"

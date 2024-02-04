@@ -14,12 +14,7 @@ const About = () => {
         <div className="max-w-md">
           <div className="avatar">
             <div className=" w-72 md:w-96 mask mask-squircle">
-              <Image
-                src="/assets/profile_pic.jpg"
-                alt="profile"
-                width={244}
-                height={244}
-              ></Image>
+              <img src="/assets/profile_pic.jpg" alt="profile" />
             </div>
           </div>
           <div className="stats shadow mt-10">
