@@ -2,7 +2,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Memoji from "../../../public/assets/Memoji.png";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -39,8 +38,8 @@ const Sidebar = () => {
       >
         {/* Image Section */}
         <div className="flex_col">
-          <div className="avatar pb-5">
-            <Image src={Memoji} alt="Profile Picture" width={96} height={96} />
+          <div className="avatar pb-5 w-32">
+            <img src="./assets/Memoji.png" alt="Profile Picture" />
           </div>
           <a
             href="#_"
