@@ -1,6 +1,4 @@
 import React from "react";
-import Underline from "../../../public/assets/undeline.svg";
-import Profile from "../../../public/assets/profile_pic.jpg";
 import Image from "next/image";
 const About = () => {
   return (
@@ -16,7 +14,7 @@ const About = () => {
         <div className="max-w-md">
           <div className="avatar">
             <div className=" w-72 md:w-96 mask mask-squircle">
-              <Image src={Profile} alt="profile" />
+              <Image src="/assets/profile_pic.jpg" alt="profile" />
             </div>
           </div>
           <div className="stats shadow mt-10">
@@ -37,7 +35,7 @@ const About = () => {
         <div className="flex_center_col gap-10 font-mono">
           <header className="font-mono text-white font-bold ease-in duration-300 text-[36px] lg:text-[50px]">
             About Me
-            <Image src={Underline} alt="underline"></Image>
+            <Image src="/assets/undeline.svg" alt="underline"></Image>
           </header>
           <p className="font-bold text-white text-xl lg:text-2xl">
             Hello, I'm Het Patel, a dedicated software developer and a graduate
