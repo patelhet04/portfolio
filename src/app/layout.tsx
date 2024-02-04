@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <Loader /> */}
+        <Loader />
         <div className="flex" data-theme="sunset">
           <Sidebar />
 

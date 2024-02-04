@@ -11,10 +11,11 @@ export const categories = [
     title: "Web Technologies",
     skills: [
       { name: "HTML/CSS", level: 90 },
+      { name: "TailwindCSS", level: 70 },
       { name: "JavaScript", level: 80 },
-      { name: "React", level: 70 },
-      { name: "Next.js", level: 85 },
-      { name: "TailwindCSS", level: 95 },
+      { name: "Typescript", level: 80 },
+      { name: "React/Next.js", level: 75 },
+      { name: "Node/Express", level: 90 },
     ],
   },
   {
