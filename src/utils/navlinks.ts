@@ -17,8 +17,8 @@ export const navLinks = [
     icon: faBriefcase,
   },
   {
-    title: "Projects",
-    path: "#projects",
+    title: "Portfolio",
+    path: "#portfolio",
     icon: faProjectDiagram,
   },
   { title: "Contact Me", path: "#contact", icon: faEnvelope },

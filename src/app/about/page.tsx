@@ -75,7 +75,7 @@ const About = () => {
               <img src="/assets/profile_pic.jpg" alt="profile" />
             </div>
           </div>
-          <div className="stats shadow mt-20 font-mono">
+          <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-mono">
             <div className="stat place-items-center">
               <div className="stat-title">Open Source</div>
               <div className="stat-value text-primary" ref={openSourceRef}>

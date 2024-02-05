@@ -1,4 +1,5 @@
 import { categories } from "@/utils/skills";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 const Skills = () => {
@@ -12,7 +13,7 @@ const Skills = () => {
       </div>
 
       <div className="hero-content flex flex-col items-baseline ">
-        <header className="font-mono text-white font-bold text-[24px] md:text-[32px] px-10 lg:px-20 pt-10">
+        <header className="font-mono text-white font-bold text-[24px] md:text-[32px] px-10 lg:px-20 ">
           Skills
           <img src="/assets/undeline.svg" alt="underline" />
         </header>
@@ -23,11 +24,14 @@ const Skills = () => {
               className="card w-full lg:w-[40%] bg-base-200 bg-opacity-[0.6] shadow-xl mx-10 my-4 border-l border-r border-white font-firaCode"
             >
               <div className="card-body">
-                <h2 className="card-title text-white">{category.title}</h2>
+                <div className="flex items-center text-white">
+                  <FontAwesomeIcon icon={category.icon} className="mr-2" />
+                  <h2 className="card-title">{category.title}</h2>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {category.skills.map((skill, skillIndex) => (
                     <div key={skillIndex} className="space-y-2">
-                      <div className="text-white font-semibold text-sm">
+                      <div className="text-white font-thin text-sm">
                         {skill.name}
                       </div>
                       <progress

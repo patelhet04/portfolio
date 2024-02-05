@@ -4,7 +4,7 @@ const Experience = () => {
   return (
     <section id="career" className="hero min-h-screen relative">
       <div
-        className="transparent_text_home text-[13vw] hidden sm:hidden md:block"
+        className="transparent_text_work hidden sm:hidden md:block "
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Career /&gt;

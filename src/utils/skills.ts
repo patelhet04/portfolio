@@ -1,5 +1,15 @@
+import { icon } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCode,
+  faDatabase,
+  faLaptopCode,
+  faNetworkWired,
+  faTools,
+} from "@fortawesome/free-solid-svg-icons";
+
 export const categories = [
   {
+    icon: faLaptopCode,
     title: "Programming Languages",
     skills: [
       { name: "C++", level: 80 },
@@ -11,17 +21,19 @@ export const categories = [
     ],
   },
   {
+    icon: faCode,
     title: "Web Technologies",
     skills: [
-      { name: "HTML/CSS", level: 90 },
+      { name: "HTML/CSS/SCSS", level: 90 },
       { name: "TailwindCSS", level: 70 },
       { name: "React/Next.js", level: 75 },
       { name: "Redux", level: 70 },
-      { name: "Node", level: 85 },
-      { name: "Express", level: 85 },
+      { name: "Node/Express", level: 85 },
+      { name: "RestAPI", level: 85 },
     ],
   },
   {
+    icon: faDatabase,
     title: "Database and Cloud",
     skills: [
       { name: "MySQL", level: 80 },
@@ -33,6 +45,7 @@ export const categories = [
     ],
   },
   {
+    icon: faTools,
     title: "Other Tools/Software",
     skills: [
       { name: "Git/Github", level: 90 },

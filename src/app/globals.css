@@ -50,7 +50,9 @@ body {
   .transparent_text_about {
     @apply font-fira absolute top-0 opacity-10 text-white font-bold z-0 text-[15vw];
   }
-
+  .transparent_text_work {
+    @apply font-fira absolute opacity-10 text-white font-bold z-0 text-[13vw] top-1/4;
+  }
   .main {
     @apply flex-1 overflow-auto max-w-full xl:ml-64;
   }
