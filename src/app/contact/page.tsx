@@ -1,5 +1,4 @@
 import React from "react";
-import MapPage from "../components/Map";
 
 const Contact: React.FC = () => {
   return (
