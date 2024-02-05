@@ -4,7 +4,7 @@ import TypeIt from "typeit-react";
 // import Animoji from '@/app/assets/'
 export default function Home() {
   return (
-    <section className="hero min-h-screen relative">
+    <section id="home" className="hero min-h-screen relative">
       <div
         className="transparent_text_home hidden sm:hidden md:block"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}

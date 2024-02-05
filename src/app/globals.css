@@ -8,6 +8,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -46,26 +50,27 @@ body {
   .transparent_text_about {
     @apply font-fira absolute top-0 opacity-10 text-white font-bold z-0 text-[15vw];
   }
+
   .main {
     @apply flex-1 overflow-auto max-w-full xl:ml-64;
   }
 }
-
-.social_icon:nth-child(1) {
+.social_icon_list a:nth-child(1) .social_icon {
   animation-delay: 1s;
 }
-.social_icon:nth-child(2) {
+.social_icon_list a:nth-child(2) .social_icon {
   animation-delay: 2s;
 }
-.social_icon:nth-child(3) {
+.social_icon_list a:nth-child(3) .social_icon {
   animation-delay: 3s;
 }
-.social_icon:nth-child(4) {
+.social_icon_list a:nth-child(4) .social_icon {
   animation-delay: 4s;
 }
-.social_icon:nth-child(5) {
+.social_icon_list a:nth-child(5) .social_icon {
   animation-delay: 5s;
 }
+
 [data-theme="sunset"] .menu li a.active {
   color: #49c5b6 !important;
 }
@@ -77,4 +82,12 @@ body {
 [data-theme="sunset"] .btn:hover {
   color: #49c5b6 !important;
   background: none !important;
+}
+
+[data-theme="sunset"] .timeline-vertical > li {
+  --timeline-col-start: minmax(0, 0fr);
+}
+
+[data-theme="sunset"] .timeline > li {
+  --timeline-row-start: minmax(0, 0fr);
 }

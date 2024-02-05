@@ -12,8 +12,8 @@ export const navLinks = [
   { title: "About Me", path: "#about", icon: faUser, isActive: false },
   { title: "Skills", path: "#skills", icon: faStar, isActive: false },
   {
-    title: "Work Experience",
-    path: "#work",
+    title: "Career",
+    path: "#career",
     icon: faBriefcase,
     isActive: false,
   },

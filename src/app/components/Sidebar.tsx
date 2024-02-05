@@ -69,12 +69,38 @@ const Sidebar = () => {
             })}
           </ul>
         </nav>
-        <div className="flex_center_row social_icon_list w-full">
-          <FontAwesomeIcon className="social_icon" icon={faLinkedin} />
-          <FontAwesomeIcon className="social_icon" icon={faGithub} />
-          <FontAwesomeIcon className="social_icon" icon={faEnvelope} />
-          <FontAwesomeIcon className="social_icon" icon={faInstagram} />
-          <FontAwesomeIcon className="social_icon" icon={faFacebook} />
+        <div className="flex_center_row social_icon_list w-full cursor-pointer">
+          <a
+            href="https://www.linkedin.com/in/het1074/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon className="social_icon" icon={faLinkedin} />
+          </a>
+          <a
+            href="https://github.com/patelhet04"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon className="social_icon" icon={faGithub} />
+          </a>
+          <a href="mailto:hetpatel0499@gmail.com">
+            <FontAwesomeIcon className="social_icon" icon={faEnvelope} />
+          </a>
+          <a
+            href="https://www.instagram.com/_hetpatel_4199"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon className="social_icon" icon={faInstagram} />
+          </a>
+          <a
+            href="https://www.facebook.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <FontAwesomeIcon className="social_icon" icon={faFacebook} />
+          </a>
         </div>
 
         {/* Sidebar Content - Links, Navigation, etc. */}

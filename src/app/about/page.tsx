@@ -60,7 +60,7 @@ const About = () => {
   }, []);
 
   return (
-    <section ref={aboutRef} className="hero min-h-screen relative">
+    <section ref={aboutRef} id="about" className="hero min-h-screen relative">
       <div
         className="transparent_text_about hidden sm:hidden md:block"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
@@ -99,7 +99,7 @@ const About = () => {
         </div>
 
         <div className="flex_center_col gap-10 font-mono">
-          <header className="font-mono text-white font-bold text-[40px]">
+          <header className="font-mono text-white font-bold text-[24px] md:text-[32px]">
             About Me
             <img src="/assets/undeline.svg" alt="underline" />
           </header>
