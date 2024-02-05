@@ -59,7 +59,7 @@ const Experience = () => {
               </svg>
             </div>
             <div className="timeline-end leading-6">
-              <time className="italic text-white">Aug 2020 - May 2020</time>
+              <time className="italic text-white">Aug 2016 - May 2020</time>
               <div className="text-base md:text-lg font-bold text-primary-blue">
                 Gujarat Technological University, India
               </div>

@@ -44,9 +44,11 @@ export default function Home() {
               }}
             />
           </p>
-          <button className="btn btn-outline font-mono btn-wide md:btn-md lg:btn-lg">
-            Explore More
-          </button>
+          <a href="#about">
+            <button className="btn btn-outline font-mono btn-wide md:btn-md lg:btn-lg">
+              Explore More
+            </button>
+          </a>
         </div>
         <video
           autoPlay

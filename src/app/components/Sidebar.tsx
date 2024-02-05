@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { navLinks } from "@/utils/navlinks";
@@ -16,7 +16,41 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activePath, setActivePath] = useState(
+    typeof window !== "undefined" ? window.location.hash : ""
+  );
 
+  useEffect(() => {
+    const handleScroll = () => {
+      let newActivePath = "";
+      let sectionFound = false;
+
+      navLinks.forEach((link) => {
+        const section = document.querySelector(link.path) as HTMLElement; // Type assertion here
+        if (section) {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          if (
+            window.scrollY >= sectionTop - sectionHeight / 4 &&
+            window.scrollY < sectionTop + sectionHeight - sectionHeight / 4
+          ) {
+            newActivePath = link.path;
+            sectionFound = true;
+          }
+        }
+      });
+
+      if (sectionFound && newActivePath !== activePath) {
+        setActivePath(newActivePath);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [activePath]);
   // Function to toggle the sidebar visibility
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -29,6 +63,7 @@ const Sidebar = () => {
           icon={faBars}
           className="text-white cursor-pointer text-2xl hover:text-gray-400"
           onClick={toggleSidebar}
+          aria-label="Toggle Sidebar"
         />
       </div>
       <aside
@@ -60,7 +95,9 @@ const Sidebar = () => {
                   {/* <FontAwesomeIcon icon={link.icon} className="mr-4 w-5 h-5" /> */}
                   <a
                     href={link.path}
-                    className={`${link.isActive ? "active font-bold" : ""}`}
+                    className={`${
+                      link.path === activePath ? "active font-bold" : ""
+                    }`}
                   >
                     {link.title}
                   </a>
