@@ -13,6 +13,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="/assets/Memoji.png" type="image/icon type" />
+        <meta property="og:image" content="/assets/Memoji.png" />
       </head>
       <body>
         <Loader />
