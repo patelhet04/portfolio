@@ -11,7 +11,7 @@ export const portfolio = [
   {
     id: 2,
     title: "Airplace Management System",
-    projectImage: "/assets/JavaSwing.png",
+    projectImage: "/assets/javaSwing.png",
     description:
       "Airplane Management System project created using Java Swing and MongoDB",
     tag: "project",
@@ -32,7 +32,8 @@ export const portfolio = [
     projectImage: "/assets/node_passport.png",
     description:
       "Node Passport Login project integrating secure authentication, check it out on GitHub",
-    tag: "https://github.com/patelhet04/Node-Passport-Login",
+    tag: "project",
+    link: "https://github.com/patelhet04/Node-Passport-Login",
   },
   {
     id: 5,
