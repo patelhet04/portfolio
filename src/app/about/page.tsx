@@ -188,7 +188,7 @@ const About = () => {
             </a>
             <a
               href="/assets/HetPatel_Resume.pdf"
-              download="Het_Pate_Resume.pdf"
+              download="Het_Patel_Resume.pdf"
             >
               <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
                 Download Resume
