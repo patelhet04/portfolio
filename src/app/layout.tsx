@@ -11,6 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/assets/Memoji.png" type="image/icon type" />
+      </head>
       <body>
         <Loader />
         <div className="flex" data-theme="sunset">
