@@ -6,22 +6,28 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import type { NextPage } from "next";
 
-// ... (rest of your imports and L.Icon.Default fix)
-
 const LocationMarker: React.FC = () => {
   const map = useMap();
 
   useEffect(() => {
-    map.locate().on("locationfound", function (e) {
-      const coords = e.latlng;
-      const radius = e.accuracy;
+    const locateUser = () => {
+      map.locate().on("locationfound", function (e) {
+        const coords = e.latlng;
+        const radius = e.accuracy;
 
-      L.marker(coords)
-        .addTo(map)
-        .bindPopup(`You are within ${radius} meters from this point`)
-        .openPopup();
-      L.circle(coords, radius).addTo(map);
-    });
+        L.marker(coords)
+          .addTo(map)
+          .bindPopup(`You are within ${radius} meters from this point`)
+          .openPopup();
+
+        L.circle(coords, radius).addTo(map);
+      });
+    };
+
+    // Ensure we are running in the browser
+    if (typeof window !== "undefined") {
+      locateUser();
+    }
   }, [map]);
 
   return null;

@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import Map from "../components/Map";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMapLocation,
@@ -9,6 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import MapPage from "../components/DynamicMap";
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -46,7 +46,7 @@ const Contact: React.FC = () => {
         &lt;Contact /&gt;
       </div>
 
-      <div className="flex flex-col justify-between p-20">
+      <div className="flex flex-col justify-between p-12 md:p-20">
         <div>
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             Get In Touch.
@@ -77,12 +77,12 @@ const Contact: React.FC = () => {
             </p>
           </div>
         </div>
-        <div className="h-[50vh] lg:h-full w-full">
-          <Map />
+        <div className="h-[50vh]">
+          <MapPage />
         </div>
       </div>
       <div className="flex flex-col justify-center p-10 mt-0 lg:mt-14">
-        <form className="py-10 px-10 rounded-lg bg-base-300">
+        <form className="py-6 px-10 rounded-lg bg-base-300">
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6">
             <input

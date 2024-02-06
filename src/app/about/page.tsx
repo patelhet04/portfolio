@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
+
 const About = () => {
   const aboutRef = useRef<HTMLDivElement>(null);
   const openSourceRef = useRef<HTMLDivElement>(null);

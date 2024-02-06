@@ -18,7 +18,7 @@ const Projects = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const triggerAnimations = () => {
-      if (gridRef.current && !animationStateRef.current.hasAnimated) {
+      if (gridRef.current && animationStateRef.current.hasAnimated == false) {
         gsap.fromTo(
           gridRef.current.children,
           { y: 100, autoAlpha: 0 },
@@ -32,7 +32,7 @@ const Projects = () => {
               trigger: gridRef.current,
               start: "top center+=100",
               end: "bottom center",
-              toggleActions: "play none none none",
+              toggleActions: "play none none reverse",
               onEnter: () => {
                 animationStateRef.current.hasAnimated = true;
               },
@@ -86,7 +86,7 @@ const Projects = () => {
       >
         &lt;Projects /&gt;
       </div>
-      <div className="hero-content mx-8 lg:mx-0">
+      <div className="hero-content mx-0">
         <div className="w-[100%]">
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             My Portfolio
@@ -144,26 +144,29 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card w-80 md:w-72 bg-base-100 shadow-xl"
+                  className="card w-80 md:w-72 bg-base-300 shadow-xl"
                 >
-                  <figure>
+                  <figure className="h-40 w-full overflow-hidden">
                     <img
                       src={
                         project.projectImage ||
                         "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
                       } // Fallback image if projectImage is empty
                       alt={project.title}
+                      className="h-full w-full object-fill"
                     />
                   </figure>
                   <div className="card-body text-white">
                     <p className="card-title text-[18px]">{project.title}</p>
-                    <p className="font-firaCode font-thin">
+                    <p className="font-firaCode text-[14px] font-thin text-justify">
                       {project.description}
                     </p>
                     <div className="card-actions justify-center">
-                      <button className="btn btn-outline font-mono btn-wide md:btn-md">
-                        View Project
-                      </button>
+                      <a href={project.link} target="_blank">
+                        <button className="btn btn-outline font-mono btn-wide md:btn-md">
+                          View Project
+                        </button>
+                      </a>
                     </div>
                   </div>
                 </div>
