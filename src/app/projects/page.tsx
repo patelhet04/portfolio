@@ -2,26 +2,43 @@
 import { portfolio } from "@/utils/portfolio";
 import gsap from "gsap";
 import React, { useState, useEffect, useRef } from "react";
-
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 const Projects = () => {
   type ActiveTab = "all" | "project" | "post" | "article";
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
-  const [animationTriggered, setAnimationTriggered] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  const animationStateRef = useRef({ hasAnimated: false });
+
   const handleTabClick = (tab: ActiveTab) => {
     setActiveTab(tab);
   };
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
     const triggerAnimations = () => {
-      if (gridRef.current && !animationTriggered) {
-        const gridElements = Array.from(gridRef.current.children);
+      if (gridRef.current && !animationStateRef.current.hasAnimated) {
         gsap.fromTo(
-          gridElements,
-          { x: -100, autoAlpha: 0 },
-          { x: 0, autoAlpha: 1, stagger: 0.1, ease: "power2.out", delay: 0.5 }
+          gridRef.current.children,
+          { y: 100, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+            duration: 1,
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top center+=100",
+              end: "bottom center",
+              toggleActions: "play none none none",
+              onEnter: () => {
+                animationStateRef.current.hasAnimated = true;
+              },
+            },
+          }
         );
-        setAnimationTriggered(true); // Set flag to true after animation
       }
     };
 
@@ -31,35 +48,14 @@ const Projects = () => {
       }
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            triggerAnimations();
-          }
-        });
-      },
-      { root: null, rootMargin: "0px", threshold: 0.1 }
-    );
-
-    if (gridRef.current) {
-      observer.observe(gridRef.current);
-    }
-
+    // Listen to hash changes for direct navigation
     window.addEventListener("hashchange", handleHashChange);
-    handleHashChange(); // Also check on initial load
+    // Trigger on initial load in case of direct navigation to the hash
+    handleHashChange();
 
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
-      if (gridRef.current) {
-        observer.unobserve(gridRef.current);
-      }
     };
-  }, [animationTriggered]); // Depend on the animationTriggered state
-
-  useEffect(() => {
-    // Reset the animation flag when the component is re-mounted (e.g., navigating away and back)
-    setAnimationTriggered(false);
   }, []);
 
   useEffect(() => {
@@ -77,6 +73,7 @@ const Projects = () => {
       );
     }
   }, [activeTab]);
+
   return (
     // <section id="projects" className="hero min-h-screen relative">
     <section
@@ -89,13 +86,13 @@ const Projects = () => {
       >
         &lt;Projects /&gt;
       </div>
-      <div className="hero-content mx-20">
-        <div className="w-full">
+      <div className="hero-content mx-8 lg:mx-0">
+        <div className="w-[100%]">
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             My Portfolio
             <img src="/assets/undeline.svg" alt="underline" />
           </header>
-          <div className="flex justify-start gap-4 mb-8 font-mono text-white">
+          <div className="flex justify-start gap-0 md:gap-4 mb-8 font-mono text-white">
             <div role="tablist" className="tabs tabs-bordered">
               <a
                 role="tab"
@@ -137,7 +134,7 @@ const Projects = () => {
           </div>
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 auto-rows-max"
           >
             {/* Replace with your project items */}
             {portfolio
@@ -147,7 +144,7 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card w-80 bg-base-100 shadow-xl"
+                  className="card w-80 md:w-72 bg-base-100 shadow-xl"
                 >
                   <figure>
                     <img
@@ -158,11 +155,15 @@ const Projects = () => {
                       alt={project.title}
                     />
                   </figure>
-                  <div className="card-body">
-                    <h2 className="card-title">{project.title}</h2>
-                    <p>{project.description}</p>
-                    <div className="card-actions justify-end">
-                      <button className="btn btn-primary">View Project</button>
+                  <div className="card-body text-white">
+                    <p className="card-title text-[18px]">{project.title}</p>
+                    <p className="font-firaCode font-thin">
+                      {project.description}
+                    </p>
+                    <div className="card-actions justify-center">
+                      <button className="btn btn-outline font-mono btn-wide md:btn-md">
+                        View Project
+                      </button>
                     </div>
                   </div>
                 </div>

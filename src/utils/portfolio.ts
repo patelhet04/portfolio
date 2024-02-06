@@ -49,7 +49,7 @@ export const portfolio = [
   },
   {
     id: 7,
-    title: "Exploring daisyUI with Next.js 14 and TailwindCSS: A Game-Changer?",
+    title: "Exploring daisyUI with Next.js 14 and TailwindCSS",
     projectImage: "",
     description:
       "This is my personal portfolio website. It showcases the skills and work I",
@@ -57,8 +57,7 @@ export const portfolio = [
   },
   {
     id: 8,
-    title:
-      "Understanding the Differences: JavaScript vs TypeScript for Beginners",
+    title: "JavaScript vs TypeScript for Beginners",
     projectImage: "",
     description:
       "This is my personal portfolio website. It showcases the skills and work I",

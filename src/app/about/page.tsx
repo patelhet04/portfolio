@@ -1,16 +1,60 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
 const About = () => {
   const aboutRef = useRef<HTMLDivElement>(null);
   const openSourceRef = useRef<HTMLDivElement>(null);
   const codingHoursRef = useRef<HTMLDivElement>(null);
+  const profilePicRef = useRef<HTMLImageElement>(null); // Ref for the profile picture
+  const headerRef = useRef<HTMLHeadingElement>(null); // Ref for the header
+  const paragraphRef = useRef<HTMLParagraphElement>(null); // Ref for the paragraph
+  const listRef = useRef<HTMLOListElement>(null); // Ref for the list
+  const buttonsRef = useRef<HTMLDivElement>(null); // Ref for the buttons container
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             // Start animations when About section comes into view
+            if (profilePicRef.current) {
+              gsap.from(profilePicRef.current, {
+                scale: 0.8,
+                opacity: 0,
+                rotation: 10, // Rotate from -10 degrees to 0
+                duration: 1.5,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: profilePicRef.current,
+                  start: "top 80%",
+                  toggleActions: "play none none none",
+                },
+              });
+            }
+
+            const contentRefs = [
+              headerRef.current,
+              paragraphRef.current,
+              listRef.current,
+              buttonsRef.current,
+            ];
+            contentRefs.forEach((ref) => {
+              if (ref) {
+                gsap.from(ref, {
+                  y: 20,
+                  opacity: 0,
+                  duration: 1,
+                  ease: "power3.out",
+                  stagger: 0.2,
+                  scrollTrigger: {
+                    trigger: ref,
+                    start: "top 80%",
+                    toggleActions: "play none none none",
+                  },
+                });
+              }
+            });
 
             const openSourceTarget = { value: 0 };
             gsap.to(openSourceTarget, {
@@ -72,7 +116,11 @@ const About = () => {
         <div className="max-w-md flex_col">
           <div className="avatar">
             <div className=" w-72 md:w-96 mask mask-squircle">
-              <img src="/assets/profile_pic.jpg" alt="profile" />
+              <img
+                ref={profilePicRef}
+                src="/assets/profile_pic.jpg"
+                alt="profile"
+              />
             </div>
           </div>
           <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-mono">
@@ -99,15 +147,21 @@ const About = () => {
         </div>
 
         <div className="flex_center_col gap-10 font-mono">
-          <header className="font-mono text-white font-bold text-[24px] md:text-[32px]">
+          <header
+            ref={headerRef}
+            className="font-mono text-white font-bold text-[24px] md:text-[32px]"
+          >
             About Me
             <img src="/assets/undeline.svg" alt="underline" />
           </header>
-          <p className="font-bold text-white text-xl lg:text-2xl">
+          <p
+            ref={paragraphRef}
+            className="font-bold text-white text-xl lg:text-2xl"
+          >
             Hello, I'm Het Patel, a dedicated software developer and a graduate
             student
           </p>
-          <ol className=" list-disc list-inside leading-8">
+          <ol ref={listRef} className=" list-disc list-inside leading-8">
             <li>
               Throughout my software development career, I've shown a strong
               commitment to innovation and problem-solving.
@@ -122,13 +176,23 @@ const About = () => {
               culture.
             </li>
           </ol>
-          <div className="flex flex-row justify-baseline items-center gap-10">
-            <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
-              Contact Me
-            </button>
-            <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
-              Explore More
-            </button>
+          <div
+            ref={buttonsRef}
+            className="flex flex-row justify-baseline items-center gap-10"
+          >
+            <a href="#contact">
+              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+                Contact Me
+              </button>
+            </a>
+            <a
+              href="/assets/HetPatel_Resume.pdf"
+              download="Het_Pate_Resume.pdf"
+            >
+              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+                Download Resume
+              </button>
+            </a>
           </div>
         </div>
       </div>
