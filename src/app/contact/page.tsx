@@ -81,7 +81,7 @@ const Contact: React.FC = () => {
           <MapPage />
         </div>
       </div>
-      <div className="flex flex-col justify-center mt-0 lg:mt-32 xl:w-[80%] md:w-full">
+      <div className="flex flex-col justify-center mt-0 lg:mt-32 xl:w-[80%] md:w-full z-10">
         <form className="py-6 px-10 rounded-lg bg-base-300">
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6 2xl:gap-14">

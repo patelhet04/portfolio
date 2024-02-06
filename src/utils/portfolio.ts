@@ -3,8 +3,7 @@ export const portfolio = [
     id: 1,
     title: "Portfolio",
     projectImage: "/assets/portfolio.png",
-    description:
-      "This is my personal portfolio website. It showcases the skills and work I",
+    description: "This is my personal portfolio website.",
     tag: "project",
     link: "https://hetpatel.dev/",
   },
@@ -65,7 +64,7 @@ export const portfolio = [
   {
     id: 8,
     title: "JavaScript vs TypeScript for Beginners",
-    projectImage: "/assets/JS_VS_TS.png",
+    projectImage: "/assets/JS_vs_TS.png",
     description:
       "Dive into the differences between JavaScript and TypeScript for beginners. Gain insights into these two languages.",
     tag: "article",
