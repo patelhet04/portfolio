@@ -22,9 +22,6 @@ body {
   box-sizing: border-box;
   background-color: #000000;
 }
-video {
-  background-color: transparent; /* Set the background to transparent */
-}
 
 @layer {
   .sidebar {
@@ -99,4 +96,8 @@ video {
 
 [data-theme="sunset"] .timeline > li {
   --timeline-row-start: minmax(0, 0fr);
+}
+
+[data-theme="sunset"] .progress::before {
+  --tw-ring-color: #49c5b6;
 }

@@ -15,7 +15,7 @@ const Experience = () => {
       {
         opacity: 1, // End state: fully visible
         x: 0, // Move to original horizontal position
-        duration: 2, // Animation duration
+        duration: 3, // Animation duration
         ease: "power3.out", // Easing function for a smooth transition
         scrollTrigger: {
           trigger: "#career",
@@ -65,7 +65,7 @@ const Experience = () => {
           {educationData.map((edu) => (
             <li
               key={edu.id}
-              className="mt-2 bg-base-300 bg-opacity-[0.6] p-4 text-[16px]"
+              className="mt-2 bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px]"
             >
               <div className="timeline-middle">
                 {/* SVG icon can be extracted as a component if used multiple times */}
@@ -101,7 +101,7 @@ const Experience = () => {
           {experienceData.map((exp) => (
             <li
               key={exp.id}
-              className="bg-base-300 bg-opacity-[0.6] p-4 text-[16px]"
+              className="bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px]"
             >
               <div className="timeline-middle">
                 <svg
