@@ -2,7 +2,6 @@
 import gsap from "gsap";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import ReactPlayer from "react-player";
 import TypeIt from "typeit-react";
 // import Animoji from '@/app/assets/'
 export default function Home() {
@@ -89,7 +88,7 @@ export default function Home() {
             </button>
           </a>
         </div>
-        {/* <video
+        <video
           ref={videoRef}
           autoPlay
           muted
@@ -98,17 +97,7 @@ export default function Home() {
         >
           <source src="/assets/Animoji.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video> */}
-        <ReactPlayer
-          controls={false}
-          url="/assets/Animoji.mp4"
-          playing
-          loop
-          muted
-          width="100%"
-          height="100%"
-          playsinline
-        />
+        </video>
       </div>
     </section>
   );
