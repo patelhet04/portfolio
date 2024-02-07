@@ -100,6 +100,7 @@ export default function Home() {
           Your browser does not support the video tag.
         </video> */}
         <ReactPlayer
+          controls={false}
           url="/assets/Animoji.mp4"
           playing
           loop
