@@ -51,7 +51,7 @@ const Experience = () => {
   return (
     <section id="career" className="hero min-h-screen relative px-0 md:px-10">
       <div
-        className="transparent_text_work hidden sm:hidden md:block"
+        className="transparent_text_work text-[15vw] hidden sm:hidden md:block"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Career /&gt;
@@ -63,7 +63,10 @@ const Experience = () => {
             <img src="/assets/undeline.svg" alt="underline" />
           </header>
           {educationData.map((edu) => (
-            <li key={edu.id} className="mt-2 bg-base-300 bg-opacity-[0.6] p-4">
+            <li
+              key={edu.id}
+              className="mt-2 bg-base-300 bg-opacity-[0.6] p-4 text-[16px]"
+            >
               <div className="timeline-middle">
                 {/* SVG icon can be extracted as a component if used multiple times */}
                 <svg
@@ -79,13 +82,13 @@ const Experience = () => {
                   />
                 </svg>
               </div>
-              <div className="timeline-end leading-6">
+              <div className="timeline-end leading-10">
                 <time className="italic">{edu.dates}</time>
-                <div className="text-base md:text-lg font-bold text-primary-blue">
+                <div className="text-lg md:text-xl font-bold text-primary-blue">
                   {edu.institution}
                 </div>
-                <p className="italic font-extralight">{edu.degree}</p>
-                <p className="font-extralight">{edu.cgpa}</p>
+                <p className="italic">{edu.degree}</p>
+                <p>{edu.cgpa}</p>
               </div>
               <hr />
             </li>
@@ -96,7 +99,10 @@ const Experience = () => {
             <img src="/assets/undeline.svg" alt="underline" />
           </header>
           {experienceData.map((exp) => (
-            <li key={exp.id} className="bg-base-300 bg-opacity-[0.6] p-4">
+            <li
+              key={exp.id}
+              className="bg-base-300 bg-opacity-[0.6] p-4 text-[16px]"
+            >
               <div className="timeline-middle">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -111,9 +117,9 @@ const Experience = () => {
                   />
                 </svg>
               </div>
-              <div className="timeline-end">
+              <div className="timeline-end leading-10">
                 <time className="italic text-white">{exp.dates}</time>
-                <div className="text-base md:text-lg font-bold text-primary-blue">
+                <div className="text-lg md:text-xl font-bold text-primary-blue">
                   {exp.company}
                 </div>
                 <p className="italic font-extralight">{exp.role}</p>

@@ -3,7 +3,8 @@ export const portfolio = [
     id: 1,
     title: "Portfolio",
     projectImage: "/assets/portfolio.png",
-    description: "This is my personal portfolio website.",
+    description:
+      "This is my personal portfolio website.  It showcases the projects I have worked on, my work experience and provides an overview of my skills.",
     tag: "project",
     link: "https://hetpatel.dev/",
   },

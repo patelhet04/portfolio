@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { FormEvent, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMapLocation,
@@ -11,6 +11,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import MapPage from "../components/DynamicMap";
 const Contact: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -86,24 +87,28 @@ const Contact: React.FC = () => {
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6 2xl:gap-14">
             <input
+              name="name"
               type="text"
               placeholder="Name *"
               className="input input-bordered w-full"
               required
             />
             <input
+              name="from_email"
               type="email"
               placeholder="Email *"
               className="input input-bordered w-full"
               required
             />
             <input
+              name="subject"
               type="text"
               placeholder="Subject *"
               className="input input-bordered w-full"
               required
             />
             <textarea
+              name="message"
               placeholder="Your message *"
               className="textarea textarea-bordered h-48"
               required
