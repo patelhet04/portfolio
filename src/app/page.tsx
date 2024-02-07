@@ -12,6 +12,7 @@ const Main: React.FC = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          console.log(entry);
           if (entry.isIntersecting) {
             const currentId = entry.target.id;
             window.history.replaceState(null, "", `#${currentId}`);

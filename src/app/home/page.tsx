@@ -93,7 +93,7 @@ export default function Home() {
           autoPlay
           muted
           loop
-          className="w-full lg:w-2/3 flex justify-center items-center"
+          className="w-full lg:w-2/3 flex justify-center items-center object-cover"
         >
           <source src="/assets/Animoji.mp4" type="video/mp4" />
           Your browser does not support the video tag.
