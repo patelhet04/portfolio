@@ -76,15 +76,18 @@ const DownloadButton: React.FC<{
   return (
     <div className="indicator">
       <a
-        href="/path/to/your/Resume.pdf"
-        download="Your_Resume_Name.pdf"
-        className="z-30 fixed bottom-5 right-20 flex items-center justify-center gap-2  bg-primary-blue px-5 py-3 rounded-[14px] font-mono border border-base-300 transition ease-in-out duration-300 transform hover:scale-110 shadow-lg"
+        href="/assets/HetPatel_Resume.pdf"
+        download="Het_Patel_Resume.pdf"
+        className="z-30 fixed bottom-5 right-5 md:right-14 flex items-center justify-center gap-2  bg-primary-blue px-3 md:px-5  py-2 md:py-3 rounded-[14px] font-mono border border-base-300 transition ease-in-out duration-300 transform hover:scale-110 shadow-lg"
       >
-        <span className="indicator-item badge badge-success bg-white font-bold">
+        <span className="indicator-item indicator-start badge badge-success bg-white font-bold">
           Download Here
         </span>
-        <FontAwesomeIcon icon={faDownload} className="text-xl text-base-300" />
-        <p className="text-base-300 text-lg font-bold">Resume</p>
+        <FontAwesomeIcon
+          icon={faDownload}
+          className="text-lg md:text-xl text-base-300"
+        />
+        <p className="text-base-300 text-base md:text-lg font-bold">Resume</p>
       </a>
     </div>
   );
