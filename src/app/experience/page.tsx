@@ -101,7 +101,7 @@ const Experience = () => {
           {experienceData.map((exp) => (
             <li
               key={exp.id}
-              className="bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px]"
+              className="bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px] mb-5"
             >
               <div className="timeline-middle">
                 <svg
