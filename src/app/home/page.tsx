@@ -96,12 +96,12 @@ export default function Home() {
           loop
           className="w-full h-full lg:w-2/3 object-cover"
         >
+          <source src="/assets/Animoji-hevc-safari.mp4" type="video/mp4" />
           <source
             src="/assets/Animoji-vp9-chrome.webm"
             type='video/webm; codecs="vp9"'
           />
           {/* Fallback H.264 format for Safari and other browsers */}
-          <source src="/assets/Animoji-hevc-safari.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
