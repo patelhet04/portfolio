@@ -94,6 +94,7 @@ export default function Home() {
           autoPlay
           muted
           loop
+          playsInline
           className="w-full h-full lg:w-2/3 object-cover"
         >
           <source src="/assets/Animoji-hevc-safari.mp4" type="video/mp4" />
