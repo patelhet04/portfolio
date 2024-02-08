@@ -8,7 +8,16 @@ export default function Home() {
   const headingRef = useRef<HTMLHeadingElement>(null); // Reference to the heading container
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const [videoSource, setVideoSource] = useState(
+    "/assets/Animoji-hevc-safari.mp4"
+  );
+
   useEffect(() => {
+    const userAgent = navigator.userAgent;
+    if (userAgent.includes("Chrome")) {
+      setVideoSource("/assets/Animoji-vp9-chrome.webm");
+    }
+
     if (headingRef.current) {
       const spans = headingRef.current.children; // Get all the span elements inside the heading
       gsap.fromTo(
@@ -96,12 +105,10 @@ export default function Home() {
           loop
           className="w-full h-full lg:w-2/3 object-cover"
         >
-          <source src="/assets/Animoji-hevc-safari.mp4" type="video/mp4" />
           <source
-            src="/assets/Animoji-vp9-chrome.webm"
-            type='video/webm; codecs="vp9"'
+            src={videoSource}
+            type={`video/${videoSource.split(".").pop()}`}
           />
-          {/* Fallback H.264 format for Safari and other browsers */}
           Your browser does not support the video tag.
         </video>
       </div>
