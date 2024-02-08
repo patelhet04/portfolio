@@ -1,12 +1,13 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import DownloadButton from "../components/DownloadBtn";
+import AboutRefContext from "../context/AboutRefContext";
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
-  const aboutRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useContext(AboutRefContext);
   const openSourceRef = useRef<HTMLDivElement>(null);
   const codingHoursRef = useRef<HTMLDivElement>(null);
   const profilePicRef = useRef<HTMLImageElement>(null); // Ref for the profile picture
@@ -97,7 +98,7 @@ const About = () => {
       }
     );
 
-    if (aboutRef.current) {
+    if (aboutRef?.current) {
       observer.observe(aboutRef.current);
     }
 
@@ -106,102 +107,99 @@ const About = () => {
   }, []);
 
   return (
-    <>
-      <section ref={aboutRef} id="about" className="hero min-h-screen relative">
-        <div
-          className="transparent_text_about hidden sm:hidden md:block"
-          style={{ color: "transparent", WebkitTextStroke: "2px white" }}
-        >
-          &lt;About /&gt;
-        </div>
+    <section ref={aboutRef} id="about" className="hero min-h-screen relative">
+      <div
+        className="transparent_text_about hidden sm:hidden md:block"
+        style={{ color: "transparent", WebkitTextStroke: "2px white" }}
+      >
+        &lt;About /&gt;
+      </div>
 
-        <div className="hero-content gap-20 px-14 md:px-20 flex_col flex-col-reverse lg:flex-row">
-          <div className="max-w-md flex_col">
-            <div className="avatar">
-              <div className=" w-72 md:w-96 mask mask-squircle">
-                <img
-                  ref={profilePicRef}
-                  src="/assets/profile_pic.jpg"
-                  alt="profile"
-                />
+      <div className="hero-content gap-20 px-14 md:px-20 flex_col flex-col-reverse lg:flex-row">
+        <div className="max-w-md flex_col">
+          <div className="avatar">
+            <div className=" w-72 md:w-96 mask mask-squircle">
+              <img
+                ref={profilePicRef}
+                src="/assets/profile_pic.jpg"
+                alt="profile"
+              />
+            </div>
+          </div>
+          <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-mono">
+            <div className="stat place-items-center">
+              <div className="stat-title">Open Source</div>
+              <div className="stat-value text-primary" ref={openSourceRef}>
+                0+
+              </div>
+              <div className="stat-desc text-[14px]">
+                Years of Contributions
               </div>
             </div>
-            <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-mono">
-              <div className="stat place-items-center">
-                <div className="stat-title">Open Source</div>
-                <div className="stat-value text-primary" ref={openSourceRef}>
-                  0+
-                </div>
-                <div className="stat-desc text-[14px]">
-                  Years of Contributions
-                </div>
-              </div>
 
-              <div className="stat place-items-center">
-                <div className="stat-title">Hours of Coding</div>
-                <div className="stat-value text-secondary" ref={codingHoursRef}>
-                  0 <sup>*</sup>
-                </div>
-                <div className="stat-desc text-[14px]">
-                  Invested in self development
-                </div>
+            <div className="stat place-items-center">
+              <div className="stat-title">Hours of Coding</div>
+              <div className="stat-value text-secondary" ref={codingHoursRef}>
+                0 <sup>*</sup>
+              </div>
+              <div className="stat-desc text-[14px]">
+                Invested in self development
               </div>
             </div>
           </div>
+        </div>
 
-          <div className="flex_center_col gap-10 font-mono">
-            <header
-              ref={headerRef}
-              className="font-mono text-white font-bold text-[24px] md:text-[32px]"
-            >
-              About Me
-              <img src="/assets/undeline.svg" alt="underline" />
-            </header>
-            <p
-              ref={paragraphRef}
-              className="font-bold text-white text-xl lg:text-2xl"
-            >
-              Hello, I'm Het Patel, a dedicated software developer and a
-              graduate student
-            </p>
-            <ol ref={listRef} className=" list-disc list-inside leading-8">
-              <li>
-                Throughout my software development career, I've shown a strong
-                commitment to innovation and problem-solving.
-              </li>
-              <li>
-                My approach is analytical, allowing me to identify challenges
-                and devise effective solutions quickly.
-              </li>
+        <div className="flex_center_col gap-10 font-mono">
+          <header
+            ref={headerRef}
+            className="font-mono text-white font-bold text-[24px] md:text-[32px]"
+          >
+            About Me
+            <img src="/assets/undeline.svg" alt="underline" />
+          </header>
+          <p
+            ref={paragraphRef}
+            className="font-bold text-white text-xl lg:text-2xl"
+          >
+            Hello, I'm Het Patel, a dedicated software developer and a graduate
+            student
+          </p>
+          <ol ref={listRef} className=" list-disc list-inside leading-8">
+            <li>
+              Throughout my software development career, I've shown a strong
+              commitment to innovation and problem-solving.
+            </li>
+            <li>
+              My approach is analytical, allowing me to identify challenges and
+              devise effective solutions quickly.
+            </li>
 
-              <li>
-                I value contributing to a collaborative and progressive work
-                culture.
-              </li>
-            </ol>
-            <div
-              ref={buttonsRef}
-              className="flex flex-row justify-baseline items-center gap-10"
+            <li>
+              I value contributing to a collaborative and progressive work
+              culture.
+            </li>
+          </ol>
+          <div
+            ref={buttonsRef}
+            className="flex flex-row justify-baseline items-center gap-10"
+          >
+            <a href="#contact">
+              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+                Contact Me
+              </button>
+            </a>
+            <a
+              href="/assets/HetPatel_Resume.pdf"
+              download="Het_Patel_Resume.pdf"
             >
-              <a href="#contact">
-                <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
-                  Contact Me
-                </button>
-              </a>
-              <a
-                href="/assets/HetPatel_Resume.pdf"
-                download="Het_Patel_Resume.pdf"
-              >
-                <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
-                  Download Resume
-                </button>
-              </a>
-            </div>
+              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+                Download Resume
+              </button>
+            </a>
           </div>
         </div>
-      </section>
-      <DownloadButton aboutRef={aboutRef} />
-    </>
+      </div>
+    </section>
   );
 };
 

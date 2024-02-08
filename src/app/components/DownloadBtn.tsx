@@ -44,7 +44,7 @@ const DownloadButton: React.FC<{
   }, [isInAboutSection]);
 
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout; // Use ReturnType<typeof setTimeout> if NodeJS.Timeout does not work
+    let scrollTimeout: ReturnType<typeof setTimeout>; // Use ReturnType<typeof setTimeout> if NodeJS.Timeout does not work
 
     const handleScroll = () => {
       setIsScrolling(true);
