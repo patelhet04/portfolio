@@ -15,7 +15,7 @@ export const portfolio = [
     description:
       "Airplane Management System project created using Java Swing and MongoDB",
     tag: "project",
-    link: "https://github.com/aed5100/final-project-team75final",
+    link: "https://github.com/patelhet04/Airplane-Management-System/",
   },
   {
     id: 3,
