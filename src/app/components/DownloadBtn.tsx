@@ -78,7 +78,7 @@ const DownloadButton: React.FC<{
       <a
         href="/assets/HetPatel_Resume.pdf"
         download="Het_Patel_Resume.pdf"
-        className="z-30 fixed bottom-5 right-5 md:right-14 flex items-center justify-center gap-2  bg-primary-blue px-3 md:px-5  py-2 md:py-3 rounded-[14px] font-mono border border-base-300 transition ease-in-out duration-300 transform hover:scale-110 shadow-lg"
+        className="z-30 fixed bottom-5 right-5 md:right-14 flex items-center justify-center gap-2  bg-primary-blue px-3 md:px-5  py-2 md:py-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg"
       >
         <span className="indicator-item indicator-start badge badge-success bg-white font-bold">
           Download Here
