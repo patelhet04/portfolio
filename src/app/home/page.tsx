@@ -96,6 +96,7 @@ export default function Home() {
           loop
           playsInline
           className="w-full h-full lg:w-2/3 object-cover"
+          poster="/assets/poster.png"
         >
           <source
             src="/assets/Animoji-vp9-chrome.webm"
