@@ -98,6 +98,6 @@ body {
   --timeline-row-start: minmax(0, 0fr);
 }
 
-[data-theme="sunset"] .progress::before {
-  --tw-ring-color: #49c5b6;
+[data-theme="sunset"] .indicator {
+  background-color: #49c5b6;
 }

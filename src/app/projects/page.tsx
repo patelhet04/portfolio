@@ -18,7 +18,7 @@ const Projects = () => {
     gsap.registerPlugin(ScrollTrigger);
 
     const triggerAnimations = () => {
-      if (gridRef.current && animationStateRef.current.hasAnimated == false) {
+      if (gridRef.current && !animationStateRef.current.hasAnimated) {
         gsap.fromTo(
           gridRef.current.children,
           { y: 100, autoAlpha: 0 },
@@ -32,10 +32,8 @@ const Projects = () => {
               trigger: gridRef.current,
               start: "top center+=100",
               end: "bottom center",
-              toggleActions: "play none none reverse",
-              onEnter: () => {
-                animationStateRef.current.hasAnimated = true;
-              },
+              toggleActions: "play none none none",
+              onEnter: () => (animationStateRef.current.hasAnimated = true),
             },
           }
         );
@@ -48,14 +46,10 @@ const Projects = () => {
       }
     };
 
-    // Listen to hash changes for direct navigation
     window.addEventListener("hashchange", handleHashChange);
-    // Trigger on initial load in case of direct navigation to the hash
     handleHashChange();
 
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange);
-    };
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   useEffect(() => {
@@ -71,6 +65,22 @@ const Projects = () => {
         { x: 100, opacity: 0 },
         { x: 0, opacity: 1, stagger: 0.1, ease: "power2.out" }
       );
+
+      const cards = gsap.utils.toArray<HTMLDivElement>(
+        gridRef.current.querySelectorAll(".card")
+      );
+
+      cards.forEach((card) => {
+        // Add mouseenter event listener
+        card.addEventListener("mouseenter", () => {
+          gsap.to(card, { scale: 1.05, duration: 0.3 });
+        });
+
+        // Add mouseleave event listener
+        card.addEventListener("mouseleave", () => {
+          gsap.to(card, { scale: 1, duration: 0.3 });
+        });
+      });
     }
   }, [activeTab]);
 
@@ -134,7 +144,7 @@ const Projects = () => {
           </div>
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14 auto-rows-max"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-max min-h-[1200px]"
           >
             {/* Replace with your project items */}
             {portfolio

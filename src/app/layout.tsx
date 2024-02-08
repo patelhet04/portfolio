@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "./components/Sidebar";
 import Loader from "./components/Loader";
 import { useState } from "react";
+import DownloadButton from "./components/DownloadBtn";
 
 export default function RootLayout({
   children,
@@ -16,10 +17,12 @@ export default function RootLayout({
       </head>
       <body>
         <Loader />
+
         <div className="flex" data-theme="sunset">
           <Sidebar />
 
           <main className="main">
+            <DownloadButton />
             {/* Content goes here */}
             {children}
           </main>
