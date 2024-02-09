@@ -134,3 +134,7 @@ body {
 [data-theme="retro"] [data-typeit-id="6934923"] .ti-cursor {
   color: #2e282a;
 }
+
+[data-theme="retro"] progress .progress {
+  color: #49c5b6 !important;
+}

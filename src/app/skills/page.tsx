@@ -110,14 +110,16 @@ const Skills = () => {
                           {skill.name}
                         </div>
 
-                        <progress
-                          ref={(el) => {
-                            if (el) progressRefs.current.set(refKey, el);
-                          }}
-                          className={`progress progress-info w-full`}
-                          value={skill.level}
-                          max="100"
-                        ></progress>
+                        <div data-theme="mytheme" className="bg-transparent">
+                          <progress
+                            ref={(el) => {
+                              if (el) progressRefs.current.set(refKey, el);
+                            }}
+                            className={`progress progress-primary w-full`}
+                            value={skill.level}
+                            max="100"
+                          ></progress>
+                        </div>
                       </div>
                     );
                   })}

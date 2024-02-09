@@ -36,7 +36,17 @@ const config: Config = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["sunset", "retro"],
+    themes: [
+      {
+        mytheme: {
+          /* "mytheme" is a placeholder, you can name it as you like */
+          primary: "#49c5b6", // Use your desired color for the primary theme color
+          // ... define other colors as needed
+        },
+      },
+      "sunset",
+      "retro",
+    ],
   },
 };
 export default config;
