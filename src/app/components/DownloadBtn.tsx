@@ -4,13 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import gsap from "gsap";
 import { debounce } from "lodash";
+import { useTheme } from "../context/ThemeContext";
 
 const DownloadButton: React.FC<{
   aboutRef: React.RefObject<HTMLElement>;
 }> = ({ aboutRef }) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isInAboutSection, setIsInAboutSection] = useState(false);
-
+  const { theme } = useTheme();
   useEffect(() => {
     const handleScroll = debounce(() => {
       if (aboutRef?.current) {
@@ -78,16 +79,26 @@ const DownloadButton: React.FC<{
       <a
         href="/assets/HetPatel_Resume.pdf"
         download="Het_Patel_Resume.pdf"
-        className="z-30 fixed bottom-5 right-5 md:right-10 flex items-center justify-center gap-2  bg-primary-blue px-3 md:px-5  py-2 md:py-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg"
+        className={`z-30 fixed bottom-5 right-5 md:right-10 flex items-center justify-center ${
+          theme === "retro" ? "btn btn-neutral" : "btn bg-primary-blue"
+        }  gap-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg`}
       >
         <span className="indicator-item indicator-start badge badge-success bg-white font-bold">
           Download Here
         </span>
         <FontAwesomeIcon
           icon={faDownload}
-          className="text-lg md:text-xl text-base-300"
+          className={`text-lg md:text-xl  ${
+            theme === "retro" ? "text-default" : "text-base-300"
+          }`}
         />
-        <p className="text-base-300 text-base md:text-lg font-bold">Resume</p>
+        <p
+          className={`md:text-lg font-bold ${
+            theme === "retro" ? "text-default" : "text-base-300"
+          }`}
+        >
+          Resume
+        </p>
       </a>
     </div>
   );

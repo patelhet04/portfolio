@@ -121,7 +121,11 @@ body {
 [data-theme="retro"] time,
 [data-theme="retro"] .sidebar-name,
 [data-theme="retro"] .badge {
-  color: #2e282a !important;
+  color: #2e282a;
+}
+
+[data-theme="retro"] .indicator p {
+  color: #ece4ca;
 }
 
 [data-theme="retro"] .transparent_text_about,
