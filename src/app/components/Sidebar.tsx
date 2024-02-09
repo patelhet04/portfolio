@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { navLinks } from "@/utils/navlinks";
@@ -14,7 +14,10 @@ import {
   faInstagram,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
+import gsap from "gsap";
 const Sidebar = () => {
+  const linkRef = useRef<HTMLAnchorElement>(null);
+
   const [isOpen, setIsOpen] = useState(false);
   const [activePath, setActivePath] = useState(
     typeof window !== "undefined" ? window.location.hash : ""
@@ -51,6 +54,44 @@ const Sidebar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [activePath]);
+
+  useEffect(() => {
+    const parallaxEffect = (e: MouseEvent) => {
+      if (!linkRef.current) return;
+
+      const rect = linkRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const deltaX = e.clientX - centerX;
+      const deltaY = e.clientY - centerY;
+
+      // Adjust these factors to control the intensity and direction of the movement
+      const intensityX = -0.4; // Negative value for inverse direction
+      const intensityY = -0.4;
+
+      const moveX = deltaX * intensityX;
+      const moveY = deltaY * intensityY;
+
+      gsap.to(linkRef.current, {
+        x: moveX,
+        y: moveY,
+        rotation: deltaX * intensityX * 0.1,
+        ease: "none",
+      });
+    };
+
+    // Listen to mousemove events on the element itself for a localized effect
+    if (linkRef.current) {
+      linkRef.current.addEventListener("mousemove", parallaxEffect);
+    }
+    // Cleanup function to remove the event listener
+    return () => {
+      if (linkRef.current) {
+        linkRef.current.removeEventListener("mousemove", parallaxEffect);
+      }
+    };
+  }, []);
+
   // Function to toggle the sidebar visibility
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -77,7 +118,9 @@ const Sidebar = () => {
             <img src="/assets/Memoji.png" alt="Profile Picture" />
           </div>
           <a
-            href="#_"
+            ref={linkRef}
+            href="https://hetpatel.dev/"
+            target="_blank"
             className="text-white transform font-oswald tracking-wide text-2xl shadow-text-shadow border-b-2  border-primary-blue"
           >
             hetpatel.dev
