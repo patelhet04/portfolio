@@ -71,21 +71,35 @@ const About = () => {
                 }
               },
             });
+            const startDate = new Date("2017-09-01"); // Replace YYYY-MM-DD with your actual start date
+            const currentDate = new Date();
+            const differenceInTime =
+              currentDate.getTime() - startDate.getTime();
+            const differenceInDays = differenceInTime / (1000 * 3600 * 24);
 
-            const codingHoursTarget = { value: 0 };
-            gsap.to(codingHoursTarget, {
-              value: 8760,
-              duration: 2, // Duration in seconds
-              onUpdate: () => {
-                if (codingHoursRef.current) {
-                  // Use innerHTML to include the <sup> tag for the asterisk
-                  codingHoursRef.current.innerHTML = `${Math.round(
-                    codingHoursTarget.value
-                  )}<sup>*</sup>`;
-                }
-              },
-            });
+            // Assuming an average of X hours coding per day
+            const averageDailyHours = 4; // Replace X with your average daily coding hours
+            const additionalHours = !isNaN(differenceInDays)
+              ? Math.round(differenceInDays * averageDailyHours)
+              : 0;
+            console.log(additionalHours, "additionalHours");
+            // Ensure the total includes initial hours and checks for NaN
 
+            // Animate the codingHoursRef to the totalCodingHours
+            if (codingHoursRef.current) {
+              const codingHoursTarget = { value: additionalHours }; // Start from 8760
+              gsap.to(codingHoursTarget, {
+                value: additionalHours,
+                duration: 2, // Adjust duration as needed
+                onUpdate: () => {
+                  if (codingHoursRef.current) {
+                    codingHoursRef.current.innerHTML = `${Math.round(
+                      codingHoursTarget.value
+                    )}<sup>*</sup>`;
+                  }
+                },
+              });
+            }
             // Disconnect observer after animation starts
             observer.disconnect();
           }

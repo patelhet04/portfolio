@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import gsap from "gsap";
 import React, { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTheme } from "../context/ThemeContext";
 const Skills = () => {
   const progressRefs = useRef<Map<string, HTMLProgressElement>>(new Map());
-
+  const { theme } = useTheme();
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger); // Ensure ScrollTrigger plugin is registered
 
@@ -88,19 +89,24 @@ const Skills = () => {
           {categories.map((category, index) => (
             <div
               key={index}
-              className="card w-full lg:w-[40%] bg-base-200 bg-opacity-[0.6] shadow-xl mx-10 my-4 border-l border-r border-white font-firaCode"
+              className={`card w-full lg:w-[40%] bg-base-200 bg-opacity-[0.6] shadow-xl mx-10 my-4 border-l border-r ${
+                theme === "retro" ? "border-[#2e282a]" : "border-white"
+              }  font-firaCode`}
             >
               <div className="card-body">
                 <div className="flex items-center text-white">
-                  <FontAwesomeIcon icon={category.icon} className="mr-2" />
+                  <FontAwesomeIcon
+                    icon={category.icon}
+                    className="skill-icon mr-2"
+                  />
                   <h2 className="card-title">{category.title}</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {category.skills.map((skill, skillIndex) => {
                     const refKey = `${category.title}-${skill.name}`;
                     return (
-                      <div key={skillIndex} className="space-y-2">
-                        <div className="text-white font-thin text-sm">
+                      <div key={skillIndex} className=" space-y-2">
+                        <div className="skill-name text-white font-thin text-sm">
                           {skill.name}
                         </div>
 

@@ -1,9 +1,11 @@
 "use client";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { educationData, experienceData } from "@/utils/experience";
+import { useTheme } from "../context/ThemeContext";
 const Experience = () => {
+  const { theme } = useTheme();
   useEffect(() => {
     // Register the ScrollTrigger plugin with GSAP
     gsap.registerPlugin(ScrollTrigger);
@@ -34,13 +36,16 @@ const Experience = () => {
     Typescript: "bg-[#3178c6] text-white",
     Nodejs: "bg-green-600",
     React: "bg-[#61DBFB]",
-    Nextjs: "bg-black text-white",
+    Nextjs: `${
+      theme === "retro" ? "bg-white text-black" : "bg-black text-white"
+    }`,
     MongoDB: "bg-green-400",
     MySQL: "bg-[#f29111]",
     Docker: "bg-[#1D63ED] text-white",
     GraphQL: "bg-[#E10098] text-white",
     Javascript: "bg-[#f7df1e]",
-    Express: "bg-gray-700 text-white",
+    Express:
+      theme === "retro" ? "bg-white text-gray-700 " : "bg-gray-700 text-white",
     // Add more mappings as needed
   };
 

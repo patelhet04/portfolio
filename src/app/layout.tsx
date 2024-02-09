@@ -5,6 +5,8 @@ import Loader from "./components/Loader";
 import { useRef, useState } from "react";
 import DownloadButton from "./components/DownloadBtn";
 import AboutRefContext from "./context/AboutRefContext";
+import ThemeController from "./components/ThemeController";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
 
 export default function RootLayout({
   children,
@@ -12,25 +14,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const aboutRef = useRef<HTMLDivElement>(null);
+  const [theme, setTheme] = useState("sunset");
   return (
-    <AboutRefContext.Provider value={aboutRef}>
-      <html lang="en">
-        <head>
-          <link rel="icon" href="/assets/Memoji.png" type="image/icon type" />
-        </head>
-        <body>
-          <Loader />
+    <ThemeProvider value={{ theme, setTheme }}>
+      <AboutRefContext.Provider value={aboutRef}>
+        <html lang="en" data-theme={theme}>
+          <head>
+            <link rel="icon" href="/assets/Memoji.png" type="image/icon type" />
+          </head>
+          <body>
+            <Loader />
 
-          <div className="flex" data-theme="sunset">
-            <Sidebar />
-            <DownloadButton aboutRef={aboutRef} />
-            <main className="main">
-              {/* Content goes here */}
-              {children}
-            </main>
-          </div>
-        </body>
-      </html>
-    </AboutRefContext.Provider>
+            <div className="flex" data-theme={theme}>
+              <Sidebar />
+              <DownloadButton aboutRef={aboutRef} />
+              <ThemeController theme={theme} setTheme={setTheme} />
+              <main className="main">
+                {/* Content goes here */}
+                {children}
+              </main>
+            </div>
+          </body>
+        </html>
+      </AboutRefContext.Provider>
+    </ThemeProvider>
   );
 }

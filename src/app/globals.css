@@ -90,14 +90,42 @@ body {
   background: none !important;
 }
 
-[data-theme="sunset"] .timeline-vertical > li {
+[data-theme="sunset"] .timeline-vertical > li,
+[data-theme="retro"] .timeline-vertical > li {
   --timeline-col-start: minmax(0, 0fr);
 }
 
-[data-theme="sunset"] .timeline > li {
+[data-theme="sunset"] .timeline > li,
+[data-theme="retro"] .timeline > li {
   --timeline-row-start: minmax(0, 0fr);
 }
 
 [data-theme="sunset"] .indicator {
   background-color: #49c5b6;
+}
+
+[data-theme="retro"] p,
+[data-theme="retro"] header,
+[data-theme="retro"] ul,
+[data-theme="retro"] li,
+[data-theme="retro"] .card h2,
+[data-theme="retro"] .skill-icon,
+[data-theme="retro"] form,
+[data-theme="retro"] .tab,
+[data-theme="retro"] .skill-name,
+[data-theme="retro"] time,
+[data-theme="retro"] .sidebar-name,
+[data-theme="retro"] .badge {
+  color: #2e282a !important;
+}
+
+[data-theme="retro"] .transparent_text_about,
+[data-theme="retro"] .transparent_text_work,
+[data-theme="retro"] .transparent_text_home {
+  color: transparent !important;
+  -webkit-text-stroke: 2px #2e282a !important;
+}
+
+[data-theme="retro"] [data-typeit-id="6934923"] .ti-cursor {
+  color: #2e282a;
 }

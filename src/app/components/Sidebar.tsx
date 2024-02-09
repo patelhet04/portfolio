@@ -121,7 +121,7 @@ const Sidebar = () => {
             ref={linkRef}
             href="https://hetpatel.dev/"
             target="_blank"
-            className="text-white transform font-oswald tracking-wide text-2xl shadow-text-shadow border-b-2  border-primary-blue"
+            className="sidebar-name text-white transform font-oswald tracking-wide text-2xl shadow-text-shadow border-b-2  border-primary-blue"
           >
             hetpatel.dev
           </a>

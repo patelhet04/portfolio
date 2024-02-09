@@ -36,7 +36,7 @@ const config: Config = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["sunset", "forest", "dark"],
+    themes: ["sunset", "retro"],
   },
 };
 export default config;
