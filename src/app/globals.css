@@ -10,6 +10,7 @@
 
 * {
   scroll-behavior: smooth;
+  /* overflow-x: hidden; */
 }
 
 *::-webkit-scrollbar {
@@ -24,6 +25,10 @@ body {
 }
 
 @layer {
+  .grid_layout {
+    @apply grid grid-cols-1 xl:grid-cols-[16rem_1fr]; /* Adjust 16rem to match the sidebar width */
+    min-height: 100vh; /* Full viewport height */
+  }
   .sidebar {
     @apply fixed top-0 left-0 z-30;
   }
@@ -58,7 +63,7 @@ body {
     @apply font-fira absolute opacity-10 text-white font-bold z-0 text-[13vw] top-1/4;
   }
   .main {
-    @apply flex-1 overflow-auto max-w-full xl:ml-64;
+    @apply overflow-x-hidden;
   }
 }
 .social_icon_list a:nth-child(1) .social_icon {

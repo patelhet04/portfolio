@@ -25,7 +25,7 @@ export default function RootLayout({
           <body>
             <Loader />
 
-            <div className="flex" data-theme={theme}>
+            <div className="grid_layout" data-theme={theme}>
               <Sidebar />
               <DownloadButton aboutRef={aboutRef} />
               <ThemeController theme={theme} setTheme={setTheme} />
