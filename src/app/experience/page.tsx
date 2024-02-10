@@ -1,7 +1,7 @@
 "use client";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { educationData, experienceData } from "@/utils/experience";
 import { useTheme } from "../context/ThemeContext";
 const Experience = () => {
