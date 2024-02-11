@@ -87,7 +87,7 @@ const About = () => {
 
             // Animate the codingHoursRef to the totalCodingHours
             if (codingHoursRef.current) {
-              const codingHoursTarget = { value: additionalHours }; // Start from 8760
+              const codingHoursTarget = { value: 0 }; // Start from 8760
               gsap.to(codingHoursTarget, {
                 value: additionalHours,
                 duration: 2, // Adjust duration as needed
