@@ -1,7 +1,7 @@
 export const educationData = [
   {
     id: "edu-1",
-    dates: "Sept 2021 - May 2023",
+    dates: "Sept 2023 - May 2025",
     institution: "Northeastern University, Boston",
     degree: "Master of Science in Information Systems",
     cgpa: "CGPA - 3.85 on a scale of 4",
