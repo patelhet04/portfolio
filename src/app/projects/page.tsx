@@ -173,7 +173,7 @@ const Projects = () => {
                     </p>
                     <div className="card-actions justify-center">
                       <a href={project.link} target="_blank">
-                        <button className="btn btn-outline font-mono btn-wide md:btn-md">
+                        <button className="btn btn-outline font-mono btn-wide md:btn-md ">
                           View Project
                         </button>
                       </a>

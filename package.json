@@ -22,10 +22,12 @@
     "nodemailer": "^6.9.9",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.50.1",
     "react-leaflet": "^4.2.1",
     "react-tagcloud": "^2.3.3",
     "sharp": "^0.33.2",
-    "typeit-react": "^2.7.1"
+    "typeit-react": "^2.7.1",
+    "windups": "^1.2.2"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.8",

@@ -24,7 +24,6 @@ export default function RootLayout({
           </head>
           <body>
             <Loader />
-
             <div className="grid_layout" data-theme={theme}>
               <Sidebar />
               <DownloadButton aboutRef={aboutRef} />

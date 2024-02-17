@@ -92,7 +92,7 @@ body {
 
 [data-theme="sunset"] .btn:hover {
   color: #49c5b6 !important;
-  background: none !important;
+  background: white;
 }
 
 [data-theme="sunset"] .timeline-vertical > li,

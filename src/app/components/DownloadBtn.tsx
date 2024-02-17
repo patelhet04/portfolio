@@ -79,26 +79,30 @@ const DownloadButton: React.FC<{
       <a
         href="/assets/HetPatel_Resume.pdf"
         download="Het_Patel_Resume.pdf"
-        className={`z-30 fixed bottom-5 right-5 md:right-10 flex items-center justify-center ${
-          theme === "retro" ? "btn btn-neutral" : "btn bg-primary-blue"
-        }  gap-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg`}
+        // className=
       >
-        <span className="indicator-item indicator-start badge badge-success bg-white font-bold">
-          Download Here
-        </span>
-        <FontAwesomeIcon
-          icon={faDownload}
-          className={`text-lg md:text-xl  ${
-            theme === "retro" ? "text-default" : "text-base-300"
-          }`}
-        />
-        <p
-          className={`md:text-lg font-bold ${
-            theme === "retro" ? "text-default" : "text-base-300"
-          }`}
+        <button
+          className={`download-btn z-30 fixed bottom-5 right-5 md:right-10 flex items-center justify-center  ${
+            theme === "retro" ? "btn btn-neutral" : "btn bg-primary-blue"
+          }  gap-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg`}
         >
-          Resume
-        </p>
+          <span className="indicator-item indicator-start badge badge-success bg-white font-bold">
+            Download Here
+          </span>
+          <FontAwesomeIcon
+            icon={faDownload}
+            className={`text-lg md:text-xl  ${
+              theme === "retro" ? "text-default" : "text-base-300"
+            }`}
+          />
+          <p
+            className={`md:text-lg font-bold ${
+              theme === "retro" ? "text-default" : "text-base-300"
+            }`}
+          >
+            Resume
+          </p>
+        </button>
       </a>
     </div>
   );

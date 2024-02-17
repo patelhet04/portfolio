@@ -1,5 +1,6 @@
 "use client";
 import React, { FormEvent, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMapLocation,
@@ -9,9 +10,16 @@ import {
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import MapPage from "../components/DynamicMap";
-const Contact: React.FC = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
 
+export type FormData = {
+  name: string;
+  from_email: string;
+  subject: string;
+  message: string;
+};
+const Contact: React.FC = () => {
+  const { register, handleSubmit } = useForm<FormData>();
+  const sectionRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -83,38 +91,37 @@ const Contact: React.FC = () => {
         </div>
       </div>
       <div className="flex flex-col justify-center mt-0 lg:mt-32 xl:w-[80%] md:w-full z-10">
-        <form className="py-6 px-10 rounded-lg bg-base-300">
+        <form
+          className="py-6 px-10 rounded-lg bg-base-300"
+          // onSubmit={}
+        >
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6 2xl:gap-14">
             <input
-              name="name"
               type="text"
               placeholder="Name *"
               className="input input-bordered w-full"
-              required
+              {...register("name", { required: true })}
             />
             <input
-              name="from_email"
               type="email"
               placeholder="Email *"
               className="input input-bordered w-full"
-              required
+              {...register("from_email", { required: true })}
             />
             <input
-              name="subject"
               type="text"
               placeholder="Subject *"
               className="input input-bordered w-full"
-              required
+              {...register("subject", { required: true })}
             />
             <textarea
-              name="message"
               placeholder="Your message *"
               className="textarea textarea-bordered h-48"
-              required
+              {...register("message", { required: true })}
             ></textarea>
           </div>
-          <button className="btn btn-outline font-mono w-full mt-10">
+          <button className="btn btn-outline font-mono w-full mt-10 ">
             Send Message
           </button>
         </form>

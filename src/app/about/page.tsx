@@ -1,12 +1,18 @@
 "use client";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import DownloadButton from "../components/DownloadBtn";
 import AboutRefContext from "../context/AboutRefContext";
+import { useWindupString } from "windups";
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  // const [startWindups, setstartWindups] = useState(false);
+  // const [text] = useWindupString("@NortheasternUniversity", {
+  //   pace: (char) => (char === "" ? 600 : 100),
+  // });
+
+  // const uniRef = useRef<HTMLAnchorElement>(null);
   const aboutRef = useContext(AboutRefContext);
   const openSourceRef = useRef<HTMLDivElement>(null);
   const codingHoursRef = useRef<HTMLDivElement>(null);
@@ -20,6 +26,7 @@ const About = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // setstartWindups(true);
             // Start animations when About section comes into view
             if (profilePicRef.current) {
               gsap.from(profilePicRef.current, {
@@ -176,7 +183,14 @@ const About = () => {
             className="font-bold text-white text-xl lg:text-2xl"
           >
             Hello, I'm Het Patel, a dedicated software developer and a graduate
-            student
+            student&nbsp;
+            {/* {startWindups && ( */}
+            <a
+              href="https://www.northeastern.edu/"
+              className="text-primary-blue text-3xl font-caveat tracking-wider"
+            >
+              @NortheasternUniversity
+            </a>
           </p>
           <ol ref={listRef} className=" list-disc list-inside leading-8">
             <li>
@@ -206,7 +220,7 @@ const About = () => {
               href="/assets/HetPatel_Resume.pdf"
               download="Het_Patel_Resume.pdf"
             >
-              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg ">
                 Download Resume
               </button>
             </a>
