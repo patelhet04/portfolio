@@ -84,7 +84,7 @@ export default function Home() {
             />
           </p>
           <a href="#about">
-            <button className="btn btn-outline font-mono btn-wide md:btn-md lg:btn-lg">
+            <button className="primary-btn btn btn-outline font-mono btn-wide md:btn-md lg:btn-lg">
               Explore More
             </button>
           </a>

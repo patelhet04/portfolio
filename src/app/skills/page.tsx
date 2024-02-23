@@ -44,7 +44,7 @@ const Skills = () => {
       {
         y: 0,
         opacity: 1,
-        stagger: 0.1, // Stagger the start times of each card's animation
+        stagger: 0.05, // Stagger the start times of each card's animation
         duration: 1,
         ease: "power3.out",
         scrollTrigger: {

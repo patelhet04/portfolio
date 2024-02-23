@@ -17,7 +17,7 @@ const Experience = () => {
       {
         opacity: 1, // End state: fully visible
         x: 0, // Move to original horizontal position
-        duration: 3, // Animation duration
+        duration: 2, // Animation duration
         ease: "power3.out", // Easing function for a smooth transition
         scrollTrigger: {
           trigger: "#career",
@@ -26,6 +26,22 @@ const Experience = () => {
         },
       }
     );
+    document.querySelectorAll(".timeline li hr").forEach((hr, index) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: hr.parentElement,
+          start: "top center+=200", // Adjust this to control when the animation starts
+          end: "bottom center",
+          scrub: true, // Makes the animation smooth and tied to the scroll position
+        },
+      });
+
+      tl.fromTo(
+        hr,
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 1, duration: 1, ease: "power2.inOut" } // 'power2.inOut' gives a nice smoothness
+      );
+    });
   }, []);
 
   type BadgeColors = {
@@ -95,7 +111,9 @@ const Experience = () => {
                 <p className="italic">{edu.degree}</p>
                 <p>{edu.cgpa}</p>
               </div>
-              <hr />
+              <hr
+                className={`${theme === "retro" ? "bg-[#2e282a]" : "bg-white"}`}
+              />
             </li>
           ))}
           <div className="divider"></div>
@@ -145,7 +163,9 @@ const Experience = () => {
                   ))}
                 </div>
               </div>
-              <hr />
+              <hr
+                className={`${theme === "retro" ? "bg-[#2e282a]" : "bg-white"}`}
+              />
             </li>
           ))}
         </ul>

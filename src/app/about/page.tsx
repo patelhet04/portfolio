@@ -212,7 +212,7 @@ const About = () => {
             className="flex flex-row justify-baseline items-center gap-10"
           >
             <a href="#contact">
-              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg">
+              <button className="primary-btn btn btn-outline font-mono md:btn-md lg:btn-lg">
                 Contact Me
               </button>
             </a>
@@ -220,7 +220,7 @@ const About = () => {
               href="/assets/HetPatel_Resume.pdf"
               download="Het_Patel_Resume.pdf"
             >
-              <button className="btn btn-outline font-mono md:btn-md lg:btn-lg ">
+              <button className="primary-btn btn btn-outline font-mono md:btn-md lg:btn-lg ">
                 Download Resume
               </button>
             </a>

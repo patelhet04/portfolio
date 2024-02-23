@@ -2,12 +2,16 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { quotes } from "@/utils/quotes";
 
 const Loader: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const loadingTextRef = useRef(null); // Ref for the loading text
+  // const [currentQuote, setCurrentQuote] = useState("");
 
   useEffect(() => {
+    // const randomQuote = Math.floor(Math.random() * quotes.length);
+    // setCurrentQuote(quotes[randomQuote]);
     // Animate the loader container
     gsap.to("#loader", {
       duration: 4,
@@ -49,6 +53,7 @@ const Loader: React.FC = () => {
         <h1 className="text-primary-blue text-4xl" ref={loadingTextRef}>
           Loading
         </h1>
+        {/* <p className="text-primary-blue text-center mx-10">{currentQuote}</p> */}
         <div className="text-primary-blue">
           <progress className="progress  bg-primary-blue w-56"></progress>
         </div>

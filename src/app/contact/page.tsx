@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useRef } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -10,15 +10,31 @@ import {
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import MapPage from "../components/DynamicMap";
+import Toaster from "../components/Toaster";
 
 export type FormData = {
   name: string;
-  from_email: string;
+  email: string;
   subject: string;
   message: string;
 };
 const Contact: React.FC = () => {
-  const { register, handleSubmit } = useForm<FormData>();
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+
+  const showToast = (message: string, type: string) => {
+    setToast({ show: true, message, type });
+
+    // Automatically hide the toast after a delay
+    setTimeout(() => {
+      setToast({ show: false, message: "", type: "" });
+    }, 3000); // Adjust time as needed
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+    reset,
+  } = useForm<FormData>();
   const sectionRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -42,6 +58,34 @@ const Contact: React.FC = () => {
       );
     }
   }, []);
+
+  async function onSubmit(formData: FormData) {
+    await fetch("/api/sendEmail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        name: formData.name,
+        subject: formData.subject,
+        email: formData.email,
+        message: formData.message,
+      }),
+    })
+      .then(() => {
+        // Toast notification
+        showToast("Message sent successfully!", "success");
+      })
+      .catch((error) => {
+        showToast(`Error: ${error}`, "info");
+      });
+
+    reset();
+  }
+
+  // Function to show toast notifications
+
   return (
     <section
       ref={sectionRef}
@@ -93,7 +137,7 @@ const Contact: React.FC = () => {
       <div className="flex flex-col justify-center mt-0 lg:mt-32 xl:w-[80%] md:w-full z-10">
         <form
           className="py-6 px-10 rounded-lg bg-base-300"
-          // onSubmit={}
+          onSubmit={handleSubmit(onSubmit)}
         >
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6 2xl:gap-14">
@@ -101,31 +145,36 @@ const Contact: React.FC = () => {
               type="text"
               placeholder="Name *"
               className="input input-bordered w-full"
-              {...register("name", { required: true })}
+              required
+              {...register("name")}
             />
             <input
               type="email"
               placeholder="Email *"
               className="input input-bordered w-full"
-              {...register("from_email", { required: true })}
+              required
+              {...register("email")}
             />
             <input
               type="text"
               placeholder="Subject *"
               className="input input-bordered w-full"
-              {...register("subject", { required: true })}
+              required
+              {...register("subject")}
             />
             <textarea
               placeholder="Your message *"
               className="textarea textarea-bordered h-48"
-              {...register("message", { required: true })}
+              required
+              {...register("message")}
             ></textarea>
           </div>
-          <button className="btn btn-outline font-mono w-full mt-10 ">
+          <button className="primary-btn btn btn-outline font-mono w-full mt-10 ">
             Send Message
           </button>
         </form>
       </div>
+      {toast.show && <Toaster message={toast.message} type={toast.type} />}
     </section>
   );
 };

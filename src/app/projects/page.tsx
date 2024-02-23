@@ -154,7 +154,7 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card w-80 md:w-72 bg-base-300 shadow-xl"
+                  className="card w-80 md:w-72 bg-base-300 shadow-xl border-l"
                 >
                   <figure className="h-40 w-full overflow-hidden">
                     <img
@@ -173,7 +173,7 @@ const Projects = () => {
                     </p>
                     <div className="card-actions justify-center">
                       <a href={project.link} target="_blank">
-                        <button className="btn btn-outline font-mono btn-wide md:btn-md ">
+                        <button className="primary-btn btn btn-outline font-mono btn-wide md:btn-md ">
                           View Project
                         </button>
                       </a>

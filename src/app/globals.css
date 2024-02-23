@@ -90,9 +90,10 @@ body {
   color: white !important;
 }
 
-[data-theme="sunset"] .btn:hover {
+.primary-btn:hover {
   color: #49c5b6 !important;
-  background: white;
+  background: none;
+  border: 1px solid #49c5b6;
 }
 
 [data-theme="sunset"] .timeline-vertical > li,
