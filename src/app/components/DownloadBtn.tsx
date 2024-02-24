@@ -77,7 +77,7 @@ const DownloadButton: React.FC<{
   return (
     <div className="indicator">
       <a
-        href="/assets/HetPatel_Resume.pdf"
+        href="/assets/Het_Patel_Resume.pdf"
         download="Het_Patel_Resume.pdf"
         // className=
       >
