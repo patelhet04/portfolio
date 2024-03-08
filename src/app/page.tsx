@@ -14,11 +14,10 @@ const Main: React.FC = () => {
 
       <About />
 
-      <Skills />
-
       <Experience />
 
       <Projects />
+      <Skills />
 
       <Contact />
     </Suspense>
