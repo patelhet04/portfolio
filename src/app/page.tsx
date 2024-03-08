@@ -11,14 +11,10 @@ const Main: React.FC = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Home />
-
       <About />
-
       <Experience />
-
       <Projects />
       <Skills />
-
       <Contact />
     </Suspense>
   );

@@ -71,4 +71,13 @@ export const portfolio = [
     tag: "article",
     link: "https://www.linkedin.com/pulse/understanding-differences-javascript-vs-typescript-beginners-patel-pqahe%3FtrackingId=9JwFIQkNRKC%252Fi5%252Fb1cy5UQ%253D%253D/?trackingId=9JwFIQkNRKC%2Fi5%2Fb1cy5UQ%3D%3D",
   },
+  {
+    id: 9,
+    title: "Full Stack Developer Roadmap 2024",
+    projectImage: "/assets/Fullstack_Article.png",
+    description:
+      "Aspiring full-stack developers, check out this roadmap article covering essential technologies and frameworks, for building dynamic applications.",
+    tag: "article",
+    link: "https://www.linkedin.com/pulse/beginners-guide-full-stack-development-2024-het-patel-c51ce/?trackingId=SVdwv%2FdnQBaZ1e1a6cZa%2Bg%3D%3D",
+  },
 ];
