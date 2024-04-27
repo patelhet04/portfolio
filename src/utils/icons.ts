@@ -19,4 +19,5 @@ export const techIcons = [
   "devicon-redux-original colored",
   "devicon-graphql-plain colored",
   "devicon-materialui-plain colored",
+  "devicon-go-original-wordmark colored",
 ];
