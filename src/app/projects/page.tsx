@@ -91,13 +91,13 @@ const Projects = () => {
       className="hero min-h-screen relative mt-10 font-mono px-0 md:px-10"
     >
       <div
-        className="transparent_text_about transform w-[100vh] h-screen text-[15vw] duration-300 ease-in hidden sm:hidden md:block rotate-0 xl:-rotate-90 left-0 xl:-left-12 top-0 xl:top-1/4 "
+        className="transparent_text_about hidden sm:hidden md:block mt-10 lg:mt-0"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Projects /&gt;
       </div>
       <div className="hero-content mx-0">
-        <div className="w-[100%]">
+        <div className="w-full">
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             My Portfolio
             <img src="/assets/undeline.svg" alt="underline" />
@@ -154,7 +154,7 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card w-80 md:w-72 bg-base-300 shadow-xl border-l"
+                  className="card h-full w-80 md:w-72 xl:w-80 bg-base-300 shadow-xl border-l"
                 >
                   <figure className="h-40 w-full overflow-hidden">
                     <img
