@@ -1,11 +1,9 @@
+"use client";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
-
-import { useTheme } from "../context/ThemeContext";
 import { techIcons } from "@/utils/icons";
 
 const Skills: React.FC = () => {
-  const { theme } = useTheme();
   const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
