@@ -62,6 +62,7 @@ const Experience = () => {
     Javascript: "bg-[#f7df1e]",
     Express:
       theme === "retro" ? "bg-white text-gray-700 " : "bg-gray-700 text-white",
+    AWS: "bg-[#FF9900] text-black",
     // Add more mappings as needed
   };
 
@@ -155,7 +156,7 @@ const Experience = () => {
                   {exp.skills.map((skill, index) => (
                     <div
                       key={index}
-                      className={`badge badge-info ${getBadgeClasses(skill)}`}
+                      className={`badge badge-info ${getBadgeClasses(skill)} border border-white`}
                     >
                       {/* TailwindCSS classes for styling badges can be applied here */}{" "}
                       {skill}

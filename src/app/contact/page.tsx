@@ -90,7 +90,7 @@ const Contact: React.FC = () => {
     <section
       ref={sectionRef}
       id="contact"
-      className="text-white min-h-screen lg:grid lg:grid-cols-2 font-mono relative"
+      className="text-white min-h-screen lg:grid lg:grid-cols-2 font-mono relative px:0 md:px-10"
     >
       <div
         className="transparent_text_about hidden sm:hidden md:block"
@@ -134,7 +134,7 @@ const Contact: React.FC = () => {
           <MapPage />
         </div>
       </div>
-      <div className="flex flex-col justify-center mt-0 lg:mt-32 xl:w-[80%] md:w-full z-10">
+      <div className="flex flex-col justify-center mt-0 lg:mt-36 xl:w-[80%] md:w-full z-10">
         <form
           className="py-6 px-10 rounded-lg bg-base-300"
           onSubmit={handleSubmit(onSubmit)}

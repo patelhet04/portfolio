@@ -139,7 +139,7 @@ const About = () => {
       <div className="hero-content gap-20 px-14 md:px-20 flex_col flex-col-reverse lg:flex-row">
         <div className="max-w-md flex_col">
           <div className="avatar">
-            <div className=" w-72 md:w-96 mask mask-squircle">
+            <div className="w-72 md:w-96 mask mask-squircle">
               <img
                 ref={profilePicRef}
                 src="/assets/profile_pic.jpg"
@@ -180,16 +180,17 @@ const About = () => {
           </header>
           <p
             ref={paragraphRef}
-            className="font-bold text-white text-xl lg:text-2xl"
+            className=" text-white text-lg lg:text-2xl text-justify"
           >
-            Hello, I'm Het Patel, a dedicated software developer and a graduate
-            student&nbsp;
-            {/* {startWindups && ( */}
+            Hello 👋, I'm Het Patel, a dedicated software engineer and a
+            graduate student &nbsp; @
             <a
               href="https://www.northeastern.edu/"
-              className="text-primary-blue text-3xl font-caveat tracking-wider"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary-blue text-2xl md:text-3xl font-caveat tracking-normal md:tracking-wider"
             >
-              @NortheasternUniversity
+              Northeastern University
             </a>
           </p>
           <ol ref={listRef} className=" list-disc list-inside leading-8">

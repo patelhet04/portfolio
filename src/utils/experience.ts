@@ -36,6 +36,7 @@ export const experienceData = [
       "MySQL",
       "Docker",
       "GraphQL",
+      "AWS",
     ],
   },
   {

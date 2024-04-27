@@ -13,8 +13,8 @@ const Main: React.FC = () => {
       <Home />
       <About />
       <Experience />
-      <Projects />
       <Skills />
+      <Projects />
       <Contact />
     </Suspense>
   );

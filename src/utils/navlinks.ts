@@ -10,12 +10,12 @@ import {
 export const navLinks = [
   { title: "Home", path: "#home", icon: faHome },
   { title: "About Me", path: "#about", icon: faUser },
-  { title: "Skills", path: "#skills", icon: faStar },
   {
     title: "Career",
     path: "#career",
     icon: faBriefcase,
   },
+  { title: "Skills", path: "#skills", icon: faStar },
   {
     title: "Portfolio",
     path: "#portfolio",

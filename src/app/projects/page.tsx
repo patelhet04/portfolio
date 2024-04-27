@@ -88,7 +88,7 @@ const Projects = () => {
     // <section id="projects" className="hero min-h-screen relative">
     <section
       id="portfolio"
-      className="hero min-h-screen relative mt-20 md:mt-10 font-mono px-0 md:px-10"
+      className="hero min-h-screen relative mt-10 font-mono px-0 md:px-10"
     >
       <div
         className="transparent_text_about transform w-[100vh] h-screen text-[15vw] duration-300 ease-in hidden sm:hidden md:block rotate-0 xl:-rotate-90 left-0 xl:-left-12 top-0 xl:top-1/4 "

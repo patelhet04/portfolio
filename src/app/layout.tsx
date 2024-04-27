@@ -21,6 +21,12 @@ export default function RootLayout({
         <html lang="en" data-theme={theme}>
           <head>
             <link rel="icon" href="/assets/Memoji.png" type="image/icon type" />
+
+            <link
+              rel="stylesheet"
+              type="text/css"
+              href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+            />
           </head>
           <body>
             <Loader />
