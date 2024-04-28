@@ -15,8 +15,8 @@ const Skills: React.FC = () => {
       marquee.innerHTML = totalIcons
         .map(
           (icon, index) =>
-            `<div class="inline-block p-10" key=${index}>
-          <i class="${icon}" style="font-size: 100px;"></i>
+            `<div class="inline-block px-12 text-[100px] xl:text[120px]" key=${index}>
+          <i class="${icon}"></i>
         </div>`
         )
         .join("");
@@ -44,10 +44,10 @@ const Skills: React.FC = () => {
   return (
     <section
       id="skills"
-      className="hero relative min-h-96 w-full overflow-hidden mt-10 bg-base-200"
+      className="hero relative min-h-96 w-full overflow-hidden my-14 bg-base-200"
     >
       <div
-        className="transparent_text_about hidden sm:hidden md:block mt-0 md:mt-24 lg:mt-10"
+        className="transparent_text_about hidden sm:hidden md:block"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Skill /&gt;
