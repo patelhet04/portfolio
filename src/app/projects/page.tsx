@@ -154,7 +154,7 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card h-full w-80 md:w-72 xl:w-80 bg-base-300 shadow-xl border-l"
+                  className="card h-full w-80 md:w-72 xl:w-80 bg-base-300 shadow-xl border-l border-b"
                 >
                   <figure className="h-40 w-full overflow-hidden">
                     <img

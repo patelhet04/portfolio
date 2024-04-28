@@ -87,7 +87,7 @@ const Experience = () => {
           {educationData.map((edu) => (
             <li
               key={edu.id}
-              className="mt-2 bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px]"
+              className="mt-2 bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px]"
             >
               <div className="timeline-middle">
                 {/* SVG icon can be extracted as a component if used multiple times */}
@@ -125,7 +125,7 @@ const Experience = () => {
           {experienceData.map((exp) => (
             <li
               key={exp.id}
-              className="bg-base-300 bg-opacity-[0.6] rounded-lg p-4 text-[16px] mb-5"
+              className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] mb-5"
             >
               <div className="timeline-middle">
                 <svg
@@ -149,7 +149,12 @@ const Experience = () => {
                 <p className="italic font-extralight">{exp.role}</p>
                 <ul className="pl-0 md:pl-10 list-disc list-inside text-white leading-8">
                   {exp.tasks.map((task, index) => (
-                    <li key={index}>{task}</li>
+                    <li
+                      className="text-justify font-firaCode font-extralight"
+                      key={index}
+                    >
+                      {task}
+                    </li>
                   ))}
                 </ul>
                 <div className="mt-4 flex flex-row flex-wrap gap-6">
