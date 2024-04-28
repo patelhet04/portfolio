@@ -31,7 +31,7 @@ const Skills: React.FC = () => {
         gsap.to(marquee, {
           x: () => -totalWidth + window.innerWidth, // End animation when the last icon is out of view
           ease: "none",
-          duration: 60, // Duration can be adjusted based on desired speed
+          duration: 100, // Duration can be adjusted based on desired speed
           repeat: -1,
           modifiers: {
             x: gsap.utils.unitize((x) => parseFloat(x) % totalWidth), // Create an infinite smooth loop
