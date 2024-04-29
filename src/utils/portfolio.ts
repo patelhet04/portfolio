@@ -10,7 +10,7 @@ export const portfolio = [
   },
   {
     id: 2,
-    title: "Airplace Management System",
+    title: "Airplane Management System",
     projectImage: "/assets/javaSwing.png",
     description:
       "Airplane Management System project created using Java Swing and MongoDB",

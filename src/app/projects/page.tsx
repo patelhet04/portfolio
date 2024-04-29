@@ -91,7 +91,7 @@ const Projects = () => {
       className="hero min-h-screen relative mt-10 font-mono px-0 md:px-10"
     >
       <div
-        className="transparent_text_about hidden sm:hidden md:block mt-10 lg:mt-0"
+        className="transparent_text_about hidden sm:hidden md:block mt-10 lg:mt-0 2xl:-mt-14"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Projects /&gt;
@@ -144,7 +144,7 @@ const Projects = () => {
           </div>
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-max min-h-[1200px]"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 2xl:gap-x-20 auto-rows-max min-h-[1200px]"
           >
             {/* Replace with your project items */}
             {portfolio
@@ -154,7 +154,7 @@ const Projects = () => {
               .map((project, index) => (
                 <div
                   key={project.id}
-                  className="card h-full w-80 md:w-72 xl:w-80 bg-base-300 shadow-xl border-l border-b"
+                  className="card h-full w-80 md:w-72 bg-base-300 shadow-xl border-l border-b"
                 >
                   <figure className="h-40 w-full overflow-hidden">
                     <img
