@@ -144,7 +144,7 @@ const Projects = () => {
           </div>
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-10 2xl:gap-x-20 auto-rows-max min-h-[1200px]"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-max min-h-[1200px]"
           >
             {/* Replace with your project items */}
             {portfolio
