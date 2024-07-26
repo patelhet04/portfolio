@@ -47,7 +47,7 @@ export default function Home() {
       >
         &lt;Home /&gt;
       </div>
-      <div className="hero-content mt-20 lg:mt-0 flex_col gap-20 lg:gap-0 lg:flex-row">
+      <div className="hero-content mt-20 lg:mt-0 flex_col gap-20 lg:gap-4 lg:flex-row">
         <div className="max-w-md">
           <p className="font-nothingDisplay text-white transform text-[24px] sm:text-[32px] duration-300 ease-i tracking-wider py-6">
             Hi, I'm

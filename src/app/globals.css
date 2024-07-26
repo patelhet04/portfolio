@@ -52,7 +52,7 @@ body {
     @apply font-fira;
   }
   .transparent_text_home {
-    @apply font-fira absolute top-[20%] opacity-10 text-white font-bold z-0 text-[16vw] xl:top-1/2;
+    @apply font-fira absolute top-[20%] opacity-10 text-white font-bold z-0 text-[16vw] lg:top-1/4;
   }
 
   .transparent_text_about {
