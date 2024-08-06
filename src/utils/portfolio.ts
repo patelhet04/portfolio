@@ -46,6 +46,15 @@ export const portfolio = [
   },
   {
     id: 6,
+    title: "Prodly - Never loose focus",
+    projectImage: "/assets/Prodly.png",
+    description:
+      "An all-in-one productivity app integrating focus-enhancing content and tools to boost user efficiency",
+    tag: "project",
+    link: "https://www.figma.com/design/727hMXAUMNn3bJ7AWEso1J/HetAshwinbhaiPatel_Fall_23?node-id=335-936&t=jt1FJC5jmvMvGtgZ-0",
+  },
+  {
+    id: 7,
     title: "Node Framework Guide for Beginners",
     projectImage: "/assets/node_frameworks.jpeg",
     description:
@@ -54,7 +63,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/posts/het1074_javascript-typescript-nodejs-activity-7153517505376915456-w_vs?utm_source=share&utm_medium=member_desktop",
   },
   {
-    id: 7,
+    id: 8,
     title: "Exploring daisyUI with Next.js 14 and TailwindCSS",
     projectImage: "/assets/nextjs_daisyui.jpeg",
     description:
@@ -63,7 +72,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/posts/het1074_reactjs-react-nextjs-activity-7151295582022578176-iEFy?utm_source=share&utm_medium=member_desktop",
   },
   {
-    id: 8,
+    id: 9,
     title: "JavaScript vs TypeScript for Beginners",
     projectImage: "/assets/JS_vs_TS.png",
     description:
@@ -72,7 +81,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/pulse/understanding-differences-javascript-vs-typescript-beginners-patel-pqahe%3FtrackingId=9JwFIQkNRKC%252Fi5%252Fb1cy5UQ%253D%253D/?trackingId=9JwFIQkNRKC%2Fi5%2Fb1cy5UQ%3D%3D",
   },
   {
-    id: 9,
+    id: 10,
     title: "Full Stack Developer Roadmap 2024",
     projectImage: "/assets/Fullstack_Article.png",
     description:
