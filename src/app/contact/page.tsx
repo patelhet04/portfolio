@@ -66,7 +66,7 @@ const Contact: React.FC = () => {
           process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
           process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
           form.current as HTMLFormElement,
-          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string }
+          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_USER_ID as string }
         )
         .then(() => {
           showToast("Message sent successfully!", "success");
