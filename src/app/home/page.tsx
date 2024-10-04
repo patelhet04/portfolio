@@ -102,7 +102,10 @@ export default function Home() {
             src="/assets/Animoji-vp9-chrome.webm"
             type='video/webm; codecs="vp9"'
           />
-          <source src="/assets/Animoji-hevc-safari.mp4" type="video/mp4" />
+          <source
+            src="/assets/EmojiMovie725310219.mov"
+            type='video/quicktime; codecs="hvc1"'
+          />
           Your browser does not support the video tag.
         </video>
       </div>

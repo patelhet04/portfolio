@@ -7,7 +7,7 @@ interface ToasterProps {
 
 const Toaster: React.FC<Readonly<ToasterProps>> = ({ message, type }) => {
   return (
-    <div className="toast toast-top toast-end z-50">
+    <div className="toast toast-top toast-end z-100">
       <div className={`alert alert-success`}>
         <span>{message}</span>
       </div>

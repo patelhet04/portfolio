@@ -60,28 +60,34 @@ const Contact: React.FC = () => {
   }, []);
 
   async function onSubmit(formData: FormData) {
-    await fetch("/api/sendEmail", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        name: formData.name,
-        subject: formData.subject,
-        email: formData.email,
-        message: formData.message,
-      }),
-    })
-      .then(() => {
-        // Toast notification
-        showToast("Message sent successfully!", "success");
-      })
-      .catch((error) => {
-        showToast(`Error: ${error}`, "info");
+    try {
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
-    reset();
+      // Check if the response is ok (status in the range 200-299)
+      if (response.ok) {
+        // Toast notification for success
+        showToast("Message sent successfully!", "success");
+      } else {
+        // Handle response errors
+        const errorData = await response.json();
+        showToast(
+          `Error: ${errorData.error || "Failed to send message."}`,
+          "info"
+        );
+      }
+    } catch (error) {
+      // Handle network errors
+      showToast(`Error: ${error}`, "info");
+    } finally {
+      // Reset the form or perform any necessary cleanup
+      reset();
+    }
   }
 
   // Function to show toast notifications
