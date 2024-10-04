@@ -11,7 +11,7 @@ import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import MapPage from "../components/DynamicMap";
 import Toaster from "../components/Toaster";
-
+import emailjs from "@emailjs/browser";
 export type FormData = {
   name: string;
   email: string;
@@ -20,7 +20,7 @@ export type FormData = {
 };
 const Contact: React.FC = () => {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
-
+  const form = useRef<HTMLFormElement>(null);
   const showToast = (message: string, type: string) => {
     setToast({ show: true, message, type });
 
@@ -61,31 +61,23 @@ const Contact: React.FC = () => {
 
   async function onSubmit(formData: FormData) {
     try {
-      const response = await fetch("/api/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      // Check if the response is ok (status in the range 200-299)
-      if (response.ok) {
-        // Toast notification for success
-        showToast("Message sent successfully!", "success");
-      } else {
-        // Handle response errors
-        const errorData = await response.json();
-        showToast(
-          `Error: ${errorData.error || "Failed to send message."}`,
-          "info"
-        );
-      }
+      await emailjs
+        .sendForm(
+          process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string,
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string,
+          form.current as HTMLFormElement,
+          { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY as string }
+        )
+        .then(() => {
+          showToast("Message sent successfully!", "success");
+        })
+        .catch((error) => {
+          showToast(`Error: ${error}`, "info");
+          console.log("FAILED...", error);
+        });
     } catch (error) {
-      // Handle network errors
       showToast(`Error: ${error}`, "info");
     } finally {
-      // Reset the form or perform any necessary cleanup
       reset();
     }
   }
@@ -118,7 +110,7 @@ const Contact: React.FC = () => {
                 icon={faMapLocation}
                 className="mr-2 text-primary-blue"
               />
-              1575 Tremont Street, Boston, MA 02120.
+              11 CAMELOT CT, Boston, MA 02135.
             </p>
             <p className="flex items-center">
               <FontAwesomeIcon
@@ -142,17 +134,22 @@ const Contact: React.FC = () => {
       </div>
       <div className="flex flex-col justify-center mt-0 lg:mt-36 xl:w-[80%] md:w-full z-10">
         <form
+          ref={form} // Attach the form reference here
           className="py-6 px-10 rounded-lg bg-base-300"
           onSubmit={handleSubmit(onSubmit)}
         >
           <h2 className="font-bold text-[24px] mb-10">Say Something</h2>
           <div className="grid grid-cols-1 gap-6 2xl:gap-14">
+            {/* Additional hidden field for `to_name` */}
+            <input type="hidden" name="to_name" value="Het Patel" />
+
             <input
               type="text"
               placeholder="Name *"
               className="input input-bordered w-full"
               required
               {...register("name")}
+              name="from_name"
             />
             <input
               type="email"
@@ -160,6 +157,7 @@ const Contact: React.FC = () => {
               className="input input-bordered w-full"
               required
               {...register("email")}
+              name="from_email"
             />
             <input
               type="text"
@@ -167,15 +165,17 @@ const Contact: React.FC = () => {
               className="input input-bordered w-full"
               required
               {...register("subject")}
+              name="subject"
             />
             <textarea
               placeholder="Your message *"
               className="textarea textarea-bordered h-48"
               required
               {...register("message")}
+              name="message"
             ></textarea>
           </div>
-          <button className="primary-btn btn btn-outline font-mono w-full mt-10 ">
+          <button className="primary-btn btn btn-outline font-mono w-full mt-10">
             Send Message
           </button>
         </form>
