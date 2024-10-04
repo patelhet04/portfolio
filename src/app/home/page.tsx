@@ -99,12 +99,12 @@ export default function Home() {
           poster="/assets/poster.png"
         >
           <source
-            src="/assets/Animoji-vp9-chrome.webm"
-            type='video/webm; codecs="vp9"'
-          />
-          <source
             src="/assets/EmojiMovie725310219.mov"
             type='video/quicktime; codecs="hvc1"'
+          />
+          <source
+            src="/assets/Animoji-vp9-chrome.webm"
+            type='video/webm; codecs="vp9"'
           />
           Your browser does not support the video tag.
         </video>
