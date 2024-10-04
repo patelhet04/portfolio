@@ -67,6 +67,8 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build with Next.js
+        env:
+          EXPORT_STATIC: true
         run:
           npm run build
           # Debugging step added here
