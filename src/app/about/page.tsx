@@ -199,13 +199,20 @@ const About = () => {
               commitment to innovation and problem-solving.
             </li>
             <li>
-              My approach is analytical, allowing me to identify challenges and
-              devise effective solutions quickly.
+              My analytical approach helps me quickly solve challenges, and I
+              value a collaborative, progressive work culture.
             </li>
-
             <li>
-              I value contributing to a collaborative and progressive work
-              culture.
+              Apart from that, in my free time I like to go to the gym,{" "}
+              <a
+                href="https://photos.app.goo.gl/BPvZmMAqwyuNguH58" // Replace with your Google Photos album link
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-blue-600 hover:text-blue-800"
+              >
+                landscape photography
+              </a>
+              , hike, and cook food.
             </li>
           </ol>
           <div
