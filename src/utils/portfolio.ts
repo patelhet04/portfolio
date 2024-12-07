@@ -106,7 +106,7 @@ export const portfolio = [
     link: "/assets/ATS-Buddy Project Ideation.pdf",
   },
   {
-    id: 10,
+    id: 13,
     title: "Scalable Backends with Encore.ts",
     projectImage: "/assets/EncoreArticle.png",
     description:
