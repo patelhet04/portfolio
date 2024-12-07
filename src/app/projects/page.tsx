@@ -4,7 +4,7 @@ import gsap from "gsap";
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 const Projects = () => {
-  type ActiveTab = "all" | "project" | "post" | "article";
+  type ActiveTab = "all" | "project" | "post" | "article" | "documentation";
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -140,6 +140,15 @@ const Projects = () => {
               >
                 Articles
               </a>
+              <a
+                role="tab"
+                className={`tab ${
+                  activeTab === "documentation" ? "tab-active text-white" : ""
+                }`}
+                onClick={() => handleTabClick("documentation")}
+              >
+                Documentation
+              </a>
             </div>
           </div>
           <div
@@ -156,28 +165,54 @@ const Projects = () => {
                   key={project.id}
                   className="card h-full w-80 md:w-72 bg-base-300 shadow-xl border-l border-b"
                 >
-                  <figure className="h-40 w-full overflow-hidden">
-                    <img
-                      src={
-                        project.projectImage ||
-                        "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                      } // Fallback image if projectImage is empty
-                      alt={project.title}
-                      className="h-full w-full object-fill"
-                    />
-                  </figure>
+                  {project.tag !== "documentation" && (
+                    <figure className="h-40 w-full overflow-hidden">
+                      <img
+                        src={
+                          project.projectImage ||
+                          "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                        } // Fallback image if projectImage is empty
+                        alt={project.title}
+                        className="h-full w-full object-fill"
+                      />
+                    </figure>
+                  )}
                   <div className="card-body text-white">
                     <p className="card-title text-[18px]">{project.title}</p>
                     <p className="font-firaCode text-[14px] font-thin text-justify">
                       {project.description}
                     </p>
-                    <div className="card-actions justify-center">
-                      <a href={project.link} target="_blank">
-                        <button className="primary-btn btn btn-outline font-mono btn-wide md:btn-md ">
-                          View Project
-                        </button>
-                      </a>
-                    </div>
+                    {project.tag === "documentation" ? (
+                      <div className="mt-4">
+                        <iframe
+                          src={project.link}
+                          className="w-full h-[300px] border"
+                          title={project.title}
+                        ></iframe>
+                        <div className="mt-2 text-center">
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-sm btn-outline primary-btn font-mono"
+                          >
+                            Open in New Tab
+                          </a>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="card-actions justify-center">
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <button className="primary-btn btn btn-outline font-mono btn-wide md:btn-md ">
+                            View Project
+                          </button>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

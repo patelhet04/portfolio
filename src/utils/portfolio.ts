@@ -89,4 +89,20 @@ export const portfolio = [
     tag: "article",
     link: "https://www.linkedin.com/pulse/beginners-guide-full-stack-development-2024-het-patel-c51ce/?trackingId=SVdwv%2FdnQBaZ1e1a6cZa%2Bg%3D%3D",
   },
+  {
+    id: 11,
+    title: "LLM Tool Integration Ideation",
+    description:
+      "Automated data entry for unstructured PDFs using AI-driven GPT-4 solution.",
+    tag: "documentation",
+    link: "/assets/Ideation - Automated Data Entry.pdf",
+  },
+  {
+    id: 12,
+    title: "ATS-Buddy Project Ideation",
+    description:
+      "OpenAI GPT-4 LLM tool generates ATS-optimized resume points effectively",
+    tag: "documentation",
+    link: "/assets/ATS-Buddy Project Ideation.pdf",
+  },
 ];
