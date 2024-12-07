@@ -105,4 +105,13 @@ export const portfolio = [
     tag: "documentation",
     link: "/assets/ATS-Buddy Project Ideation.pdf",
   },
+  {
+    id: 10,
+    title: "Scalable Backends with Encore.ts",
+    projectImage: "/assets/EncoreArticle.png",
+    description:
+      "The article introduces Encore.ts, a TypeScript framework for scalable backend development, featuring microservices, auto-scaling, and observability",
+    tag: "article",
+    link: "https://medium.com/@patelhet04/building-scalable-backends-with-encore-ts-f8d7b03a4596",
+  },
 ];
