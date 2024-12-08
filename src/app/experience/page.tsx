@@ -1,7 +1,7 @@
 "use client";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { educationData, experienceData } from "@/utils/experience";
 import { useTheme } from "../context/ThemeContext";
 const Experience = () => {
@@ -70,6 +70,7 @@ const Experience = () => {
     const defaultClasses = "bg-gray-400 text-white";
     return badgeColors[skill] || defaultClasses;
   };
+
   return (
     <section id="career" className="hero min-h-screen relative px-0 md:px-10">
       <div
@@ -147,7 +148,7 @@ const Experience = () => {
                   {exp.company}
                 </div>
                 <p className="italic font-extralight">{exp.role}</p>
-                <ul className="pl-0 md:pl-10 list-disc list-inside text-white leading-8">
+                <ul className="pl-0 md:pl-10 list-disc list-inside text-white leading-8 max-h-[200px] overflow-y-auto">
                   {exp.tasks.map((task, index) => (
                     <li
                       className="text-justify font-firaCode font-extralight"
