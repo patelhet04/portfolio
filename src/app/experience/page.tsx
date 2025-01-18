@@ -81,44 +81,6 @@ const Experience = () => {
       </div>
       <div className="hero-content flex flex-col gap-20 mx-10 mt-20 md:mt-0 text-white">
         <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical font-mono rounded-[1rem] text-[12px] md:text-[14px]">
-          <header className="font-mono font-bold text-[24px] md:text-[32px] mb-5">
-            Education
-            <img src="/assets/undeline.svg" alt="underline" />
-          </header>
-          {educationData.map((edu) => (
-            <li
-              key={edu.id}
-              className="mt-2 bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px]"
-            >
-              <div className="timeline-middle">
-                {/* SVG icon can be extracted as a component if used multiple times */}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  className="h-5 w-5"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="timeline-end leading-10">
-                <time className="italic">{edu.dates}</time>
-                <div className="text-lg md:text-xl font-bold text-primary-blue">
-                  {edu.institution}
-                </div>
-                <p className="italic">{edu.degree}</p>
-                <p>{edu.cgpa}</p>
-              </div>
-              <hr
-                className={`${theme === "retro" ? "bg-[#2e282a]" : "bg-white"}`}
-              />
-            </li>
-          ))}
-          <div className="divider"></div>
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] mb-5">
             Work Experience
             <img src="/assets/undeline.svg" alt="underline" />
@@ -169,6 +131,44 @@ const Experience = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+              <hr
+                className={`${theme === "retro" ? "bg-[#2e282a]" : "bg-white"}`}
+              />
+            </li>
+          ))}
+          <div className="divider"></div>
+          <header className="font-mono font-bold text-[24px] md:text-[32px] mb-5">
+            Education
+            <img src="/assets/undeline.svg" alt="underline" />
+          </header>
+          {educationData.map((edu) => (
+            <li
+              key={edu.id}
+              className="mt-2 bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px]"
+            >
+              <div className="timeline-middle">
+                {/* SVG icon can be extracted as a component if used multiple times */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  className="h-5 w-5"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="timeline-end leading-10">
+                <time className="italic">{edu.dates}</time>
+                <div className="text-lg md:text-xl font-bold text-primary-blue">
+                  {edu.institution}
+                </div>
+                <p className="italic">{edu.degree}</p>
+                <p>{edu.cgpa}</p>
               </div>
               <hr
                 className={`${theme === "retro" ? "bg-[#2e282a]" : "bg-white"}`}
