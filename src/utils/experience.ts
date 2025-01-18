@@ -18,6 +18,24 @@ export const educationData = [
 export const experienceData = [
   {
     id: "exp-1",
+    dates: "Jan 2025 - Present",
+    company: "DMSB AI Strategic Hub (DASH)",
+    role: "Human AI Interaction Engineer",
+    tasks: [],
+
+    skills: [
+      "GenAI",
+      "Nodejs",
+      "Retrieval-Augmented Generation (RAG)",
+      "Amazon Web Services (AWS)",
+      "Python (Programming Language)",
+      "Prompt Engineering",
+      "AI Agents",
+      "Vector Databases",
+    ],
+  },
+  {
+    id: "exp-2",
     dates: "Sept 2021 - May 2023",
     company: "Silver Webbuzz Private Limited",
     role: "Software Developer",
@@ -40,7 +58,7 @@ export const experienceData = [
     ],
   },
   {
-    id: "exp-2",
+    id: "exp-3",
     dates: "Dec 2019 - Apr 2020",
     company: "Shinestar Web Solutions",
     role: "Software Developer Intern",
