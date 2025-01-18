@@ -62,7 +62,13 @@ const Experience = () => {
     Javascript: "bg-[#f7df1e]",
     Express:
       theme === "retro" ? "bg-white text-gray-700 " : "bg-gray-700 text-white",
-    AWS: "bg-[#FF9900] text-black",
+    GenAI: "bg-[#10B981] text-white",
+    "Retrieval-Augmented Generation (RAG)": "bg-[#6366F1] text-white",
+    "Amazon Web Services": "bg-[#FF9900] text-black",
+    "Python (Programming Language)": "bg-[#3776AB] text-white",
+    "Prompt Engineering": "bg-[#8B5CF6] text-white",
+    "AI Agents": "bg-[#14B8A6] text-white",
+    "Vector Databases": "bg-[#0EA5E9] text-white",
     // Add more mappings as needed
   };
 

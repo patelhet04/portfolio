@@ -27,7 +27,7 @@ export const experienceData = [
       "GenAI",
       "Nodejs",
       "Retrieval-Augmented Generation (RAG)",
-      "Amazon Web Services (AWS)",
+      "Amazon Web Services",
       "Python (Programming Language)",
       "Prompt Engineering",
       "AI Agents",
@@ -54,7 +54,7 @@ export const experienceData = [
       "MySQL",
       "Docker",
       "GraphQL",
-      "AWS",
+      "Amazon Web Services",
     ],
   },
   {
