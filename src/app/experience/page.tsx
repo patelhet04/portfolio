@@ -63,7 +63,7 @@ const Experience = () => {
     Express:
       theme === "retro" ? "bg-white text-gray-700 " : "bg-gray-700 text-white",
     GenAI: "bg-[#10B981] text-white",
-    "Retrieval-Augmented Generation (RAG)": "bg-[#6366F1] text-white",
+    RAG: "bg-[#6366F1] text-white",
     "Amazon Web Services": "bg-[#FF9900] text-black",
     "Python (Programming Language)": "bg-[#3776AB] text-white",
     "Prompt Engineering": "bg-[#8B5CF6] text-white",

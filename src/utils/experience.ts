@@ -26,9 +26,9 @@ export const experienceData = [
     skills: [
       "GenAI",
       "Nodejs",
-      "Retrieval-Augmented Generation (RAG)",
+      "RAG",
       "Amazon Web Services",
-      "Python (Programming Language)",
+      "Python",
       "Prompt Engineering",
       "AI Agents",
       "Vector Databases",
