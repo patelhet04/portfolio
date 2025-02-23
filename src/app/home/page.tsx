@@ -1,44 +1,48 @@
 "use client";
 import gsap from "gsap";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import TypeIt from "typeit-react";
-// import Animoji from '@/app/assets/'
+
 export default function Home() {
-  const headingRef = useRef<HTMLHeadingElement>(null); // Reference to the heading container
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (headingRef.current) {
-      const spans = headingRef.current.children; // Get all the span elements inside the heading
-      gsap.fromTo(
-        spans,
-        { y: "100%", opacity: 0 },
-        {
-          y: "0%",
-          opacity: 1,
-          duration: 2,
-          stagger: 0.2,
-          ease: "power2.out",
-          delay: 3,
-        } // Animate each span
-      );
-    }
-    if (videoRef.current) {
-      // Start with the video slightly rotated and scaled down
-      gsap.set(videoRef.current, { scale: 0.6, rotation: -20, autoAlpha: 0 });
+    let ctx = gsap.context(() => {
+      if (headingRef.current) {
+        const spans = headingRef.current.children;
+        gsap.fromTo(
+          spans,
+          { y: "100%", opacity: 0 },
+          {
+            y: "0%",
+            opacity: 1,
+            duration: 2,
+            stagger: 0.2,
+            ease: "power2.out",
+            delay: 3,
+          }
+        );
+      }
 
-      // Animate to its final state
-      gsap.to(videoRef.current, {
-        scale: 1,
-        rotation: 0,
-        autoAlpha: 1,
-        duration: 4, // Longer duration for a smoother effect
-        ease: "elastic.out(1, 0.75)", // Elastic easing for a bounce effect
-        delay: 4, // Start after a slight delay to ensure the loader has finished
-      });
-    }
+      if (videoRef.current) {
+        gsap.set(videoRef.current, { scale: 0.6, rotation: -20, autoAlpha: 0 });
+
+        gsap.to(videoRef.current, {
+          scale: 1,
+          rotation: 0,
+          autoAlpha: 1,
+          duration: 4,
+          ease: "elastic.out(1, 0.75)",
+          delay: 4,
+        });
+      }
+    });
+
+    return () => ctx.revert(); // Cleanup animations when component unmounts
   }, []);
+
   return (
     <section id="home" className="hero min-h-screen relative">
       <div
@@ -65,20 +69,25 @@ export default function Home() {
               options={{ loop: true }}
               getBeforeInit={(instance) => {
                 instance
-                  .type("Sogtware", { delay: 300 })
-                  .move(-5)
-                  .delete(1)
-                  .type("f")
-                  .move(null, { to: "END" })
-                  .type(" developer")
+                  .type("Software", { delay: 300 })
                   .pause(300)
                   .move(-8)
                   .delete(1)
                   .type("D")
                   .move(null, { to: "END" })
+                  .type("eveloper")
+                  .pause(500)
+                  .delete(9)
+                  .type("Engineer")
+                  .pause(500)
+                  .delete(8)
+                  .type("Architect")
+                  .pause(500)
+                  .delete(9)
+                  .type("Data Scientist")
+                  .pause(500)
                   .go();
 
-                // Remember to return it!
                 return instance;
               }}
             />

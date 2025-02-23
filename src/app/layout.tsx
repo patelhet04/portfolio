@@ -7,6 +7,7 @@ import DownloadButton from "./components/DownloadBtn";
 import AboutRefContext from "./context/AboutRefContext";
 import ThemeController from "./components/ThemeController";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -19,7 +20,7 @@ export default function RootLayout({
     <ThemeProvider value={{ theme, setTheme }}>
       <AboutRefContext.Provider value={aboutRef}>
         <html lang="en" data-theme={theme}>
-          <head>
+          <Head>
             <title>Het Patel - Software Engineer</title>
             <meta
               name="viewport"
@@ -37,7 +38,10 @@ export default function RootLayout({
               property="og:description"
               content="Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University."
             />
-            <meta property="og:image" content="/assets/profile_pic.jpg" />
+            <meta
+              property="og:image"
+              content="/assets/het-patel-software-engineer.jpg"
+            />
             <meta property="og:url" content="https://hetpatel.dev" />
             <meta property="og:type" content="website" />
 
@@ -50,7 +54,10 @@ export default function RootLayout({
               name="twitter:description"
               content="Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University."
             />
-            <meta name="twitter:image" content="/assets/profile_pic.jpg" />
+            <meta
+              name="twitter:image"
+              content="/assets/het-patel-software-engineer.jpg"
+            />
 
             <link rel="icon" href="/assets/Memoji.png" type="image/png" />
 
@@ -69,13 +76,14 @@ export default function RootLayout({
                   name: "Het Patel",
                   jobTitle: "Software Engineer",
                   url: "https://hetpatel.dev",
-                  image: "https://hetpatel.dev/assets/profile_pic.jpg",
+                  image:
+                    "https://hetpatel.dev/assets/het-patel-software-engineer.jpg",
                   description:
                     "Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University.",
                 }),
               }}
             />
-          </head>
+          </Head>
           <body>
             <Loader />
             <div className="grid_layout" data-theme={theme}>

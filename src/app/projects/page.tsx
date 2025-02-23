@@ -3,11 +3,12 @@ import { portfolio } from "@/utils/portfolio";
 import gsap from "gsap";
 import React, { useState, useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
+
 const Projects = () => {
   type ActiveTab = "all" | "project" | "post" | "article" | "documentation";
   const [activeTab, setActiveTab] = useState<ActiveTab>("all");
   const gridRef = useRef<HTMLDivElement>(null);
-
   const animationStateRef = useRef({ hasAnimated: false });
 
   const handleTabClick = (tab: ActiveTab) => {
@@ -17,7 +18,7 @@ const Projects = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const triggerAnimations = () => {
+    let ctx = gsap.context(() => {
       if (gridRef.current && !animationStateRef.current.hasAnimated) {
         gsap.fromTo(
           gridRef.current.children,
@@ -38,54 +39,39 @@ const Projects = () => {
           }
         );
       }
-    };
+    }, gridRef);
 
-    const handleHashChange = () => {
-      if (window.location.hash === "#portfolio") {
-        triggerAnimations();
-      }
-    };
-
-    window.addEventListener("hashchange", handleHashChange);
-    handleHashChange();
-
-    return () => window.removeEventListener("hashchange", handleHashChange);
+    return () => ctx.revert(); // Cleanup animations
   }, []);
 
   useEffect(() => {
-    // Ensure gridRef.current is not null before proceeding with the animation
     if (gridRef.current) {
-      // Safe to use gridRef.current here as it's confirmed to be non-null
-      const gridElements = gridRef.current.children;
-
-      // Fade out all grid items
-      // You may need to use SVGs or pseudo-elements for the borders
-      gsap.fromTo(
-        gridElements,
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.1, ease: "power2.out" }
-      );
-
       const cards = gsap.utils.toArray<HTMLDivElement>(
         gridRef.current.querySelectorAll(".card")
       );
 
+      // Apply hover effects using GSAP
       cards.forEach((card) => {
-        // Add mouseenter event listener
-        card.addEventListener("mouseenter", () => {
-          gsap.to(card, { scale: 1.05, duration: 0.3 });
+        gsap.set(card, { scale: 1 });
+
+        gsap.to(card, {
+          scale: 1.05,
+          duration: 0.3,
+          paused: true,
+          id: `hover-${card.id}`,
         });
 
-        // Add mouseleave event listener
-        card.addEventListener("mouseleave", () => {
-          gsap.to(card, { scale: 1, duration: 0.3 });
-        });
+        card.addEventListener("mouseenter", () =>
+          gsap.getById(`hover-${card.id}`)?.play()
+        );
+        card.addEventListener("mouseleave", () =>
+          gsap.getById(`hover-${card.id}`)?.reverse()
+        );
       });
     }
   }, [activeTab]);
 
   return (
-    // <section id="projects" className="hero min-h-screen relative">
     <section
       id="portfolio"
       className="hero min-h-screen relative mt-10 font-mono px-0 md:px-10"
@@ -100,80 +86,55 @@ const Projects = () => {
         <div className="w-full">
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             My Portfolio
-            <img src="/assets/undeline.svg" alt="underline" />
+            <Image
+              src="/assets/undeline.svg"
+              alt="underline"
+              width={200}
+              height={20}
+            />
           </header>
           <div className="flex justify-start gap-0 md:gap-4 mb-8 font-mono text-white">
             <div role="tablist" className="tabs tabs-bordered">
-              <a
-                role="tab"
-                className={`tab ${
-                  activeTab === "all" ? "tab-active text-white" : ""
-                }`}
-                onClick={() => handleTabClick("all")}
-              >
-                All
-              </a>
-              <a
-                role="tab"
-                className={`tab ${
-                  activeTab === "project" ? "tab-active text-white" : ""
-                }`}
-                onClick={() => handleTabClick("project")}
-              >
-                Projects
-              </a>
-              <a
-                role="tab"
-                className={`tab ${
-                  activeTab === "post" ? "tab-active text-white" : ""
-                }`}
-                onClick={() => handleTabClick("post")}
-              >
-                Posts
-              </a>
-              <a
-                role="tab"
-                className={`tab ${
-                  activeTab === "article" ? "tab-active text-white" : ""
-                }`}
-                onClick={() => handleTabClick("article")}
-              >
-                Articles
-              </a>
-              <a
-                role="tab"
-                className={`tab ${
-                  activeTab === "documentation" ? "tab-active text-white" : ""
-                }`}
-                onClick={() => handleTabClick("documentation")}
-              >
-                Documentation
-              </a>
+              {["all", "project", "post", "article", "documentation"].map(
+                (tab) => (
+                  <a
+                    key={tab}
+                    role="tab"
+                    className={`tab ${
+                      activeTab === tab ? "tab-active text-white" : ""
+                    }`}
+                    onClick={() => handleTabClick(tab as ActiveTab)}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </a>
+                )
+              )}
             </div>
           </div>
           <div
             ref={gridRef}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-max min-h-[1200px]"
           >
-            {/* Replace with your project items */}
             {portfolio
               .filter(
                 (project) => activeTab === "all" || project.tag === activeTab
               )
-              .map((project, index) => (
+              .map((project) => (
                 <div
                   key={project.id}
                   className="card h-full w-80 md:w-72 bg-base-300 shadow-xl border-l border-b"
                 >
                   {project.tag !== "documentation" && (
                     <figure className="h-40 w-full overflow-hidden">
-                      <img
+                      <Image
                         src={
                           project.projectImage ||
                           "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                        } // Fallback image if projectImage is empty
+                        }
                         alt={project.title}
-                        className="h-full w-full object-fill"
+                        width={288}
+                        height={160}
+                        className="h-full w-full object-cover"
                       />
                     </figure>
                   )}
@@ -220,7 +181,6 @@ const Projects = () => {
         </div>
       </div>
     </section>
-    // </section>
   );
 };
 
