@@ -34,7 +34,9 @@ export default function Head() {
       />
 
       {/* ✅ Correct Favicon Reference */}
-      <link rel="icon" href="/assets/Memoji.png" type="image/png" />
+      <link rel="icon" href="/Memoji.png" type="image/png" />
+      <link rel="apple-touch-icon" href="/Memoji.png" />
+      <link rel="shortcut icon" href="/Memoji.png" type="image/x-icon" />
     </>
   );
 }
