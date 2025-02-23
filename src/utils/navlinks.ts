@@ -15,7 +15,7 @@ export const navLinks = [
     path: "#career",
     icon: faBriefcase,
   },
-  { title: "Skills", path: "#skills", icon: faStar },
+  // { title: "Skills", path: "#skills", icon: faStar },
   {
     title: "Portfolio",
     path: "#portfolio",

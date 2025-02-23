@@ -1,6 +1,6 @@
 "use client";
 import About from "./about/page";
-import Skills from "./skills/page";
+import Skills from "./components/Skills";
 import Experience from "./experience/page";
 import Contact from "./contact/page";
 import React, { Suspense, lazy, useEffect, useRef } from "react";

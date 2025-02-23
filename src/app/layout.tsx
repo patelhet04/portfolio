@@ -8,6 +8,7 @@ import AboutRefContext from "./context/AboutRefContext";
 import ThemeController from "./components/ThemeController";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Head from "next/head";
+import Script from "next/script";
 
 export default function RootLayout({
   children,
@@ -60,30 +61,11 @@ export default function RootLayout({
             />
 
             <link rel="icon" href="/assets/Memoji.png" type="image/png" />
-
-            <link
-              rel="stylesheet"
-              type="text/css"
-              href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
-            />
-
-            <script
-              type="application/ld+json"
-              dangerouslySetInnerHTML={{
-                __html: JSON.stringify({
-                  "@context": "https://schema.org",
-                  "@type": "Person",
-                  name: "Het Patel",
-                  jobTitle: "Software Engineer",
-                  url: "https://hetpatel.dev",
-                  image:
-                    "https://hetpatel.dev/assets/het-patel-software-engineer.jpg",
-                  description:
-                    "Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University.",
-                }),
-              }}
-            />
           </Head>
+          <Script
+            strategy="afterInteractive"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.js"
+          />
           <body>
             <Loader />
             <div className="grid_layout" data-theme={theme}>
