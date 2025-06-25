@@ -44,7 +44,7 @@ const Skills: React.FC = () => {
   return (
     <section
       id="skills"
-      className="hero relative min-h-96 w-full overflow-hidden my-14 bg-base-200"
+      className="hero relative min-h-80 w-full overflow-hidden my-14 bg-base-200"
     >
       <div
         className="transparent_text_about hidden sm:hidden md:block"

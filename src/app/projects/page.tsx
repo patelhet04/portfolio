@@ -6,13 +6,38 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 
 const Projects = () => {
-  type ActiveTab = "all" | "project" | "post" | "article" | "documentation";
-  const [activeTab, setActiveTab] = useState<ActiveTab>("all");
+  type ActiveTab = "project" | "post" | "article" | "documentation";
+  const [activeTab, setActiveTab] = useState<ActiveTab>("project");
   const gridRef = useRef<HTMLDivElement>(null);
   const animationStateRef = useRef({ hasAnimated: false });
 
   const handleTabClick = (tab: ActiveTab) => {
-    setActiveTab(tab);
+    if (tab === activeTab) return;
+
+    // Animate current content out to the left
+    if (gridRef.current) {
+      gsap.to(gridRef.current, {
+        x: "-100%",
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.inOut",
+        onComplete: () => {
+          setActiveTab(tab);
+          // Immediately position new content off-screen to the right
+          gsap.set(gridRef.current, { x: "100%", opacity: 0 });
+          // Then animate it in from the right
+          gsap.to(gridRef.current, {
+            x: "0%",
+            opacity: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            delay: 0.1,
+          });
+        },
+      });
+    } else {
+      setActiveTab(tab);
+    }
   };
 
   useEffect(() => {
@@ -41,48 +66,93 @@ const Projects = () => {
       }
     }, gridRef);
 
-    return () => ctx.revert(); // Cleanup animations
+    return () => ctx.revert();
   }, []);
 
   useEffect(() => {
     if (gridRef.current) {
       const cards = gsap.utils.toArray<HTMLDivElement>(
-        gridRef.current.querySelectorAll(".card")
+        gridRef.current.querySelectorAll(".project-card")
       );
 
-      // Apply hover effects using GSAP
-      cards.forEach((card) => {
-        gsap.set(card, { scale: 1 });
+      // Store event handlers and timelines for cleanup
+      const eventHandlers: Array<{
+        card: HTMLDivElement;
+        timeline: gsap.core.Timeline;
+        onMouseEnter: () => void;
+        onMouseLeave: () => void;
+      }> = [];
 
-        gsap.to(card, {
-          scale: 1.05,
+      cards.forEach((card) => {
+        // Reset any existing transforms
+        gsap.set(card, { scale: 1, y: 0, clearProps: "transform" });
+
+        const hoverTl = gsap.timeline({ paused: true });
+        hoverTl.to(card, {
+          scale: 1.03,
+          y: -8,
           duration: 0.3,
-          paused: true,
-          id: `hover-${card.id}`,
+          ease: "power2.out",
         });
 
-        card.addEventListener("mouseenter", () =>
-          gsap.getById(`hover-${card.id}`)?.play()
-        );
-        card.addEventListener("mouseleave", () =>
-          gsap.getById(`hover-${card.id}`)?.reverse()
-        );
+        const onMouseEnter = () => {
+          // Kill any existing animations on this card
+          gsap.killTweensOf(card);
+          hoverTl.restart();
+        };
+
+        const onMouseLeave = () => {
+          // Kill any existing animations and reverse
+          gsap.killTweensOf(card);
+          hoverTl.reverse();
+        };
+
+        card.addEventListener("mouseenter", onMouseEnter);
+        card.addEventListener("mouseleave", onMouseLeave);
+
+        eventHandlers.push({
+          card,
+          timeline: hoverTl,
+          onMouseEnter,
+          onMouseLeave,
+        });
       });
+
+      // Cleanup function
+      return () => {
+        eventHandlers.forEach(
+          ({ card, timeline, onMouseEnter, onMouseLeave }) => {
+            card.removeEventListener("mouseenter", onMouseEnter);
+            card.removeEventListener("mouseleave", onMouseLeave);
+            timeline.kill();
+            // Reset card to default state
+            gsap.set(card, { scale: 1, y: 0, clearProps: "transform" });
+          }
+        );
+      };
     }
   }, [activeTab]);
+
+  const filteredProjects = portfolio.filter(
+    (project) => project.tag === activeTab
+  );
+
+  const getTabCount = (tab: ActiveTab) => {
+    return portfolio.filter((project) => project.tag === tab).length;
+  };
 
   return (
     <section
       id="portfolio"
-      className="hero min-h-screen relative mt-10 font-mono px-0 md:px-10"
+      className="hero min-h-screen relative px-0 md:px-10 pb-20"
     >
       <div
-        className="transparent_text_about hidden sm:hidden md:block mt-10 lg:mt-0 2xl:-mt-14"
+        className="transparent_text_about hidden sm:hidden md:block"
         style={{ color: "transparent", WebkitTextStroke: "2px white" }}
       >
         &lt;Projects /&gt;
       </div>
-      <div className="hero-content mx-0">
+      <div className="flex flex-col gap-8 mx-10 mt-20 md:mt-0 text-white">
         <div className="w-full">
           <header className="font-mono text-white font-bold text-[24px] md:text-[32px] py-10">
             My Portfolio
@@ -93,91 +163,127 @@ const Projects = () => {
               height={20}
             />
           </header>
+
+          {/* Enhanced Tab Navigation */}
           <div className="flex justify-start gap-0 md:gap-4 mb-8 font-mono text-white">
             <div role="tablist" className="tabs tabs-bordered">
-              {["all", "project", "post", "article", "documentation"].map(
-                (tab) => (
-                  <a
-                    key={tab}
-                    role="tab"
-                    className={`tab ${
-                      activeTab === tab ? "tab-active text-white" : ""
-                    }`}
-                    onClick={() => handleTabClick(tab as ActiveTab)}
-                  >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </a>
-                )
-              )}
+              {(
+                ["project", "post", "article", "documentation"] as ActiveTab[]
+              ).map((tab) => (
+                <a
+                  key={tab}
+                  role="tab"
+                  className={`tab relative transition-all duration-300 ${
+                    activeTab === tab
+                      ? "tab-active text-white"
+                      : "hover:text-opacity-80"
+                  }`}
+                  onClick={() => handleTabClick(tab)}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  <span className="ml-2 text-xs opacity-60">
+                    ({getTabCount(tab)})
+                  </span>
+                </a>
+              ))}
             </div>
           </div>
+
+          {/* Enhanced Grid */}
           <div
             ref={gridRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 auto-rows-max min-h-[1200px]"
+            className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-max min-h-[600px]`}
           >
-            {portfolio
-              .filter(
-                (project) => activeTab === "all" || project.tag === activeTab
-              )
-              .map((project) => (
-                <div
-                  key={project.id}
-                  className="card h-full w-80 md:w-72 bg-base-300 shadow-xl border-l border-b"
-                >
-                  {project.tag !== "documentation" && (
-                    <figure className="h-40 w-full overflow-hidden">
-                      <Image
-                        src={
-                          project.projectImage ||
-                          "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                        }
-                        alt={project.title}
-                        width={288}
-                        height={160}
-                        className="h-full w-full object-cover"
-                      />
-                    </figure>
-                  )}
-                  <div className="card-body text-white">
-                    <p className="card-title text-[18px]">{project.title}</p>
-                    <p className="font-firaCode text-[14px] font-thin text-justify">
-                      {project.description}
-                    </p>
-                    {project.tag === "documentation" ? (
-                      <div className="mt-4">
+            {filteredProjects.map((project, index) => (
+              <div
+                key={project.id}
+                className="project-card h-full w-full bg-base-300 bg-opacity-[0.8] backdrop-blur-sm shadow-xl border border-base-content border-opacity-10 rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 flex flex-col"
+              >
+                {project.tag !== "documentation" && (
+                  <figure className="h-48 w-full overflow-hidden relative flex-shrink-0">
+                    <Image
+                      src={
+                        project.projectImage ||
+                        "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+                      }
+                      alt={project.title}
+                      width={400}
+                      height={192}
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                    <div className="absolute top-3 right-3">
+                      <div className="badge badge-primary badge-sm font-mono">
+                        {project.tag}
+                      </div>
+                    </div>
+                  </figure>
+                )}
+
+                <div className="card-body text-white p-6 flex flex-col flex-grow">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="card-title text-[18px] font-mono leading-tight">
+                      {project.title}
+                    </h3>
+                    {project.tag === "documentation" && (
+                      <div className="badge badge-primary badge-sm font-mono">
+                        {project.tag}
+                      </div>
+                    )}
+                  </div>
+
+                  <p className="font-firaCode text-[14px] font-thin text-justify leading-relaxed mb-4 text-base-content text-opacity-90 flex-grow">
+                    {project.description}
+                  </p>
+
+                  {project.tag === "documentation" ? (
+                    <div className="mt-auto">
+                      <div className="bg-base-100 bg-opacity-50 rounded-lg p-4 mb-4">
                         <iframe
                           src={project.link}
-                          className="w-full h-[300px] border"
+                          className="w-full h-[250px] border-0 rounded"
                           title={project.title}
                         ></iframe>
-                        <div className="mt-2 text-center">
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="btn btn-sm btn-outline primary-btn font-mono"
-                          >
-                            Open in New Tab
-                          </a>
-                        </div>
                       </div>
-                    ) : (
-                      <div className="card-actions justify-center">
+                      <div className="text-center">
                         <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="btn btn-sm btn-outline primary-btn font-mono w-full"
                         >
-                          <button className="primary-btn btn btn-outline font-mono btn-wide md:btn-md ">
-                            View Project
-                          </button>
+                          Open in New Tab
                         </a>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="card-actions justify-center mt-auto">
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-outline primary-btn font-mono btn-wide hover:scale-105 transition-transform duration-200"
+                      >
+                        View{" "}
+                        {project.tag === "project"
+                          ? "Project"
+                          : project.tag.charAt(0).toUpperCase() +
+                            project.tag.slice(1)}
+                      </a>
+                    </div>
+                  )}
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
+
+          {/* Empty State */}
+          {filteredProjects.length === 0 && (
+            <div className="text-center py-16">
+              <p className="text-base-content text-opacity-60 font-mono">
+                No {activeTab}s available yet.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -21,8 +21,12 @@ export const experienceData = [
     dates: "Jan 2025 - Present",
     company: "DMSB AI Strategic Hub (DASH)",
     role: "Human AI Interaction Engineer",
-    tasks: [],
-
+    tasks: [
+      "Developing innovative AI-powered solutions for business process optimization and automation.",
+      "Designing and implementing conversational AI systems using advanced NLP and machine learning techniques.",
+      "Creating intelligent agents that enhance human-AI collaboration in enterprise environments.",
+      "Building robust RAG (Retrieval-Augmented Generation) systems for knowledge management and decision support.",
+    ],
     skills: [
       "GenAI",
       "Nodejs",
@@ -36,7 +40,7 @@ export const experienceData = [
   },
   {
     id: "exp-2",
-    dates: "Sept 2021 - May 2023",
+    dates: "Sep 2021 - May 2023",
     company: "Silver Webbuzz Private Limited",
     role: "Software Developer",
     tasks: [
@@ -44,7 +48,6 @@ export const experienceData = [
       "Actively promoted creativity and teamwork in cross-functional teams by often delivering excellent software solutions ahead of schedule.",
       "Contributed to the development of scalable solutions, enhancing team efficiency and exceeding client expectations.",
     ],
-
     skills: [
       "Typescript",
       "Nodejs",
