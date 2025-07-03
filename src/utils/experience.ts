@@ -1,10 +1,35 @@
-export const educationData = [
+export interface Project {
+  name: string;
+  description: string;
+  tasks: string[];
+}
+
+export interface Education {
+  id: string;
+  dates: string;
+  institution: string;
+  degree: string;
+  cgpa: string;
+}
+
+export interface Experience {
+  id: string;
+  dates: string;
+  company: string;
+  role: string;
+  location?: string;
+  projects?: Project[];
+  tasks?: string[];
+  skills: string[];
+}
+
+export const educationData: Education[] = [
   {
     id: "edu-1",
-    dates: "Sept 2023 - May 2025",
+    dates: "Sept 2023 - Dec 2025",
     institution: "Northeastern University, Boston",
     degree: "Master of Science in Information Systems",
-    cgpa: "CGPA - 3.85 on a scale of 4",
+    cgpa: "CGPA - 3.61 on a scale of 4",
   },
   {
     id: "edu-2",
@@ -15,25 +40,52 @@ export const educationData = [
   },
 ];
 
-export const experienceData = [
+export const experienceData: Experience[] = [
   {
     id: "exp-1",
     dates: "Jan 2025 - Present",
-    company: "DMSB AI Strategic Hub (DASH)",
+    company: "DMSB AI Strategic Hub (DASH), Boston, MA",
     role: "Human AI Interaction Engineer",
-    tasks: [
-      "Developing innovative AI-powered solutions for business process optimization and automation.",
-      "Designing and implementing conversational AI systems using advanced NLP and machine learning techniques.",
-      "Creating intelligent agents that enhance human-AI collaboration in enterprise environments.",
-      "Building robust RAG (Retrieval-Augmented Generation) systems for knowledge management and decision support.",
+    location: "Boston, MA",
+    projects: [
+      {
+        name: "LearnBot",
+        description:
+          "Full Stack Generative AI essay grading system to enhance student learning through personalized feedback",
+        tasks: [
+          "Engineered a Flask based LlamaIndex RAG pipeline with HuggingFace embeddings and FAISS indexing, supporting 2-100+ PDF documents per assignment with anti-gaming detection",
+          "Optimized Docker-containerized Ollama models with GPU acceleration, achieving 3x faster inference latency",
+          "Configured local MinIO storage on local Ubuntu server to comply with university data residency policies",
+          "Reduced instructor grading time from 8+ hours to 30 minutes by automating rubric creation and batch processing using LangChain prompts",
+          "Streamlined Next.js and FlaskAPI deployment with GitHub Actions CI/CD, Nginx, and PM2, achieving 95% uptime",
+          "Coordinated with RAs and professors to conduct UAT and optimize grading accuracy via continuous feedback",
+        ],
+      },
+      {
+        name: "NeuroLoom",
+        description:
+          "Multi-Agent AI Chat Platform using Flask-SocketIO with Behavioral Profiling and Sentiment Analytics",
+        tasks: [
+          "Developed adaptive AI agents with 8+ personality traits using LangGraph and Ollama, serving 80+ daily users",
+          "Pioneered AI agent networking module that analyzed conversation patterns and personality traits to recommend optimal agent pairings for collaborative projects and research",
+          "Incorporated real-time sentiment analysis (VADER) to monitor emotional and social trends across interactions",
+        ],
+      },
     ],
     skills: [
       "GenAI",
-      "Nodejs",
-      "RAG",
-      "Amazon Web Services",
       "Python",
-      "Prompt Engineering",
+      "Flask",
+      "RAG",
+      "LlamaIndex",
+      "LangGraph",
+      "Ollama",
+      "Docker",
+      "Next.js",
+      "CI/CD",
+      "FAISS",
+      "MinIO",
+      "Sentiment Analysis",
       "AI Agents",
       "Vector Databases",
     ],

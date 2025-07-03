@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useEffect, useRef } from "react";
 import { educationData, experienceData } from "@/utils/experience";
+import type { Experience, Project } from "@/utils/experience";
 import { useTheme } from "../context/ThemeContext";
 import Image from "next/image";
 
@@ -91,6 +92,7 @@ const Experience = () => {
     Nodejs: "bg-green-600 text-white",
     React: "bg-[#61DBFB] text-black",
     Nextjs: `${theme === "retro" ? "bg-white text-black" : "bg-black text-white"}`,
+    "Next.js": `${theme === "retro" ? "bg-white text-black" : "bg-black text-white"}`,
     MongoDB: "bg-green-400 text-black",
     MySQL: "bg-[#f29111] text-white",
     Docker: "bg-[#1D63ED] text-white",
@@ -106,6 +108,14 @@ const Experience = () => {
     "AI Agents": "bg-[#14B8A6] text-white",
     "Vector Databases": "bg-[#0EA5E9] text-white",
     Python: "bg-[#3776AB] text-white",
+    Flask: "bg-[#000000] text-white",
+    LlamaIndex: "bg-[#FF6B35] text-white",
+    LangGraph: "bg-[#FF4785] text-white",
+    Ollama: "bg-[#10B981] text-white",
+    "CI/CD": "bg-[#326CE5] text-white",
+    FAISS: "bg-[#FF6B6B] text-white",
+    MinIO: "bg-[#C72E29] text-white",
+    "Sentiment Analysis": "bg-[#9333EA] text-white",
   };
 
   const getBadgeClasses = (skill: string): string => {
@@ -217,11 +227,48 @@ const Experience = () => {
                     </time>
                   </div>
 
-                  {/* Tasks */}
-                  {exp.tasks.length > 0 && (
+                  {/* Projects Section (for experiences with projects) */}
+                  {exp.projects && (
+                    <div className="mb-6">
+                      <div className="space-y-6">
+                        {exp.projects.map(
+                          (project: Project, projectIndex: number) => (
+                            <div
+                              key={projectIndex}
+                              className="border-l-2 border-primary-blue pl-4 bg-base-200 bg-opacity-30 rounded-r-lg p-3"
+                            >
+                              <div className="mb-3">
+                                <h4 className="text-lg font-bold text-primary-blue font-mono">
+                                  {project.name}
+                                </h4>
+                                <p className="text-white font-firaCode font-light text-sm mt-1 italic">
+                                  {project.description}
+                                </p>
+                              </div>
+                              <ul className="pl-0 list-disc list-inside text-white leading-7">
+                                {project.tasks.map(
+                                  (task: string, taskIndex: number) => (
+                                    <li
+                                      key={taskIndex}
+                                      className="text-left font-firaCode font-extralight mb-2 text-sm"
+                                    >
+                                      {task}
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tasks Section (for experiences without projects) */}
+                  {exp.tasks && exp.tasks.length > 0 && (
                     <div className="mb-6">
                       <ul className="pl-0 list-disc list-inside text-white leading-8 max-h-[200px] overflow-y-auto">
-                        {exp.tasks.map((task, taskIndex) => (
+                        {exp.tasks.map((task: string, taskIndex: number) => (
                           <li
                             key={taskIndex}
                             className="text-left font-firaCode font-extralight mb-2 text-sm"

@@ -26,11 +26,14 @@ body {
 
 @layer {
   .grid_layout {
-    @apply grid grid-cols-1 xl:grid-cols-[16rem_1fr]; /* Adjust 16rem to match the sidebar width */
+    @apply grid grid-cols-1; /* Single column since sidebar is now independent */
     min-height: 100vh; /* Full viewport height */
   }
   .sidebar {
     @apply fixed top-0 left-0 z-30;
+  }
+  .z-45 {
+    z-index: 45;
   }
 
   .flex_col {

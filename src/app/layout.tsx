@@ -68,11 +68,12 @@ export default function RootLayout({
           />
           <body>
             <Loader />
+            <Sidebar />
+
             <div className="grid_layout" data-theme={theme}>
-              <Sidebar />
               <DownloadButton aboutRef={aboutRef} />
               <ThemeController theme={theme} setTheme={setTheme} />
-              <main className="main">
+              <main className="main xl:ml-64">
                 {/* Content goes here */}
                 {children}
               </main>
