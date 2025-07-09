@@ -136,164 +136,166 @@ const Experience = () => {
         &lt;Career /&gt;
       </div>
 
-      <div className="flex flex-col gap-8 mx-10 mt-20 md:mt-0 text-white">
-        {/* Header */}
-        <div ref={headerRef} className="w-full">
-          <h1 className="font-mono text-white font-bold text-[24px] md:text-[32px] text-left">
-            Career Journey
-          </h1>
-          <div className="flex justify-start">
-            <Image
-              src="/assets/undeline.svg"
-              alt="underline"
-              width={200}
-              height={20}
-            />
+      <div className="hero-content gap-8 px-14 md:px-20 flex-col">
+        <div className="w-full flex flex-col gap-8 text-white">
+          {/* Header */}
+          <div ref={headerRef} className="w-full">
+            <h1 className="font-mono text-white font-bold text-[24px] md:text-[32px] text-left">
+              Career Journey
+            </h1>
+            <div className="flex justify-start">
+              <Image
+                src="/assets/undeline.svg"
+                alt="underline"
+                width={200}
+                height={20}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Single Column Layout - Education First, then Work Experience */}
-        <div className="space-y-12">
-          {/* Education Section */}
-          <div ref={educationRef} className="space-y-8">
-            <div className="text-left">
-              <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
-                Education
-              </h2>
-              <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
+          {/* Single Column Layout - Education First, then Work Experience */}
+          <div className="space-y-12">
+            {/* Education Section */}
+            <div ref={educationRef} className="space-y-8">
+              <div className="text-left">
+                <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
+                  Education
+                </h2>
+                <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {educationData.map((edu, index) => (
+                  <div key={edu.id} className="education-card group">
+                    <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] font-mono h-full">
+                      {/* Institution and Dates Header */}
+                      <div className="flex flex-col mb-4">
+                        <div>
+                          <h3 className="text-md md:text-lg font-bold text-primary-blue font-mono">
+                            {edu.institution}
+                          </h3>
+                          <p className="italic font-extralight font-mono">
+                            {edu.degree}
+                          </p>
+                        </div>
+                        <time className="italic text-white font-mono text-sm mt-2">
+                          {edu.dates}
+                        </time>
+                      </div>
+
+                      {/* CGPA */}
+                      <div className="mb-4">
+                        <p className="text-white font-mono">{edu.cgpa}</p>
+                      </div>
+
+                      {/* Additional Education Details */}
+                      {index === 0 && (
+                        <ul className="list-disc list-inside text-white leading-6 font-firaCode font-extralight text-sm">
+                          <li>Graduate Research Assistant</li>
+                          <li>Active in Tech Communities</li>
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {educationData.map((edu, index) => (
-                <div key={edu.id} className="education-card group">
-                  <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] font-mono h-full">
-                    {/* Institution and Dates Header */}
-                    <div className="flex flex-col mb-4">
+            {/* Work Experience Section */}
+            <div ref={workExperienceRef} className="space-y-8">
+              <div className="text-left">
+                <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
+                  Work Experience
+                </h2>
+                <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
+              </div>
+
+              {experienceData.map((exp, index) => (
+                <div key={exp.id} className="experience-card group">
+                  <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] mb-5 font-mono">
+                    {/* Company and Role Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
                       <div>
                         <h3 className="text-md md:text-lg font-bold text-primary-blue font-mono">
-                          {edu.institution}
+                          {exp.company}
                         </h3>
                         <p className="italic font-extralight font-mono">
-                          {edu.degree}
+                          {exp.role}
                         </p>
                       </div>
-                      <time className="italic text-white font-mono text-sm mt-2">
-                        {edu.dates}
+                      <time className="italic text-white font-mono text-sm">
+                        {exp.dates}
                       </time>
                     </div>
 
-                    {/* CGPA */}
-                    <div className="mb-4">
-                      <p className="text-white font-mono">{edu.cgpa}</p>
-                    </div>
-
-                    {/* Additional Education Details */}
-                    {index === 0 && (
-                      <ul className="list-disc list-inside text-white leading-6 font-firaCode font-extralight text-sm">
-                        <li>Graduate Research Assistant</li>
-                        <li>Active in Tech Communities</li>
-                      </ul>
+                    {/* Projects Section (for experiences with projects) */}
+                    {exp.projects && (
+                      <div className="mb-6">
+                        <div className="space-y-6">
+                          {exp.projects.map(
+                            (project: Project, projectIndex: number) => (
+                              <div
+                                key={projectIndex}
+                                className="border-l-2 border-primary-blue pl-4 bg-base-200 bg-opacity-30 rounded-r-lg p-3"
+                              >
+                                <div className="mb-3">
+                                  <h4 className="text-lg font-bold text-primary-blue font-mono">
+                                    {project.name}
+                                  </h4>
+                                  <p className="text-white font-firaCode font-light text-sm mt-1 italic">
+                                    {project.description}
+                                  </p>
+                                </div>
+                                <ul className="pl-0 list-disc list-inside text-white leading-7">
+                                  {project.tasks.map(
+                                    (task: string, taskIndex: number) => (
+                                      <li
+                                        key={taskIndex}
+                                        className="text-left font-firaCode font-extralight mb-2 text-sm"
+                                      >
+                                        {task}
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
                     )}
+
+                    {/* Tasks Section (for experiences without projects) */}
+                    {exp.tasks && exp.tasks.length > 0 && (
+                      <div className="mb-6">
+                        <ul className="pl-0 list-disc list-inside text-white leading-8 max-h-[200px] overflow-y-auto">
+                          {exp.tasks.map((task: string, taskIndex: number) => (
+                            <li
+                              key={taskIndex}
+                              className="text-left font-firaCode font-extralight mb-2 text-sm"
+                            >
+                              {task}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Skills */}
+                    <div className="mt-4 flex flex-row flex-wrap gap-6">
+                      {exp.skills.map((skill, skillIndex) => (
+                        <div
+                          key={skillIndex}
+                          className={`badge badge-info ${getBadgeClasses(skill)} border border-white`}
+                        >
+                          {skill}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Work Experience Section */}
-          <div ref={workExperienceRef} className="space-y-8">
-            <div className="text-left">
-              <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
-                Work Experience
-              </h2>
-              <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
-            </div>
-
-            {experienceData.map((exp, index) => (
-              <div key={exp.id} className="experience-card group">
-                <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] mb-5 font-mono">
-                  {/* Company and Role Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-                    <div>
-                      <h3 className="text-md md:text-lg font-bold text-primary-blue font-mono">
-                        {exp.company}
-                      </h3>
-                      <p className="italic font-extralight font-mono">
-                        {exp.role}
-                      </p>
-                    </div>
-                    <time className="italic text-white font-mono text-sm">
-                      {exp.dates}
-                    </time>
-                  </div>
-
-                  {/* Projects Section (for experiences with projects) */}
-                  {exp.projects && (
-                    <div className="mb-6">
-                      <div className="space-y-6">
-                        {exp.projects.map(
-                          (project: Project, projectIndex: number) => (
-                            <div
-                              key={projectIndex}
-                              className="border-l-2 border-primary-blue pl-4 bg-base-200 bg-opacity-30 rounded-r-lg p-3"
-                            >
-                              <div className="mb-3">
-                                <h4 className="text-lg font-bold text-primary-blue font-mono">
-                                  {project.name}
-                                </h4>
-                                <p className="text-white font-firaCode font-light text-sm mt-1 italic">
-                                  {project.description}
-                                </p>
-                              </div>
-                              <ul className="pl-0 list-disc list-inside text-white leading-7">
-                                {project.tasks.map(
-                                  (task: string, taskIndex: number) => (
-                                    <li
-                                      key={taskIndex}
-                                      className="text-left font-firaCode font-extralight mb-2 text-sm"
-                                    >
-                                      {task}
-                                    </li>
-                                  )
-                                )}
-                              </ul>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tasks Section (for experiences without projects) */}
-                  {exp.tasks && exp.tasks.length > 0 && (
-                    <div className="mb-6">
-                      <ul className="pl-0 list-disc list-inside text-white leading-8 max-h-[200px] overflow-y-auto">
-                        {exp.tasks.map((task: string, taskIndex: number) => (
-                          <li
-                            key={taskIndex}
-                            className="text-left font-firaCode font-extralight mb-2 text-sm"
-                          >
-                            {task}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Skills */}
-                  <div className="mt-4 flex flex-row flex-wrap gap-6">
-                    {exp.skills.map((skill, skillIndex) => (
-                      <div
-                        key={skillIndex}
-                        className={`badge badge-info ${getBadgeClasses(skill)} border border-white`}
-                      >
-                        {skill}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
