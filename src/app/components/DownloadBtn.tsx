@@ -11,7 +11,22 @@ const DownloadButton: React.FC<{
 }> = ({ aboutRef }) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isInAboutSection, setIsInAboutSection] = useState(false);
+  const [showButton, setShowButton] = useState(false);
   const { theme } = useTheme();
+  
+  useEffect(() => {
+    // Show button after loader completes
+    const handleLoaderComplete = () => {
+      setShowButton(true);
+    };
+    
+    window.addEventListener('loaderComplete', handleLoaderComplete);
+    
+    return () => {
+      window.removeEventListener('loaderComplete', handleLoaderComplete);
+    };
+  }, []);
+
   useEffect(() => {
     const handleScroll = debounce(() => {
       if (aboutRef?.current) {
@@ -73,6 +88,8 @@ const DownloadButton: React.FC<{
       ease: "power1.inOut",
     });
   }, [isScrolling]);
+
+  if (!showButton) return null;
 
   return (
     <div className="indicator">

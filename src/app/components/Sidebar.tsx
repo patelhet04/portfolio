@@ -15,6 +15,20 @@ import { navLinks } from "@/utils/navlinks";
 const Sidebar = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [activePath, setActivePath] = useState("#home");
+  const [showSidebar, setShowSidebar] = useState(false);
+
+  useEffect(() => {
+    // Show sidebar after loader completes
+    const handleLoaderComplete = () => {
+      setShowSidebar(true);
+    };
+    
+    window.addEventListener('loaderComplete', handleLoaderComplete);
+    
+    return () => {
+      window.removeEventListener('loaderComplete', handleLoaderComplete);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,6 +106,8 @@ const Sidebar = memo(() => {
       setIsOpen(false);
     }
   };
+
+  if (!showSidebar) return null;
 
   return (
     <>

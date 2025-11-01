@@ -1,4 +1,4 @@
-import React, { ChangeEvent, memo } from "react";
+import React, { ChangeEvent, memo, useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 
 interface ThemeControllerProps {
@@ -7,6 +7,21 @@ interface ThemeControllerProps {
 }
 
 const ThemeController = memo(({ theme, setTheme }: ThemeControllerProps) => {
+  const [showController, setShowController] = useState(false);
+
+  useEffect(() => {
+    // Show controller after loader completes
+    const handleLoaderComplete = () => {
+      setShowController(true);
+    };
+    
+    window.addEventListener('loaderComplete', handleLoaderComplete);
+    
+    return () => {
+      window.removeEventListener('loaderComplete', handleLoaderComplete);
+    };
+  }, []);
+
   // This function will be called when the checkbox is clicked
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Toggle theme based on the checkbox
@@ -14,6 +29,8 @@ const ThemeController = memo(({ theme, setTheme }: ThemeControllerProps) => {
   };
 
   // Determine if the checkbox should be checked based on the current theme
+
+  if (!showController) return null;
 
   return (
     <div className="fixed top-5 right-5 md:right-10 z-30">

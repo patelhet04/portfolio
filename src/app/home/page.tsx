@@ -125,7 +125,7 @@ export default function Home() {
             <span className="ai-drop inline-block opacity-0">AI</span>
             <span className="engineer-slide inline-block">
               <TypeIt
-                options={{ loop: true, startDelay: 3000 }}
+                options={{ loop: true, startDelay: 4000 }}
                 getBeforeInit={(instance) => {
                   instance
                     .type("Sogtware", { delay: 300 })

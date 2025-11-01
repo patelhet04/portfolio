@@ -126,7 +126,10 @@ const Experience = () => {
     "AI Agents": "bg-[#14B8A6] text-white",
     "Vector Databases": "bg-[#0EA5E9] text-white",
     Python: "bg-[#3776AB] text-white",
-    Flask: theme === "lemonade" ? "bg-black text-white" : "bg-white text-black",
+    Flask:
+      theme === "lemonade"
+        ? "bg-gray-900 text-white border border-gray-700"
+        : "bg-gray-100 text-gray-900 border border-gray-300",
     LlamaIndex: "bg-[#FF6B35] text-white",
     LangGraph: "bg-[#FF4785] text-white",
     vLLM: "bg-[#00D9FF] text-black",

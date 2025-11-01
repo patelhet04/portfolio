@@ -90,7 +90,7 @@ body {
 
   /* AI Drop Animation */
   .ai-drop {
-    animation: aiDrop 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 5.5s forwards;
+    animation: aiDrop 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 6.5s forwards;
   }
 
   @keyframes aiDrop {
@@ -121,7 +121,7 @@ body {
 
   /* Software Engineer Slide Animation */
   .engineer-slide {
-    animation: engineerSlide 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 5.5s forwards;
+    animation: engineerSlide 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 6.5s forwards;
     transform: translateX(-60px);
   }
 
@@ -144,6 +144,46 @@ body {
     100% {
       transform: translateX(0);
     }
+  }
+
+  /* Loader Particle Styles */
+  .particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--fallback-p, oklch(var(--p)));
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--fallback-p, oklch(var(--p))), 0 0 40px var(--fallback-p, oklch(var(--p)/0.5));
+    animation: particlePulse 2s ease-in-out infinite;
+  }
+
+  .particle:nth-child(2n) {
+    animation-delay: 0.5s;
+    width: 6px;
+    height: 6px;
+  }
+
+  .particle:nth-child(3n) {
+    animation-delay: 1s;
+    width: 10px;
+    height: 10px;
+  }
+
+  @keyframes particlePulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .code-line {
+    font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    line-height: 1.8;
   }
 }
 .social_icon_list a:nth-child(1) .social_icon {
