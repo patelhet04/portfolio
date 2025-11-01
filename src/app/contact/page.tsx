@@ -175,30 +175,30 @@ const Contact: React.FC = () => {
         &lt;Contact /&gt;
       </div>
 
-      <div className="hero-content gap-8 px-4 sm:px-8 md:px-14 lg:px-20 flex-col w-full max-w-7xl">
+      <div className="hero-content gap-6 px-4 sm:px-8 md:px-14 lg:px-20 flex-col w-full max-w-7xl">
         <div className="w-full text-base-content">
           {/* Header */}
-          <div ref={headerRef} className="w-full mb-12">
+          <div ref={headerRef} className="w-full mb-8">
             <h1 className="font-sora text-base-content font-bold text-[24px] md:text-[32px] text-left">
               Get In Touch
             </h1>
             <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
-            <p className="font-sora text-base-content text-opacity-80 mt-6 text-[14px] md:text-[16px] max-w-3xl">
+            <p className="font-sora text-base-content text-opacity-80 mt-4 text-[14px] md:text-[16px] max-w-3xl">
               I'm always open to discussing new opportunities, interesting
               projects, or just having a friendly conversation about technology.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
             {/* Left Column - Contact Info & Map */}
-            <div className="flex flex-col space-y-8">
+            <div className="flex flex-col space-y-6">
               {/* Contact Information Card - Single Container */}
-              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-8 border border-base-content border-opacity-20 shadow-xl flex-1">
-                <h2 className="text-[20px] md:text-[22px] font-bold text-primary mb-6 font-sora">
+              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-6 border border-base-content border-opacity-20 shadow-xl flex-1">
+                <h2 className="text-[20px] md:text-[22px] font-bold text-primary mb-5 font-sora">
                   Contact Information
                 </h2>
 
-                <div ref={contactInfoRef} className="space-y-6">
+                <div ref={contactInfoRef} className="space-y-5">
                   <div className="contact-item flex items-center space-x-4 group">
                     <div className="w-11 h-11 bg-primary bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
                       <FontAwesomeIcon
@@ -253,12 +253,12 @@ const Contact: React.FC = () => {
               </div>
 
               {/* Map */}
-              <div ref={mapRef} className="h-[280px] lg:h-[300px]">
-                <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-6 border border-base-content border-opacity-20 h-full">
-                  <h3 className="font-sora font-semibold text-white mb-4 text-[16px]">
+              <div ref={mapRef} className="h-[240px] lg:h-[260px]">
+                <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-5 border border-base-content border-opacity-20 h-full">
+                  <h3 className="font-sora font-semibold text-white mb-3 text-[16px]">
                     Find Me Here
                   </h3>
-                  <div className="h-[calc(100%-2.5rem)] rounded-3xl overflow-hidden">
+                  <div className="h-[calc(100%-2.25rem)] rounded-3xl overflow-hidden">
                     <MapPage />
                   </div>
                 </div>
@@ -267,14 +267,14 @@ const Contact: React.FC = () => {
 
             {/* Right Column - Contact Form */}
             <div ref={formRef} className="flex">
-              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-8 border border-base-content border-opacity-20 shadow-xl flex-1 flex flex-col">
-                <h2 className="font-sora font-bold text-[20px] md:text-[22px] text-base-content mb-6">
+              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-6 border border-base-content border-opacity-20 shadow-xl flex-1 flex flex-col">
+                <h2 className="font-sora font-bold text-[20px] md:text-[22px] text-base-content mb-5">
                   Send Me a Message
                 </h2>
                 <form
                   ref={form}
                   onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-6 flex-1 flex flex-col"
+                  className="space-y-4 flex-1 flex flex-col"
                 >
                   <input type="hidden" name="to_name" value="Het Patel" />
 
