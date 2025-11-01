@@ -102,7 +102,7 @@ export default function Home() {
       >
         &lt;Home /&gt;
       </div>
-      <div className="hero-content mt-20 lg:mt-0 flex_col gap-20 lg:gap-4 lg:flex-row">
+      <div className="hero-content mt-20 lg:mt-0 flex_col gap-20 lg:gap-4 lg:flex-row px-4 sm:px-8 md:px-12">
         <div 
           className="max-w-md"
           style={{
@@ -121,28 +121,27 @@ export default function Home() {
             <span>Ashwinbhai</span>
             <span>Patel.</span>
           </h1>
-          <p className="py-8 font-sora transform text-white text-[24px] sm:text-[32px] duration-300 ease-in tracking-wider font-light">
-            <TypeIt
-              options={{ loop: true }}
-              getBeforeInit={(instance) => {
-                instance
-                  .type("Sogtware", { delay: 300 })
-                  .move(-5)
-                  .delete(1)
-                  .type("f")
-                  .move(null, { to: "END" })
-                  .type(" developer")
-                  .pause(300)
-                  .move(-8)
-                  .delete(1)
-                  .type("D")
-                  .move(null, { to: "END" })
-                  .go();
+          <p className="py-8 font-sora transform text-white text-[24px] sm:text-[32px] duration-300 ease-in tracking-wider font-light flex items-center gap-3">
+            <span className="ai-drop inline-block opacity-0">AI</span>
+            <span className="engineer-slide inline-block">
+              <TypeIt
+                options={{ loop: true, startDelay: 3000 }}
+                getBeforeInit={(instance) => {
+                  instance
+                    .type("Sogtware", { delay: 300 })
+                    .move(-5)
+                    .delete(1)
+                    .type("f")
+                    .move(null, { to: "END" })
+                    .type(" Engineer")
+                    .pause(1000)
+                    .go();
 
-                // Remember to return it!
-                return instance;
-              }}
-            />
+                  // Remember to return it!
+                  return instance;
+                }}
+              />
+            </span>
           </p>
           <a href="#about">
             <button className="primary-btn btn btn-outline font-sora btn-wide md:btn-md lg:btn-lg rounded-2xl">

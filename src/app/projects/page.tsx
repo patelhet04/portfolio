@@ -91,16 +91,16 @@ const Projects = () => {
       >
         &lt;Projects /&gt;
       </div>
-      <div className="hero-content gap-8 px-14 md:px-20 flex-col">
-        <div className="w-full flex flex-col gap-8 text-white">
+      <div className="hero-content gap-8 px-4 sm:px-8 md:px-14 lg:px-20 flex-col">
+        <div className="w-full flex flex-col gap-8 text-base-content">
           <div className="w-full">
-            <header className="font-sora text-white font-bold text-[24px] md:text-[32px] py-10">
+            <header className="font-sora text-base-content font-bold text-[24px] md:text-[32px] py-10">
               My Portfolio
               <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
             </header>
 
             {/* Enhanced Tab Navigation */}
-            <div className="flex justify-start gap-0 md:gap-4 mb-8 font-sora text-white">
+            <div className="flex justify-start gap-0 md:gap-4 mb-8 font-sora text-base-content">
               <div role="tablist" className="tabs tabs-bordered">
                 {(
                   ["project", "post", "article", "documentation"] as ActiveTab[]
@@ -110,7 +110,7 @@ const Projects = () => {
                     role="tab"
                     className={`tab relative transition-all duration-300 ${
                       activeTab === tab
-                        ? "tab-active text-white"
+                        ? "tab-active text-base-content"
                         : "hover:text-opacity-80"
                     }`}
                     onClick={() => handleTabClick(tab)}
@@ -162,7 +162,7 @@ const Projects = () => {
                     </figure>
                   )}
 
-                  <div className="card-body text-white p-6 flex flex-col flex-grow">
+                  <div className="card-body text-base-content p-6 flex flex-col flex-grow">
                     <div className="flex items-start justify-between mb-3">
                       <h3 className="card-title text-[18px] font-sora leading-tight">
                         {project.title}

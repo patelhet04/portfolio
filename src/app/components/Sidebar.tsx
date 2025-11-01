@@ -18,28 +18,35 @@ const Sidebar = memo(() => {
 
   useEffect(() => {
     const handleScroll = () => {
-      let newActivePath = "#home"; // Default to home
-      let sectionFound = false;
+      const scrollPosition = window.scrollY;
+      
+      // Check if we're at the very top (home section)
+      if (scrollPosition < window.innerHeight * 0.8) {
+        if (activePath !== "#home") {
+          setActivePath("#home");
+        }
+        return;
+      }
+
+      let newActivePath = "#home";
 
       navLinks.forEach((link) => {
+        if (link.path === "#home") return; // Skip home as we handled it above
+        
         const section = document.querySelector(link.path) as HTMLElement;
         if (section) {
-          const sectionTop = section.offsetTop;
+          const rect = section.getBoundingClientRect();
+          const sectionTop = rect.top + scrollPosition;
           const sectionHeight = section.offsetHeight;
+          
           if (
-            window.scrollY >= sectionTop - sectionHeight / 4 &&
-            window.scrollY < sectionTop + sectionHeight - sectionHeight / 4
+            scrollPosition >= sectionTop - 300 &&
+            scrollPosition < sectionTop + sectionHeight - 300
           ) {
             newActivePath = link.path;
-            sectionFound = true;
           }
         }
       });
-
-      // If no section found and we're at the top, set to home
-      if (!sectionFound && window.scrollY < 100) {
-        newActivePath = "#home";
-      }
 
       if (newActivePath !== activePath) {
         setActivePath(newActivePath);
@@ -58,9 +65,23 @@ const Sidebar = memo(() => {
   // Smooth scroll function
   const handleNavClick = (path: string, e: React.MouseEvent) => {
     e.preventDefault();
+    
+    // Special handling for home
+    if (path === "#home") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setIsOpen(false);
+      return;
+    }
+    
     const target = document.querySelector(path) as HTMLElement;
     if (target) {
-      const targetPosition = target.offsetTop - 80;
+      // Get the actual position of the element relative to the document
+      const rect = target.getBoundingClientRect();
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const targetPosition = rect.top + scrollTop - 80;
 
       window.scrollTo({
         top: targetPosition,

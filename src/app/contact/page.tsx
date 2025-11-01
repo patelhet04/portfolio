@@ -175,11 +175,11 @@ const Contact: React.FC = () => {
         &lt;Contact /&gt;
       </div>
 
-      <div className="hero-content gap-8 px-14 md:px-20 flex-col w-full max-w-7xl">
-        <div className="w-full text-white">
+      <div className="hero-content gap-8 px-4 sm:px-8 md:px-14 lg:px-20 flex-col w-full max-w-7xl">
+        <div className="w-full text-base-content">
           {/* Header */}
           <div ref={headerRef} className="w-full mb-12">
-            <h1 className="font-sora text-white font-bold text-[24px] md:text-[32px] text-left">
+            <h1 className="font-sora text-base-content font-bold text-[24px] md:text-[32px] text-left">
               Get In Touch
             </h1>
             <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
@@ -207,7 +207,7 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-base-content mb-1 text-[15px]">
                         Location
                       </h3>
                       <p className="font-sora text-[13px] text-base-content text-opacity-80">
@@ -224,7 +224,7 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-base-content mb-1 text-[15px]">
                         Email
                       </h3>
                       <p className="font-sora text-[13px] text-base-content text-opacity-80">
@@ -241,7 +241,7 @@ const Contact: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-base-content mb-1 text-[15px]">
                         Phone
                       </h3>
                       <p className="font-sora text-[13px] text-base-content text-opacity-80">
@@ -268,7 +268,7 @@ const Contact: React.FC = () => {
             {/* Right Column - Contact Form */}
             <div ref={formRef} className="flex">
               <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-8 border border-base-content border-opacity-20 shadow-xl flex-1 flex flex-col">
-                <h2 className="font-sora font-bold text-[20px] md:text-[22px] text-white mb-6">
+                <h2 className="font-sora font-bold text-[20px] md:text-[22px] text-base-content mb-6">
                   Send Me a Message
                 </h2>
                 <form
@@ -281,7 +281,7 @@ const Contact: React.FC = () => {
                   {/* Name Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-sora text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-base-content flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faUser}
                           className="mr-2 text-primary"
@@ -308,7 +308,7 @@ const Contact: React.FC = () => {
                   {/* Email Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-sora text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-base-content flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faAt}
                           className="mr-2 text-primary"
@@ -341,7 +341,7 @@ const Contact: React.FC = () => {
                   {/* Subject Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-sora text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-base-content flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faTag}
                           className="mr-2 text-primary"
@@ -372,7 +372,7 @@ const Contact: React.FC = () => {
                   {/* Message Field */}
                   <div className="form-group flex-1 flex flex-col">
                     <label className="label py-1">
-                      <span className="label-text font-sora text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-base-content flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faComment}
                           className="mr-2 text-primary"

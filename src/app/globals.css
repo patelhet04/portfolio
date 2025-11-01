@@ -87,6 +87,64 @@ body {
   .badge {
     @apply rounded-2xl;
   }
+
+  /* AI Drop Animation */
+  .ai-drop {
+    animation: aiDrop 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 5.5s forwards;
+  }
+
+  @keyframes aiDrop {
+    0% {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    60% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(-15px);
+    }
+    85% {
+      transform: translateY(0);
+    }
+    92% {
+      transform: translateY(-5px);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Software Engineer Slide Animation */
+  .engineer-slide {
+    animation: engineerSlide 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 5.5s forwards;
+    transform: translateX(-60px);
+  }
+
+  @keyframes engineerSlide {
+    0% {
+      transform: translateX(-60px);
+    }
+    60% {
+      transform: translateX(0);
+    }
+    75% {
+      transform: translateX(-8px);
+    }
+    85% {
+      transform: translateX(0);
+    }
+    92% {
+      transform: translateX(-3px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 }
 .social_icon_list a:nth-child(1) .social_icon {
   animation-delay: 1s;

@@ -115,17 +115,17 @@ const About = () => {
     <section ref={aboutRef} id="about" className="hero min-h-screen relative">
       <div
         className="transparent_text_about hidden sm:hidden md:block"
-        style={{ 
-          color: "transparent", 
+        style={{
+          color: "transparent",
           WebkitTextStroke: "2px white",
           transform: `translateY(${scrollY * 0.15}px)`,
-          transition: "transform 0.1s ease-out"
+          transition: "transform 0.1s ease-out",
         }}
       >
         &lt;About /&gt;
       </div>
 
-      <div className="hero-content gap-20 px-14 md:px-20 flex_col flex-col-reverse lg:flex-row">
+      <div className="hero-content gap-20 px-4 sm:px-8 md:px-14 lg:px-20 flex_col flex-col-reverse lg:flex-row">
         <div className="max-w-md flex_col">
           <Tilt
             tiltMaxAngleX={5}
@@ -139,8 +139,8 @@ const About = () => {
             <div className="w-72 md:w-96 mask mask-squircle">
               <Image
                 ref={profilePicRef}
-                src="/assets/het-patel-software-engineer.jpg"
-                alt="Het Patel - Software Engineer"
+                src="/assets/Profile1.jpg"
+                alt="Het Patel - AI Software Engineer"
                 width={250}
                 height={250}
                 priority

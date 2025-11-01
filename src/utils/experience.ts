@@ -46,7 +46,7 @@ export const experienceData: Experience[] = [
     id: "exp-1",
     dates: "Jan 2025 - Present",
     company: "DMSB AI Strategic Hub (DASH), Boston, MA",
-    role: "Human AI Interaction Engineer",
+    role: "AI Software Engineer | Lead GenAI Research Assistant",
     location: "Boston, MA",
     summary:
       "Built production GenAI solutions for education—designing LangGraph agent systems, optimizing GPU infrastructure, and deploying fault-tolerant applications serving 100+ concurrent users.",
@@ -57,6 +57,7 @@ export const experienceData: Experience[] = [
       "RAG",
       "LlamaIndex",
       "LangGraph",
+      "vLLM",
       "Ollama",
       "Docker",
       "Next.js",
