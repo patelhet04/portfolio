@@ -9,6 +9,7 @@ import ThemeController from "./components/ThemeController";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import Head from "next/head";
 import Script from "next/script";
+import SmoothScroll from "./components/SmoothScroll";
 
 export default function RootLayout({
   children,
@@ -27,6 +28,9 @@ export default function RootLayout({
               name="viewport"
               content="width=device-width, initial-scale=1"
             />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
             <link rel="canonical" href="https://hetpatel.dev" />
             <meta
               name="description"
@@ -67,6 +71,7 @@ export default function RootLayout({
             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.js"
           />
           <body>
+            <SmoothScroll />
             <Loader />
             <Sidebar />
 

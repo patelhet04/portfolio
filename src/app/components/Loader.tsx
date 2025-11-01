@@ -49,13 +49,13 @@ const Loader: React.FC = () => {
         isLoaded ? "hidden" : "scale-x-100"
       }`}
     >
-      <div className="flex font-oswald flex-col justify-center items-center w-full h-full gap-6">
-        <h1 className="text-primary-blue text-4xl" ref={loadingTextRef}>
+      <div className="flex font-sora flex-col justify-center items-center w-full h-full gap-6">
+        <h1 className="text-primary text-4xl" ref={loadingTextRef}>
           Loading
         </h1>
-        {/* <p className="text-primary-blue text-center mx-10">{currentQuote}</p> */}
-        <div className="text-primary-blue">
-          <progress className="progress  bg-primary-blue w-56"></progress>
+        {/* <p className="text-primary text-center mx-10">{currentQuote}</p> */}
+        <div className="text-primary">
+          <progress className="progress  bg-primary w-56"></progress>
         </div>
       </div>
     </div>

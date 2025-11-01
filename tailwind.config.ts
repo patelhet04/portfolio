@@ -12,14 +12,8 @@ const config: Config = {
         right: "2px 20px 10px -5px rgba(255, 255,255, 1)", // Adjust values as needed
       },
       fontFamily: {
-        fira: ["Fira Mono", "sans-serif"],
-        oswald: ["Oswald", "sans-serif"],
-        caveat: ["Caveat", "cursive"],
-        nothingDisplay: ["Nothing You Could Do", "cursive"],
-        firaCode: ["Fira Code", "monospace"],
-      },
-      colors: {
-        "primary-blue": "#49C5B6",
+        sans: ["Sora", "sans-serif"],
+        sora: ["Sora", "sans-serif"],
       },
       keyframes: {
         flipHorizontal: {
@@ -38,14 +32,18 @@ const config: Config = {
   daisyui: {
     themes: [
       {
-        mytheme: {
-          /* "mytheme" is a placeholder, you can name it as you like */
-          primary: "#49c5b6", // Use your desired color for the primary theme color
-          // ... define other colors as needed
+        sunset: {
+          ...require("daisyui/src/theming/themes")["sunset"],
+          "font-family": "'Sora', sans-serif",
+          "base-100": "oklch(18% 0.019 237.69)",
+          "base-200": "oklch(20% 0.019 237.69)",
+          "base-300": "oklch(18% 0.019 237.69)",
+        },
+        lemonade: {
+          ...require("daisyui/src/theming/themes")["lemonade"],
+          "font-family": "'Sora', sans-serif",
         },
       },
-      "sunset",
-      "retro",
     ],
   },
 };

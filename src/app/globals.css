@@ -1,13 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Caveat&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
 @import url("https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    font-family: 'Sora', sans-serif;
+  }
+  
+  html,
+  body {
+    font-family: 'Sora', sans-serif;
+  }
+}
 
 * {
   scroll-behavior: smooth;
@@ -50,23 +57,35 @@ body {
     @apply flex flex-row justify-evenly items-center;
   }
   .social_icon {
-    @apply px-3 text-2xl text-primary-blue animate-flipHorizontal;
+    @apply px-3 text-2xl text-primary animate-flipHorizontal;
   }
   nav {
-    @apply font-fira;
+    @apply font-sora;
   }
   .transparent_text_home {
-    @apply font-fira absolute top-[20%] opacity-10 text-white font-bold z-0 text-[16vw] lg:top-1/4;
+    @apply font-sora absolute top-[20%] opacity-10 text-white font-bold z-0 text-[16vw] lg:top-1/4;
   }
 
   .transparent_text_about {
-    @apply font-fira absolute top-0 opacity-10 text-white font-bold z-0 text-[15vw];
+    @apply font-sora absolute top-0 opacity-10 text-white font-bold z-0 text-[15vw];
   }
   .transparent_text_work {
-    @apply font-fira absolute opacity-10 text-white font-bold z-0 text-[13vw] top-1/4;
+    @apply font-sora absolute opacity-10 text-white font-bold z-0 text-[13vw] top-1/4;
   }
   .main {
     @apply overflow-x-hidden;
+  }
+
+  /* Parallax Effect Styles */
+  #home {
+    will-change: filter, opacity, transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Squircle Styles for Cards and Components */
+  .badge {
+    @apply rounded-2xl;
   }
 }
 .social_icon_list a:nth-child(1) .social_icon {
@@ -86,63 +105,94 @@ body {
 }
 
 [data-theme="sunset"] .menu li a.active {
-  color: #49c5b6 !important;
+  color: var(--fallback-p, oklch(var(--p))) !important;
 }
 
 [data-theme="sunset"] .btn {
   color: white !important;
 }
 
+.primary-btn {
+  border-radius: 1rem;
+}
+
 .primary-btn:hover {
-  color: #49c5b6 !important;
+  color: var(--fallback-p, oklch(var(--p))) !important;
   background: none;
-  border: 1px solid #49c5b6;
+  border: 1px solid var(--fallback-p, oklch(var(--p)));
 }
 
 [data-theme="sunset"] .timeline-vertical > li,
-[data-theme="retro"] .timeline-vertical > li {
+[data-theme="lemonade"] .timeline-vertical > li {
   --timeline-col-start: minmax(0, 0fr);
 }
 
 [data-theme="sunset"] .timeline > li,
-[data-theme="retro"] .timeline > li {
+[data-theme="lemonade"] .timeline > li {
   --timeline-row-start: minmax(0, 0fr);
 }
 
 [data-theme="sunset"] .indicator {
-  background-color: #49c5b6;
+  background-color: var(--fallback-p, oklch(var(--p)));
 }
 
-[data-theme="retro"] p,
-[data-theme="retro"] header,
-[data-theme="retro"] ul,
-[data-theme="retro"] li,
-[data-theme="retro"] .card h2,
-[data-theme="retro"] .skill-icon,
-[data-theme="retro"] form,
-[data-theme="retro"] .tab,
-[data-theme="retro"] .skill-name,
-[data-theme="retro"] time,
-[data-theme="retro"] .sidebar-name,
-[data-theme="retro"] .badge {
-  color: #2e282a;
+[data-theme="lemonade"] p,
+[data-theme="lemonade"] header,
+[data-theme="lemonade"] ul,
+[data-theme="lemonade"] li,
+[data-theme="lemonade"] .card h2,
+[data-theme="lemonade"] .skill-icon,
+[data-theme="lemonade"] form,
+[data-theme="lemonade"] .tab,
+[data-theme="lemonade"] .skill-name,
+[data-theme="lemonade"] time,
+[data-theme="lemonade"] .sidebar-name,
+[data-theme="lemonade"] .badge {
+  color: #291d05;
 }
 
-[data-theme="retro"] .indicator p {
-  color: #ece4ca;
+[data-theme="lemonade"] .indicator p {
+  color: #291d05;
 }
 
-[data-theme="retro"] .transparent_text_about,
-[data-theme="retro"] .transparent_text_work,
-[data-theme="retro"] .transparent_text_home {
+[data-theme="lemonade"] .transparent_text_about,
+[data-theme="lemonade"] .transparent_text_work,
+[data-theme="lemonade"] .transparent_text_home {
   color: transparent !important;
-  -webkit-text-stroke: 2px #2e282a !important;
+  -webkit-text-stroke: 2px #291d05 !important;
 }
 
-[data-theme="retro"] span .ti-cursor {
-  color: #2e282a;
+[data-theme="lemonade"] span .ti-cursor {
+  color: #291d05;
 }
 
-[data-theme="retro"] progress .progress {
-  color: #49c5b6 !important;
+[data-theme="lemonade"] progress .progress {
+  color: var(--fallback-p, oklch(var(--p))) !important;
+}
+
+/* Light mode specific fixes */
+[data-theme="lemonade"] .sidebar-name {
+  color: #291d05 !important;
+}
+
+[data-theme="lemonade"] aside .text-white {
+  color: #291d05 !important;
+}
+
+[data-theme="lemonade"] .menu li a {
+  color: #291d05 !important;
+}
+
+[data-theme="lemonade"] .menu li a.active {
+  color: var(--fallback-p, oklch(var(--p))) !important;
+}
+
+[data-theme="lemonade"] .btn.btn-neutral {
+  background-color: var(--fallback-p, oklch(var(--p)));
+  color: white;
+}
+
+[data-theme="lemonade"] .btn.btn-neutral:hover {
+  background-color: var(--fallback-p, oklch(var(--p)));
+  opacity: 0.9;
 }

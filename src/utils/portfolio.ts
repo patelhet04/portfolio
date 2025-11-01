@@ -1,6 +1,15 @@
 export const portfolio = [
   {
     id: 1,
+    title: "vLLM vs Ollama Benchmarking",
+    projectImage: "/assets/vllm.png",
+    description:
+      "The article introduces vLLM vs Ollama benchmarking, featuring 7x speed improvement for large language models for production use cases",
+    tag: "article",
+    link: "https://www.linkedin.com/posts/het1074_ai-machinelearning-gpucomputing-share-7385761843883200513-50D3?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJsiJ4Buk5-zE3Ed9YwwUa8n21r2r_-ymw",
+  },
+  {
+    id: 2,
     title: "Portfolio",
     projectImage: "/assets/portfolio.png",
     description:
@@ -9,7 +18,7 @@ export const portfolio = [
     link: "https://hetpatel.dev/",
   },
   {
-    id: 2,
+    id: 3,
     title: "Airplane Management System",
     projectImage: "/assets/javaSwing.png",
     description:
@@ -18,7 +27,7 @@ export const portfolio = [
     link: "https://github.com/patelhet04/Airplane-Management-System/",
   },
   {
-    id: 3,
+    id: 4,
     title: "React Flash Cards",
     projectImage: "/assets/flashcard.png",
     description:
@@ -27,7 +36,7 @@ export const portfolio = [
     link: "https://react-flashcards-demo-project.netlify.app/",
   },
   {
-    id: 4,
+    id: 5,
     title: "Node Passport Login",
     projectImage: "/assets/node_passport.png",
     description:
@@ -36,7 +45,7 @@ export const portfolio = [
     link: "https://github.com/patelhet04/Node-Passport-Login",
   },
   {
-    id: 5,
+    id: 6,
     title: "Amazon Social",
     projectImage: "/assets/AmazonSocial.png",
     description:
@@ -45,7 +54,7 @@ export const portfolio = [
     link: "https://www.figma.com/file/727hMXAUMNn3bJ7AWEso1J/HetAshwinbhaiPatel_Fall_23?type=design&node-id=612%3A2&mode=design&t=Km8QQdHWI3uhHXCN-1",
   },
   {
-    id: 6,
+    id: 7,
     title: "Prodly - Never loose focus",
     projectImage: "/assets/Prodly.png",
     description:
@@ -54,7 +63,7 @@ export const portfolio = [
     link: "https://www.figma.com/design/727hMXAUMNn3bJ7AWEso1J/HetAshwinbhaiPatel_Fall_23?node-id=335-936&t=jt1FJC5jmvMvGtgZ-0",
   },
   {
-    id: 7,
+    id: 8,
     title: "Node Framework Guide for Beginners",
     projectImage: "/assets/node_frameworks.jpeg",
     description:
@@ -63,7 +72,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/posts/het1074_javascript-typescript-nodejs-activity-7153517505376915456-w_vs?utm_source=share&utm_medium=member_desktop",
   },
   {
-    id: 8,
+    id: 9,
     title: "Exploring daisyUI with Next.js 14 and TailwindCSS",
     projectImage: "/assets/nextjs_daisyui.jpeg",
     description:
@@ -72,7 +81,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/posts/het1074_reactjs-react-nextjs-activity-7151295582022578176-iEFy?utm_source=share&utm_medium=member_desktop",
   },
   {
-    id: 9,
+    id: 10,
     title: "JavaScript vs TypeScript for Beginners",
     projectImage: "/assets/JS_vs_TS.png",
     description:
@@ -81,7 +90,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/pulse/understanding-differences-javascript-vs-typescript-beginners-patel-pqahe%3FtrackingId=9JwFIQkNRKC%252Fi5%252Fb1cy5UQ%253D%253D/?trackingId=9JwFIQkNRKC%2Fi5%2Fb1cy5UQ%3D%3D",
   },
   {
-    id: 10,
+    id: 11,
     title: "Full Stack Developer Roadmap 2024",
     projectImage: "/assets/Fullstack_Article.png",
     description:
@@ -90,7 +99,7 @@ export const portfolio = [
     link: "https://www.linkedin.com/pulse/beginners-guide-full-stack-development-2024-het-patel-c51ce/?trackingId=SVdwv%2FdnQBaZ1e1a6cZa%2Bg%3D%3D",
   },
   {
-    id: 11,
+    id: 12,
     title: "LLM Tool Integration Ideation",
     description:
       "Automated data entry for unstructured PDFs using AI-driven GPT-4 solution.",
@@ -98,7 +107,7 @@ export const portfolio = [
     link: "/assets/Ideation - Automated Data Entry.pdf",
   },
   {
-    id: 12,
+    id: 13,
     title: "ATS-Buddy Project Ideation",
     description:
       "OpenAI GPT-4 LLM tool generates ATS-optimized resume points effectively",
@@ -106,7 +115,7 @@ export const portfolio = [
     link: "/assets/ATS-Buddy Project Ideation.pdf",
   },
   {
-    id: 13,
+    id: 14,
     title: "Scalable Backends with Encore.ts",
     projectImage: "/assets/EncoreArticle.png",
     description:

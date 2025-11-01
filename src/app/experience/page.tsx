@@ -13,6 +13,7 @@ const Experience = () => {
   const workExperienceRef = useRef<HTMLDivElement>(null);
   const educationRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = React.useState(0);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -87,19 +88,36 @@ const Experience = () => {
     return () => ctx.revert();
   }, []);
 
+  React.useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const badgeColors: { [skill: string]: string } = {
     Typescript: "bg-[#3178c6] text-white",
     Nodejs: "bg-green-600 text-white",
     React: "bg-[#61DBFB] text-black",
-    Nextjs: `${theme === "retro" ? "bg-white text-black" : "bg-black text-white"}`,
-    "Next.js": `${theme === "retro" ? "bg-white text-black" : "bg-black text-white"}`,
+    Nextjs: `${theme === "lemonade" ? "bg-white text-black" : "bg-black text-white"}`,
+    "Next.js": `${theme === "lemonade" ? "bg-white text-black" : "bg-black text-white"}`,
     MongoDB: "bg-green-400 text-black",
     MySQL: "bg-[#f29111] text-white",
     Docker: "bg-[#1D63ED] text-white",
     GraphQL: "bg-[#E10098] text-white",
     Javascript: "bg-[#f7df1e] text-black",
     Express:
-      theme === "retro" ? "bg-white text-gray-700" : "bg-gray-700 text-white",
+      theme === "lemonade"
+        ? "bg-white text-gray-700"
+        : "bg-gray-700 text-white",
     GenAI: "bg-[#10B981] text-white",
     RAG: "bg-[#6366F1] text-white",
     "Amazon Web Services": "bg-[#FF9900] text-black",
@@ -131,7 +149,12 @@ const Experience = () => {
       {/* Background Text */}
       <div
         className="transparent_text_work text-[15vw] hidden sm:hidden md:block"
-        style={{ color: "transparent", WebkitTextStroke: "2px white" }}
+        style={{
+          color: "transparent",
+          WebkitTextStroke: "2px white",
+          transform: `translateY(${scrollY * 0.1}px)`,
+          transition: "transform 0.1s ease-out",
+        }}
       >
         &lt;Career /&gt;
       </div>
@@ -140,57 +163,104 @@ const Experience = () => {
         <div className="w-full flex flex-col gap-8 text-white">
           {/* Header */}
           <div ref={headerRef} className="w-full">
-            <h1 className="font-mono text-white font-bold text-[24px] md:text-[32px] text-left">
+            <h1 className="font-sora text-white font-bold text-[24px] md:text-[32px] text-left">
               Career Journey
             </h1>
-            <div className="flex justify-start">
-              <Image
-                src="/assets/undeline.svg"
-                alt="underline"
-                width={200}
-                height={20}
-              />
-            </div>
+            <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
           </div>
 
-          {/* Single Column Layout - Education First, then Work Experience */}
+          {/* Work Experience First, then Education */}
           <div className="space-y-12">
+            {/* Work Experience Section */}
+            <div ref={workExperienceRef} className="space-y-8">
+              <div className="text-left">
+                <h2 className="text-[20px] md:text-[24px] font-bold text-primary mb-2 font-sora">
+                  Work Experience
+                </h2>
+                <div className="w-24 h-1 bg-primary rounded-full"></div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {experienceData.map((exp, index) => (
+                  <div key={exp.id} className="experience-card group">
+                    <div className="bg-base-200 border border-base-content border-opacity-20 rounded-3xl p-6 text-[16px] font-sora h-full flex flex-col shadow-lg">
+                      {/* Company and Role Header */}
+                      <div className="flex flex-col mb-6">
+                        <div>
+                          <h3 className="text-md md:text-lg font-bold text-primary font-sora mb-1">
+                            {exp.company}
+                          </h3>
+                          <p className="italic font-extralight font-sora text-[15px]">
+                            {exp.role}
+                          </p>
+                        </div>
+                        <time className="italic text-white font-sora text-sm mt-3">
+                          {exp.dates}
+                        </time>
+                      </div>
+
+                      {/* Summary */}
+                      <div className="mb-6 flex-grow">
+                        <p className="text-white font-sora font-extralight text-sm leading-loose">
+                          {exp.summary}
+                        </p>
+                      </div>
+
+                      {/* Skills */}
+                      <div className="mt-4 pt-4 border-t border-base-content border-opacity-10 flex flex-row flex-wrap gap-2">
+                        {exp.skills.map((skill, skillIndex) => (
+                          <div
+                            key={skillIndex}
+                            className={`badge badge-sm ${getBadgeClasses(skill)} border border-white`}
+                          >
+                            {skill}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Education Section */}
             <div ref={educationRef} className="space-y-8">
               <div className="text-left">
-                <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
+                <h2 className="text-[20px] md:text-[24px] font-bold text-primary mb-2 font-sora">
                   Education
                 </h2>
-                <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
+                <div className="w-24 h-1 bg-primary rounded-full"></div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {educationData.map((edu, index) => (
                   <div key={edu.id} className="education-card group">
-                    <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] font-mono h-full">
+                    <div className="bg-base-200 border border-base-content border-opacity-20 rounded-3xl p-6 text-[16px] font-sora h-full shadow-lg">
                       {/* Institution and Dates Header */}
-                      <div className="flex flex-col mb-4">
+                      <div className="flex flex-col mb-6">
                         <div>
-                          <h3 className="text-md md:text-lg font-bold text-primary-blue font-mono">
+                          <h3 className="text-md md:text-lg font-bold text-primary font-sora mb-1">
                             {edu.institution}
                           </h3>
-                          <p className="italic font-extralight font-mono">
+                          <p className="italic font-extralight font-sora text-[15px]">
                             {edu.degree}
                           </p>
                         </div>
-                        <time className="italic text-white font-mono text-sm mt-2">
+                        <time className="italic text-white font-sora text-sm mt-3">
                           {edu.dates}
                         </time>
                       </div>
 
                       {/* CGPA */}
-                      <div className="mb-4">
-                        <p className="text-white font-mono">{edu.cgpa}</p>
+                      <div className="mb-5">
+                        <p className="text-white font-sora font-medium">
+                          {edu.cgpa}
+                        </p>
                       </div>
 
                       {/* Additional Education Details */}
                       {index === 0 && (
-                        <ul className="list-disc list-inside text-white leading-6 font-firaCode font-extralight text-sm">
+                        <ul className="list-disc list-inside text-white leading-7 font-sora font-extralight text-sm space-y-1">
                           <li>Graduate Research Assistant</li>
                           <li>Active in Tech Communities</li>
                         </ul>
@@ -199,102 +269,6 @@ const Experience = () => {
                   </div>
                 ))}
               </div>
-            </div>
-
-            {/* Work Experience Section */}
-            <div ref={workExperienceRef} className="space-y-8">
-              <div className="text-left">
-                <h2 className="text-[20px] md:text-[24px] font-bold text-[#49C5B6] mb-2 font-mono">
-                  Work Experience
-                </h2>
-                <div className="w-24 h-1 bg-[#49C5B6] rounded-full"></div>
-              </div>
-
-              {experienceData.map((exp, index) => (
-                <div key={exp.id} className="experience-card group">
-                  <div className="bg-base-300 bg-opacity-[0.5] rounded-lg p-4 text-[16px] mb-5 font-mono">
-                    {/* Company and Role Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-                      <div>
-                        <h3 className="text-md md:text-lg font-bold text-primary-blue font-mono">
-                          {exp.company}
-                        </h3>
-                        <p className="italic font-extralight font-mono">
-                          {exp.role}
-                        </p>
-                      </div>
-                      <time className="italic text-white font-mono text-sm">
-                        {exp.dates}
-                      </time>
-                    </div>
-
-                    {/* Projects Section (for experiences with projects) */}
-                    {exp.projects && (
-                      <div className="mb-6">
-                        <div className="space-y-6">
-                          {exp.projects.map(
-                            (project: Project, projectIndex: number) => (
-                              <div
-                                key={projectIndex}
-                                className="border-l-2 border-primary-blue pl-4 bg-base-200 bg-opacity-30 rounded-r-lg p-3"
-                              >
-                                <div className="mb-3">
-                                  <h4 className="text-lg font-bold text-primary-blue font-mono">
-                                    {project.name}
-                                  </h4>
-                                  <p className="text-white font-firaCode font-light text-sm mt-1 italic">
-                                    {project.description}
-                                  </p>
-                                </div>
-                                <ul className="pl-0 list-disc list-inside text-white leading-7">
-                                  {project.tasks.map(
-                                    (task: string, taskIndex: number) => (
-                                      <li
-                                        key={taskIndex}
-                                        className="text-left font-firaCode font-extralight mb-2 text-sm"
-                                      >
-                                        {task}
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Tasks Section (for experiences without projects) */}
-                    {exp.tasks && exp.tasks.length > 0 && (
-                      <div className="mb-6">
-                        <ul className="pl-0 list-disc list-inside text-white leading-8 max-h-[200px] overflow-y-auto">
-                          {exp.tasks.map((task: string, taskIndex: number) => (
-                            <li
-                              key={taskIndex}
-                              className="text-left font-firaCode font-extralight mb-2 text-sm"
-                            >
-                              {task}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Skills */}
-                    <div className="mt-4 flex flex-row flex-wrap gap-6">
-                      {exp.skills.map((skill, skillIndex) => (
-                        <div
-                          key={skillIndex}
-                          className={`badge badge-info ${getBadgeClasses(skill)} border border-white`}
-                        >
-                          {skill}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>

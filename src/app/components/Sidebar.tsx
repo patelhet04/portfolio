@@ -1,6 +1,7 @@
 // components/Sidebar.tsx
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -11,15 +12,13 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { navLinks } from "@/utils/navlinks";
 
-const Sidebar = () => {
+const Sidebar = memo(() => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activePath, setActivePath] = useState(
-    typeof window !== "undefined" ? window.location.hash : ""
-  );
+  const [activePath, setActivePath] = useState("#home");
 
   useEffect(() => {
     const handleScroll = () => {
-      let newActivePath = "";
+      let newActivePath = "#home"; // Default to home
       let sectionFound = false;
 
       navLinks.forEach((link) => {
@@ -37,12 +36,20 @@ const Sidebar = () => {
         }
       });
 
-      if (sectionFound && newActivePath !== activePath) {
+      // If no section found and we're at the top, set to home
+      if (!sectionFound && window.scrollY < 100) {
+        newActivePath = "#home";
+      }
+
+      if (newActivePath !== activePath) {
         setActivePath(newActivePath);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Set initial state
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -70,7 +77,7 @@ const Sidebar = () => {
       {/* Mobile toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-5 left-5 z-[100] w-12 h-12 bg-base-300 bg-opacity-80 backdrop-blur-sm rounded-lg border border-base-content border-opacity-20 flex items-center justify-center hover:bg-opacity-100 transition-all duration-300 hover:scale-105"
+        className="lg:hidden fixed top-5 left-5 z-[100] w-12 h-12 bg-base-300 bg-opacity-80 backdrop-blur-sm rounded-2xl border border-base-content border-opacity-20 flex items-center justify-center hover:bg-opacity-100 transition-all duration-300 hover:scale-105"
       >
         <FontAwesomeIcon
           icon={isOpen ? faTimes : faBars}
@@ -101,14 +108,21 @@ const Sidebar = () => {
         {/* Profile Section */}
         <div className="flex flex-col justify-center items-center mb-8">
           <div className="avatar pb-6 w-28 transition-transform duration-300 hover:scale-105">
-            <div className="rounded-full ring ring-primary-blue ring-opacity-20 ring-offset-base-100 ring-offset-2">
-              <img src="/assets/Memoji.png" alt="Profile Picture" />
+            <div className="rounded-full ring ring-primary ring-opacity-20 ring-offset-base-100 ring-offset-2">
+              <Image
+                src="/assets/Memoji.png"
+                alt="Profile Picture"
+                width={112}
+                height={112}
+                priority
+                quality={90}
+              />
             </div>
           </div>
           <a
             href="https://hetpatel.dev/"
             target="_blank"
-            className="sidebar-name text-white transform font-oswald tracking-wide text-xl shadow-text-shadow border-b-2 border-primary-blue hover:border-opacity-80 transition-all duration-300 px-4 py-2 rounded-lg hover:bg-primary-blue hover:bg-opacity-10"
+            className="sidebar-name text-white transform font-sora tracking-wide text-xl shadow-text-shadow border-b-2 border-primary hover:border-opacity-80 transition-all duration-300 px-4 py-2 rounded-2xl hover:bg-primary hover:bg-opacity-10"
           >
             hetpatel.dev
           </a>
@@ -125,25 +139,25 @@ const Sidebar = () => {
                 <a
                   href={link.path}
                   onClick={(e) => handleNavClick(link.path, e)}
-                  className={`flex items-center space-x-4 px-4 py-3 rounded-lg transition-all duration-300 group hover:bg-primary-blue hover:bg-opacity-20 hover:translate-x-1 ${
+                  className={`flex items-center space-x-4 px-4 py-3 rounded-2xl transition-all duration-300 group hover:bg-primary hover:bg-opacity-20 hover:translate-x-1 ${
                     link.path === activePath
-                      ? "active font-bold bg-primary-blue bg-opacity-30 border-l-4 border-primary-blue text-primary-blue shadow-lg"
-                      : "hover:text-primary-blue"
+                      ? "active font-bold bg-primary bg-opacity-30 border-l-4 border-primary text-primary shadow-lg"
+                      : "hover:text-primary"
                   }`}
                 >
                   <FontAwesomeIcon
                     icon={link.icon}
                     className={`w-5 h-5 transition-all duration-300 group-hover:scale-110 ${
                       link.path === activePath
-                        ? "text-primary-blue"
-                        : "text-white group-hover:text-primary-blue"
+                        ? "text-primary"
+                        : "text-white group-hover:text-primary"
                     }`}
                   />
-                  <span className="font-fira text-sm font-medium">
+                  <span className="font-sora text-sm font-medium">
                     {link.title}
                   </span>
                   {link.path === activePath && (
-                    <div className="ml-auto w-2 h-2 bg-primary-blue rounded-full animate-pulse" />
+                    <div className="ml-auto w-2 h-2 bg-primary rounded-full animate-pulse" />
                   )}
                 </a>
               </li>
@@ -154,7 +168,7 @@ const Sidebar = () => {
         {/* Social Media Section */}
         <div className="mt-8 px-4">
           <div className="border-t border-base-content border-opacity-20 pt-6">
-            <h4 className="text-white font-fira text-xs uppercase tracking-wider mb-4 opacity-60 text-center">
+            <h4 className="text-white font-sora text-xs uppercase tracking-wider mb-4 opacity-60 text-center">
               Connect With Me
             </h4>
             <div className="flex justify-center space-x-2 social_icon_list">
@@ -162,10 +176,10 @@ const Sidebar = () => {
                 href="https://www.linkedin.com/in/het1074/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-lg flex items-center justify-center hover:bg-primary-blue hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
+                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-2xl flex items-center justify-center hover:bg-primary hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
               >
                 <FontAwesomeIcon
-                  className="social_icon text-primary-blue text-lg group-hover:scale-110 transition-transform duration-300"
+                  className="social_icon text-primary text-lg group-hover:scale-110 transition-transform duration-300"
                   icon={faLinkedin}
                 />
               </a>
@@ -173,19 +187,19 @@ const Sidebar = () => {
                 href="https://github.com/patelhet04"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-lg flex items-center justify-center hover:bg-primary-blue hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
+                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-2xl flex items-center justify-center hover:bg-primary hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
               >
                 <FontAwesomeIcon
-                  className="social_icon text-primary-blue text-lg group-hover:scale-110 transition-transform duration-300"
+                  className="social_icon text-primary text-lg group-hover:scale-110 transition-transform duration-300"
                   icon={faGithub}
                 />
               </a>
               <a
                 href="mailto:hetpatel0499@gmail.com"
-                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-lg flex items-center justify-center hover:bg-primary-blue hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
+                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-2xl flex items-center justify-center hover:bg-primary hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
               >
                 <FontAwesomeIcon
-                  className="social_icon text-primary-blue text-lg group-hover:scale-110 transition-transform duration-300"
+                  className="social_icon text-primary text-lg group-hover:scale-110 transition-transform duration-300"
                   icon={faEnvelope}
                 />
               </a>
@@ -193,10 +207,10 @@ const Sidebar = () => {
                 href="https://www.instagram.com/_hetpatel_4199"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-lg flex items-center justify-center hover:bg-primary-blue hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
+                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-2xl flex items-center justify-center hover:bg-primary hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
               >
                 <FontAwesomeIcon
-                  className="social_icon text-primary-blue text-lg group-hover:scale-110 transition-transform duration-300"
+                  className="social_icon text-primary text-lg group-hover:scale-110 transition-transform duration-300"
                   icon={faInstagram}
                 />
               </a>
@@ -204,10 +218,10 @@ const Sidebar = () => {
                 href="https://www.facebook.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-lg flex items-center justify-center hover:bg-primary-blue hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
+                className="w-10 h-10 bg-base-300 bg-opacity-60 rounded-2xl flex items-center justify-center hover:bg-primary hover:bg-opacity-20 transition-all duration-300 hover:scale-110 hover:-translate-y-1 group"
               >
                 <FontAwesomeIcon
-                  className="social_icon text-primary-blue text-lg group-hover:scale-110 transition-transform duration-300"
+                  className="social_icon text-primary text-lg group-hover:scale-110 transition-transform duration-300"
                   icon={faFacebook}
                 />
               </a>
@@ -217,6 +231,8 @@ const Sidebar = () => {
       </aside>
     </>
   );
-};
+});
+
+Sidebar.displayName = "Sidebar";
 
 export default Sidebar;

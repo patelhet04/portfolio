@@ -175,83 +175,76 @@ const Contact: React.FC = () => {
         &lt;Contact /&gt;
       </div>
 
-      <div className="hero-content gap-7 px-14 md:px-20 flex-col">
+      <div className="hero-content gap-8 px-14 md:px-20 flex-col w-full max-w-7xl">
         <div className="w-full text-white">
           {/* Header */}
-          <div ref={headerRef} className="w-full">
-            <h1 className="font-mono text-white font-bold text-[24px] md:text-[32px] text-left">
+          <div ref={headerRef} className="w-full mb-12">
+            <h1 className="font-sora text-white font-bold text-[24px] md:text-[32px] text-left">
               Get In Touch
             </h1>
-            <div className="flex justify-start">
-              <Image
-                src="/assets/undeline.svg"
-                alt="underline"
-                width={200}
-                height={20}
-              />
-            </div>
-            <p className="font-firaCode text-base-content text-opacity-80 mt-4 text-[14px] max-w-full">
+            <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
+            <p className="font-sora text-base-content text-opacity-80 mt-6 text-[14px] md:text-[16px] max-w-3xl">
               I'm always open to discussing new opportunities, interesting
               projects, or just having a friendly conversation about technology.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Left Column - Contact Info & Map */}
-            <div className="flex flex-col space-y-7">
+            <div className="flex flex-col space-y-8">
               {/* Contact Information Card - Single Container */}
-              <div className="bg-base-300 bg-opacity-[0.8] backdrop-blur-sm rounded-lg p-6 border border-base-content border-opacity-10 shadow-xl flex-1">
-                <h2 className="text-[20px] md:text-[22px] font-bold text-[#49C5B6] mb-5 font-mono">
+              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-8 border border-base-content border-opacity-20 shadow-xl flex-1">
+                <h2 className="text-[20px] md:text-[22px] font-bold text-primary mb-6 font-sora">
                   Contact Information
                 </h2>
 
-                <div ref={contactInfoRef} className="space-y-5">
+                <div ref={contactInfoRef} className="space-y-6">
                   <div className="contact-item flex items-center space-x-4 group">
-                    <div className="w-11 h-11 bg-[#49C5B6] bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
+                    <div className="w-11 h-11 bg-primary bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
                       <FontAwesomeIcon
                         icon={faMapLocation}
-                        className="text-[#49C5B6] text-base"
+                        className="text-primary text-base"
                       />
                     </div>
                     <div>
-                      <h3 className="font-mono font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
                         Location
                       </h3>
-                      <p className="font-firaCode text-[13px] text-base-content text-opacity-80">
+                      <p className="font-sora text-[13px] text-base-content text-opacity-80">
                         11 CAMELOT CT, Boston, MA 02135
                       </p>
                     </div>
                   </div>
 
                   <div className="contact-item flex items-center space-x-4 group">
-                    <div className="w-11 h-11 bg-[#49C5B6] bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
+                    <div className="w-11 h-11 bg-primary bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
                       <FontAwesomeIcon
                         icon={faEnvelope}
-                        className="text-[#49C5B6] text-base"
+                        className="text-primary text-base"
                       />
                     </div>
                     <div>
-                      <h3 className="font-mono font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
                         Email
                       </h3>
-                      <p className="font-firaCode text-[13px] text-base-content text-opacity-80">
+                      <p className="font-sora text-[13px] text-base-content text-opacity-80">
                         hetpatel0499@gmail.com
                       </p>
                     </div>
                   </div>
 
                   <div className="contact-item flex items-center space-x-4 group">
-                    <div className="w-11 h-11 bg-[#49C5B6] bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
+                    <div className="w-11 h-11 bg-primary bg-opacity-20 rounded-full flex items-center justify-center group-hover:bg-opacity-30 transition-all duration-300">
                       <FontAwesomeIcon
                         icon={faPhone}
-                        className="text-[#49C5B6] text-base"
+                        className="text-primary text-base"
                       />
                     </div>
                     <div>
-                      <h3 className="font-mono font-semibold text-white mb-1 text-[15px]">
+                      <h3 className="font-sora font-semibold text-white mb-1 text-[15px]">
                         Phone
                       </h3>
-                      <p className="font-firaCode text-[13px] text-base-content text-opacity-80">
+                      <p className="font-sora text-[13px] text-base-content text-opacity-80">
                         +1 (857) 544-9003
                       </p>
                     </div>
@@ -260,12 +253,12 @@ const Contact: React.FC = () => {
               </div>
 
               {/* Map */}
-              <div ref={mapRef} className="h-[240px] lg:h-[260px]">
-                <div className="bg-base-300 bg-opacity-[0.8] backdrop-blur-sm rounded-lg p-4 border border-base-content border-opacity-10 h-full">
-                  <h3 className="font-mono font-semibold text-white mb-3 text-[15px]">
+              <div ref={mapRef} className="h-[280px] lg:h-[300px]">
+                <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-6 border border-base-content border-opacity-20 h-full">
+                  <h3 className="font-sora font-semibold text-white mb-4 text-[16px]">
                     Find Me Here
                   </h3>
-                  <div className="h-[calc(100%-2rem)] rounded-lg overflow-hidden">
+                  <div className="h-[calc(100%-2.5rem)] rounded-3xl overflow-hidden">
                     <MapPage />
                   </div>
                 </div>
@@ -274,24 +267,24 @@ const Contact: React.FC = () => {
 
             {/* Right Column - Contact Form */}
             <div ref={formRef} className="flex">
-              <div className="bg-base-300 bg-opacity-[0.8] backdrop-blur-sm rounded-lg p-7 border border-base-content border-opacity-10 shadow-xl flex-1 flex flex-col">
-                <h2 className="font-mono font-bold text-[20px] md:text-[22px] text-white mb-2">
+              <div className="bg-base-200 backdrop-blur-sm rounded-3xl p-8 border border-base-content border-opacity-20 shadow-xl flex-1 flex flex-col">
+                <h2 className="font-sora font-bold text-[20px] md:text-[22px] text-white mb-6">
                   Send Me a Message
                 </h2>
                 <form
                   ref={form}
                   onSubmit={handleSubmit(onSubmit)}
-                  className="space-y-5 flex-1 flex flex-col"
+                  className="space-y-6 flex-1 flex flex-col"
                 >
                   <input type="hidden" name="to_name" value="Het Patel" />
 
                   {/* Name Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-mono text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-white flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faUser}
-                          className="mr-2 text-[#49C5B6]"
+                          className="mr-2 text-primary"
                         />
                         Name
                       </span>
@@ -299,16 +292,14 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       placeholder="Your full name"
-                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 ${
-                        errors.name
-                          ? "border-red-500"
-                          : "focus:border-[#49C5B6]"
+                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 rounded-2xl ${
+                        errors.name ? "border-red-500" : "focus:border-primary"
                       }`}
                       {...register("name", { required: "Name is required" })}
                       name="from_name"
                     />
                     {errors.name && (
-                      <span className="text-red-400 text-[12px] font-firaCode mt-1">
+                      <span className="text-red-400 text-[12px] font-sora mt-1">
                         {errors.name.message}
                       </span>
                     )}
@@ -317,10 +308,10 @@ const Contact: React.FC = () => {
                   {/* Email Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-mono text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-white flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faAt}
-                          className="mr-2 text-[#49C5B6]"
+                          className="mr-2 text-primary"
                         />
                         Email
                       </span>
@@ -328,10 +319,8 @@ const Contact: React.FC = () => {
                     <input
                       type="email"
                       placeholder="your.email@example.com"
-                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 ${
-                        errors.email
-                          ? "border-red-500"
-                          : "focus:border-[#49C5B6]"
+                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 rounded-2xl ${
+                        errors.email ? "border-red-500" : "focus:border-primary"
                       }`}
                       {...register("email", {
                         required: "Email is required",
@@ -343,7 +332,7 @@ const Contact: React.FC = () => {
                       name="from_email"
                     />
                     {errors.email && (
-                      <span className="text-red-400 text-[12px] font-firaCode mt-1">
+                      <span className="text-red-400 text-[12px] font-sora mt-1">
                         {errors.email.message}
                       </span>
                     )}
@@ -352,10 +341,10 @@ const Contact: React.FC = () => {
                   {/* Subject Field */}
                   <div className="form-group">
                     <label className="label py-1">
-                      <span className="label-text font-mono text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-white flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faTag}
-                          className="mr-2 text-[#49C5B6]"
+                          className="mr-2 text-primary"
                         />
                         Subject
                       </span>
@@ -363,10 +352,10 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       placeholder="What's this about?"
-                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 ${
+                      className={`input input-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 rounded-2xl ${
                         errors.subject
                           ? "border-red-500"
-                          : "focus:border-[#49C5B6]"
+                          : "focus:border-primary"
                       }`}
                       {...register("subject", {
                         required: "Subject is required",
@@ -374,7 +363,7 @@ const Contact: React.FC = () => {
                       name="subject"
                     />
                     {errors.subject && (
-                      <span className="text-red-400 text-[12px] font-firaCode mt-1">
+                      <span className="text-red-400 text-[12px] font-sora mt-1">
                         {errors.subject.message}
                       </span>
                     )}
@@ -383,20 +372,20 @@ const Contact: React.FC = () => {
                   {/* Message Field */}
                   <div className="form-group flex-1 flex flex-col">
                     <label className="label py-1">
-                      <span className="label-text font-mono text-white flex items-center text-[15px]">
+                      <span className="label-text font-sora text-white flex items-center text-[15px]">
                         <FontAwesomeIcon
                           icon={faComment}
-                          className="mr-2 text-[#49C5B6]"
+                          className="mr-2 text-primary"
                         />
                         Message
                       </span>
                     </label>
                     <textarea
                       placeholder="Tell me about your project, idea, or just say hello..."
-                      className={`textarea textarea-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 resize-none flex-1 ${
+                      className={`textarea textarea-bordered w-full bg-base-100 bg-opacity-50 focus:bg-opacity-70 transition-all duration-300 resize-none flex-1 rounded-2xl ${
                         errors.message
                           ? "border-red-500"
-                          : "focus:border-[#49C5B6]"
+                          : "focus:border-primary"
                       }`}
                       {...register("message", {
                         required: "Message is required",
@@ -404,7 +393,7 @@ const Contact: React.FC = () => {
                       name="message"
                     />
                     {errors.message && (
-                      <span className="text-red-400 text-[12px] font-firaCode mt-1">
+                      <span className="text-red-400 text-[12px] font-sora mt-1">
                         {errors.message.message}
                       </span>
                     )}
@@ -414,7 +403,7 @@ const Contact: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`btn primary-btn btn-outline font-mono w-full flex items-center justify-center space-x-2 hover:scale-105 transition-transform duration-200 ${
+                    className={`btn primary-btn btn-outline font-sora w-full flex items-center justify-center space-x-2 hover:scale-105 transition-transform duration-200 rounded-2xl ${
                       isSubmitting ? "loading" : ""
                     }`}
                   >

@@ -1,9 +1,10 @@
 "use client";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AboutRefContext from "../context/AboutRefContext";
 import Image from "next/image";
+import Tilt from "react-parallax-tilt";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,7 @@ const About = () => {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -94,18 +96,46 @@ const About = () => {
     return () => ctx.revert();
   }, []);
 
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section ref={aboutRef} id="about" className="hero min-h-screen relative">
       <div
         className="transparent_text_about hidden sm:hidden md:block"
-        style={{ color: "transparent", WebkitTextStroke: "2px white" }}
+        style={{ 
+          color: "transparent", 
+          WebkitTextStroke: "2px white",
+          transform: `translateY(${scrollY * 0.15}px)`,
+          transition: "transform 0.1s ease-out"
+        }}
       >
         &lt;About /&gt;
       </div>
 
       <div className="hero-content gap-20 px-14 md:px-20 flex_col flex-col-reverse lg:flex-row">
         <div className="max-w-md flex_col">
-          <div className="avatar">
+          <Tilt
+            tiltMaxAngleX={5}
+            tiltMaxAngleY={5}
+            perspective={1000}
+            transitionSpeed={1500}
+            scale={1.02}
+            gyroscope={true}
+            className="avatar"
+          >
             <div className="w-72 md:w-96 mask mask-squircle">
               <Image
                 ref={profilePicRef}
@@ -116,8 +146,8 @@ const About = () => {
                 priority
               />
             </div>
-          </div>
-          <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-mono">
+          </Tilt>
+          <div className="stats stats-vertical lg:stats-horizontal shadow mt-20 font-sora">
             <div className="stat place-items-center">
               <div className="stat-title">Open Source</div>
               <div className="stat-value text-primary" ref={openSourceRef}>
@@ -140,18 +170,13 @@ const About = () => {
           </div>
         </div>
 
-        <div className="flex_center_col gap-10 font-mono">
+        <div className="flex_center_col gap-10 font-sora">
           <header
             ref={headerRef}
-            className="font-mono text-white font-bold text-[24px] md:text-[32px]"
+            className="font-sora text-white font-bold text-[24px] md:text-[32px]"
           >
             About Me
-            <Image
-              src="/assets/undeline.svg"
-              alt="underline"
-              width={200}
-              height={20}
-            />
+            <div className="w-48 h-1 bg-primary rounded-full mt-2"></div>
           </header>
           <p
             ref={paragraphRef}
@@ -164,7 +189,7 @@ const About = () => {
               href="https://www.northeastern.edu/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary-blue text-2xl md:text-3xl font-caveat tracking-normal md:tracking-wider"
+              className="text-primary text-2xl md:text-3xl font-sora tracking-normal md:tracking-wider font-semibold"
             >
               Northeastern University
             </a>
@@ -197,23 +222,19 @@ const About = () => {
             className="flex flex-row justify-baseline items-center gap-10"
           >
             <a href="#contact">
-              <button className="primary-btn btn btn-outline font-mono md:btn-md lg:btn-lg">
+              <button className="primary-btn btn btn-outline font-sora md:btn-md lg:btn-lg rounded-2xl">
                 Contact Me
               </button>
             </a>
-            <button
-              className="primary-btn btn btn-outline font-mono md:btn-md lg:btn-lg"
-              onClick={() => {
-                const link = document.createElement("a");
-                link.href = "/assets/HetPatel_Resume.pdf";
-                link.setAttribute("download", "Het_Patel_Resume.pdf");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }}
+            <a
+              href="https://docs.google.com/document/d/1o-yUJEaBgF6yATc7LSCH2HWCTxTil09D/edit?usp=sharing&ouid=112724013765530570552&rtpof=true&sd=true"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              Download Resume
-            </button>
+              <button className="primary-btn btn btn-outline font-sora md:btn-md lg:btn-lg rounded-2xl">
+                View Resume
+              </button>
+            </a>
           </div>
         </div>
       </div>

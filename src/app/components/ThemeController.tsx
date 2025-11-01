@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, memo } from "react";
 import { useTheme } from "../context/ThemeContext";
 
 interface ThemeControllerProps {
@@ -6,11 +6,11 @@ interface ThemeControllerProps {
   setTheme: (theme: string) => void; // Accept setTheme as a prop
 }
 
-const ThemeController = ({ theme, setTheme }: ThemeControllerProps) => {
+const ThemeController = memo(({ theme, setTheme }: ThemeControllerProps) => {
   // This function will be called when the checkbox is clicked
   const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Toggle theme based on the checkbox
-    setTheme(event.target.checked ? "retro" : "sunset");
+    setTheme(event.target.checked ? "lemonade" : "sunset");
   };
 
   // Determine if the checkbox should be checked based on the current theme
@@ -21,8 +21,8 @@ const ThemeController = ({ theme, setTheme }: ThemeControllerProps) => {
         {/* The checkbox now controls the state of the theme */}
         <input
           type="checkbox"
-          // Assume the theme is "synthwave" if checked
-          checked={theme === "retro"} // You need to pass the current theme as a prop to determine this
+          // Assume the theme is "lemonade" if checked (light mode)
+          checked={theme === "lemonade"} // You need to pass the current theme as a prop to determine this
           onChange={handleThemeChange}
           className="theme-controller"
         />
@@ -47,6 +47,8 @@ const ThemeController = ({ theme, setTheme }: ThemeControllerProps) => {
       </label>
     </div>
   );
-};
+});
+
+ThemeController.displayName = "ThemeController";
 
 export default ThemeController;

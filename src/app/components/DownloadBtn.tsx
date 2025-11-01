@@ -77,26 +77,26 @@ const DownloadButton: React.FC<{
   return (
     <div className="indicator">
       <a
-        href="/assets/Het_Patel_Resume.pdf"
-        download="Het_Patel_Resume.pdf"
-        // className=
+        href="https://docs.google.com/document/d/1o-yUJEaBgF6yATc7LSCH2HWCTxTil09D/edit?usp=sharing&ouid=112724013765530570552&rtpof=true&sd=true"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <button
           className={`z-30 fixed bottom-5 right-5 md:right-10 flex items-center justify-center  ${
-            theme === "retro"
+            theme === "lemonade"
               ? "btn btn-neutral"
-              : "btn btn-neutral bg-primary-blue hover:bg-primary-blue"
-          }  gap-3 rounded-[14px] font-mono transition ease-in-out duration-300 transform hover:scale-110 shadow-lg`}
+              : "btn btn-neutral bg-primary hover:bg-primary"
+          }  gap-3 rounded-2xl font-sora transition ease-in-out duration-300 transform hover:scale-110 shadow-lg`}
         >
           <span className="indicator-item indicator-start badge badge-success bg-white font-bold text-base-300">
-            Download Here
+            View Resume
           </span>
           <FontAwesomeIcon
             icon={faDownload}
-            className={`text-lg md:text-xl ${theme === "retro" ? "text-default" : "text-base-300"}`}
+            className="text-lg md:text-xl text-white"
           />
           <p
-            className={`md:text-lg font-bold ${theme === "retro" ? "text-default" : "text-base-300"}`}
+            className="md:text-lg font-bold text-white"
           >
             Resume
           </p>

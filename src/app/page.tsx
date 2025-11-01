@@ -11,11 +11,16 @@ const Main: React.FC = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Home />
-      <About />
-      <Experience />
-      <Skills />
-      <Projects />
-      <Contact />
+      {/* Add spacer for parallax effect */}
+      <div style={{ height: "100vh" }} />
+      {/* Content sections with higher z-index */}
+      <div style={{ position: "relative", zIndex: 10, background: "var(--fallback-b1, oklch(var(--b1)/1))" }}>
+        <About />
+        <Experience />
+        <Skills />
+        <Projects />
+        <Contact />
+      </div>
     </Suspense>
   );
 };
