@@ -128,8 +128,8 @@ const Experience = () => {
     Python: "bg-[#3776AB] text-white",
     Flask:
       theme === "lemonade"
-        ? "bg-gray-900 text-white border border-gray-700"
-        : "bg-gray-100 text-gray-900 border border-gray-300",
+        ? "bg-black text-white border-2 border-gray-800"
+        : "bg-white text-black border-2 border-gray-300",
     LlamaIndex: "bg-[#FF6B35] text-white",
     LangGraph: "bg-[#FF4785] text-white",
     vLLM: "bg-[#00D9FF] text-black",
@@ -215,7 +215,7 @@ const Experience = () => {
                         {exp.skills.map((skill, skillIndex) => (
                           <div
                             key={skillIndex}
-                            className={`badge badge-sm ${getBadgeClasses(skill)} border border-white`}
+                            className={`badge badge-sm ${getBadgeClasses(skill)} ${skill !== "Flask" ? "border border-white" : ""}`}
                           >
                             {skill}
                           </div>
