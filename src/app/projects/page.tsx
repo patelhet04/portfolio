@@ -8,7 +8,7 @@ import Tilt from "react-parallax-tilt";
 
 const Projects = () => {
   type ActiveTab = "project" | "post" | "article" | "documentation";
-  const [activeTab, setActiveTab] = useState<ActiveTab>("project");
+  const [activeTab, setActiveTab] = useState<ActiveTab>("article");
   const gridRef = useRef<HTMLDivElement>(null);
   const animationStateRef = useRef({ hasAnimated: false });
 
@@ -103,7 +103,7 @@ const Projects = () => {
             <div className="flex justify-start gap-0 md:gap-4 mb-8 font-sora text-base-content">
               <div role="tablist" className="tabs tabs-bordered">
                 {(
-                  ["project", "post", "article", "documentation"] as ActiveTab[]
+                  ["article", "project", "post", "documentation"] as ActiveTab[]
                 ).map((tab) => (
                   <a
                     key={tab}

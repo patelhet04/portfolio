@@ -5,6 +5,7 @@ import {
   faBriefcase,
   faProjectDiagram,
   faEnvelope,
+  faQuoteLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const navLinks = [
@@ -20,6 +21,11 @@ export const navLinks = [
     title: "Portfolio",
     path: "#portfolio",
     icon: faProjectDiagram,
+  },
+  {
+    title: "Testimonials",
+    path: "#recommendations",
+    icon: faQuoteLeft,
   },
   { title: "Contact Me", path: "#contact", icon: faEnvelope },
 ];
