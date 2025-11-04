@@ -12,6 +12,7 @@ const Recommendations = () => {
     [key: number]: number;
   }>({});
   const [activeCard, setActiveCard] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -63,6 +64,19 @@ const Recommendations = () => {
     };
   }, []);
 
+  // Auto-rotate cards every 3 seconds when not hovered
+  useEffect(() => {
+    if (isHovered) return;
+
+    const autoRotateInterval = setInterval(() => {
+      setActiveCard((prev) => (prev + 1) % recommendationsData.length);
+    }, 3000);
+
+    return () => {
+      clearInterval(autoRotateInterval);
+    };
+  }, [isHovered]);
+
   const nextCard = () => {
     setActiveCard((prev) => (prev + 1) % recommendationsData.length);
   };
@@ -98,7 +112,11 @@ const Recommendations = () => {
           </header>
 
           {/* Featured Testimonial - Large Card */}
-          <div className="recommendation-card relative">
+          <div 
+            className="recommendation-card relative"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2">
                 {recommendationsData.map((rec, index) => (
