@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-24T00:00:00Z",
+  "title": "Design System: Het Patel — The Inference Trace",
+  "extensions": {
+    "colorMeta": {
+      "signal": { "role": "secondary", "displayName": "Signal Highlighter", "canonical": "#c6f53a", "note": "Per season: Spring #f4afc3, Summer #ffc62e, Fall #f0a043, Winter #b7daf2" },
+      "accent": { "role": "tertiary", "displayName": "Span Accent", "canonical": "#10120d", "note": "Per season: Spring #457c2d, Summer #1a6fa8, Fall #a4493d, Winter #1e4b42" },
+      "primary": { "role": "primary", "displayName": "Ink Button", "canonical": "#10120d" },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#f3f4f0" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#10120d" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The streamed hero answer." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings." },
+      "label": { "displayName": "Machine label", "purpose": "Every piece of metadata a machine would print." }
+    },
+    "shadows": [
+      { "name": "ambient-panel", "value": "0 1px 1px rgba(var(--shadow-rgb),0.04), 0 8px 24px -12px rgba(var(--shadow-rgb),0.2)", "purpose": "Instrument panels: model card, trace, composer, quote card." },
+      { "name": "pop", "value": "0 1px 2px rgba(var(--shadow-rgb),0.06), 0 18px 40px -16px rgba(var(--shadow-rgb),0.35)", "purpose": "Floating layers only: season menu, mobile sheet, output preview." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Press-down and quick state changes." },
+      { "name": "ease-arrive", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entrances and span draw-in." },
+      { "name": "ease-drawer", "value": "cubic-bezier(0.32, 0.72, 0, 1)", "purpose": "Shared-element morphs and the mobile sheet." },
+      { "name": "spring", "value": "linear(...) 650ms", "purpose": "Press release, popovers, filter indicator." },
+      { "name": "spring-soft", "value": "linear(...) 680ms", "purpose": "Detail swaps, before/after bars." }
+    ],
+    "breakpoints": [
+      { "name": "trace-stack", "value": "1180px" },
+      { "name": "single-column", "value": "960px" },
+      { "name": "compact", "value": "640px" }
+    ]
+  },
+  "components": [
+    { "name": "Primary Button", "kind": "button", "refersTo": "button-primary", "description": "The one main action in a view.", "html": "<button class=\"ds-btn ds-btn--primary\">Read the trace</button>", "css": ".ds-btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--rule-2);background:transparent;color:var(--ink);font:500 15px var(--sans);cursor:pointer;transition:transform var(--spring-ms) var(--spring),background-color .2s,border-color .2s}.ds-btn:active{transform:scale(.96);transition-duration:120ms}.ds-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}.ds-btn--primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}.ds-btn--primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}" },
+    { "name": "Ghost Button", "kind": "button", "refersTo": "button-ghost", "description": "Secondary actions.", "html": "<button class=\"ds-ghost\">Start a conversation</button>", "css": ".ds-ghost{display:inline-flex;align-items:center;height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--rule-2);background:transparent;color:var(--ink);font:500 15px var(--sans);cursor:pointer;transition:transform var(--spring-ms) var(--spring),border-color .2s}.ds-ghost:hover{border-color:var(--ink)}.ds-ghost:active{transform:scale(.96)}.ds-ghost:focus-visible{outline:2px solid var(--ink);outline-offset:3px}" },
+    { "name": "Stack Chip", "kind": "chip", "refersTo": "chip", "description": "One technology used in a span.", "html": "<span class=\"ds-chip\">LangGraph</span>", "css": ".ds-chip{font:400 10.5px var(--mono);padding:4px 7px;border-radius:var(--r-xs);background:var(--paper-2);color:var(--ink-2)}" },
+    { "name": "Status Pill", "kind": "chip", "refersTo": "status-pill", "description": "Live status in the model card.", "html": "<span class=\"ds-pill\"><i></i>serving · Boston</span>", "css": ".ds-pill{display:inline-flex;align-items:center;gap:6px;font:400 10.5px var(--mono);color:var(--ink-2);padding:4px 8px 4px 7px;border-radius:999px;background:var(--paper-2)}.ds-pill i{width:6px;height:6px;border-radius:50%;background:var(--signal-2);box-shadow:0 0 0 3px var(--signal-soft)}" },
+    { "name": "Inline Field", "kind": "input", "refersTo": "field", "description": "Name and email fields in the composer footer.", "html": "<label class=\"ds-field\"><span>name</span><input /></label>", "css": ".ds-field{display:flex;align-items:center;gap:8px;height:42px;padding:0 12px;border-radius:var(--r-md);background:var(--paper-2);box-shadow:inset 0 0 0 1px transparent;transition:box-shadow .2s}.ds-field:focus-within{box-shadow:inset 0 0 0 1px var(--ink)}.ds-field span{font:400 11.5px var(--mono);color:var(--muted)}.ds-field input{flex:1;border:0;background:transparent;font:15px var(--sans);color:var(--ink);outline:none}" },
+    { "name": "Nav Link", "kind": "nav", "refersTo": "nav-link", "description": "Top-bar section link.", "html": "<nav class=\"ds-nav\"><a>Experience</a><a aria-current=\"true\">About</a></nav>", "css": ".ds-nav{display:flex;gap:2px}.ds-nav a{font:14.5px var(--sans);color:var(--muted);padding:8px 12px;border-radius:999px;transition:color .2s,background-color .2s}.ds-nav a:hover{color:var(--ink)}.ds-nav a[aria-current=true]{color:var(--ink);background:var(--paper-2)}" },
+    { "name": "Instrument Panel", "kind": "card", "refersTo": "panel", "description": "Trace, model card and quote card surface.", "html": "<div class=\"ds-panel\"><div class=\"ds-panel__bar\">trace_id <b>het-2016-now</b></div><div class=\"ds-panel__body\">Span detail</div></div>", "css": ".ds-panel{background:var(--card);border:1px solid var(--rule);border-radius:var(--r-lg);box-shadow:0 1px 1px rgba(var(--shadow-rgb),.04),0 8px 24px -12px rgba(var(--shadow-rgb),.2);overflow:hidden}.ds-panel__bar{padding:12px 16px;border-bottom:1px solid var(--rule);font:11.5px var(--mono);color:var(--muted)}.ds-panel__bar b{color:var(--ink);font-weight:500}.ds-panel__body{padding:20px}" }
+  ],
+  "narrative": {
+    "northStar": "The Inference Trace",
+    "overview": "The site is one model response, read top to bottom. The answer streams in token by token, and the rest reads like the tools used to inspect it: a trace waterfall, tokenizer output, a feedback panel and a chat composer. Calm paper, hairline rules, two type voices and one highlighter color per palette.",
+    "keyCharacteristics": ["One highlighter color per palette, used sparingly.", "Host Grotesk for people, Martian Mono for machines.", "Paper-and-hairline surfaces with one ambient panel shadow.", "Squircle corners where supported.", "Five seasonal palettes, each light and dark, on shared roles."],
+    "rules": [
+      { "name": "The One Highlighter Rule", "body": "Each palette has exactly one signal color, and it only marks live or important things.", "section": "colors" },
+      { "name": "The Same Roles Rule", "body": "New components use role tokens, never hex values.", "section": "colors" },
+      { "name": "The Two Voices Rule", "body": "Machine output in Martian Mono, human voice in Host Grotesk.", "section": "typography" },
+      { "name": "The Float Only When Floating Rule", "body": "Only overlapping layers get the pop shadow.", "section": "elevation" }
+    ],
+    "dos": ["Do use role tokens so changes work across all ten palettes.", "Do use the --r-* tokens for every corner.", "Do keep press feedback on the spring.", "Do keep .block padding as the single vertical rhythm."],
+    "donts": ["Don't add a second highlight color.", "Don't change fonts, palettes, radii, highlights, copy or section order.", "Don't give inline panels the pop shadow.", "Don't replace streamed or springing motion with a generic fade."]
+  }
+}

@@ -1,0 +1,133 @@
+"use client";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { recommendationsData } from "@/utils/recommendations";
+import { revealWords } from "../lib/stream";
+
+/** Splits "[highlighted] text" into marked and plain runs of words. */
+export function parseHighlights(content: string) {
+  return content.split(/(\[[^\]]+\])/).filter(Boolean).map((chunk) => ({
+    marked: chunk.startsWith("["),
+    words: (chunk.startsWith("[") ? chunk.slice(1, -1) : chunk).split(/(\s+)/),
+  }));
+}
+
+export default function Testimonials() {
+  const [index, setIndex] = useState<number | null>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLQuoteElement>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const first = useRef(true);
+  const shown = index ?? 0;
+
+  // Stream the first quote when the section scrolls into view
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setIndex((i) => i ?? 0);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(panelRef.current!);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (index === null) return;
+    const quote = quoteRef.current!;
+    const words = Array.from(quote.querySelectorAll<HTMLElement>(".w"));
+    const marks = Array.from(quote.querySelectorAll<HTMLElement>("mark"));
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      marks.forEach((m) => m.classList.add("swept"));
+      return;
+    }
+    const step = first.current ? 16 : 9;
+    first.current = false;
+    quote.dataset.streaming = "";
+    const timers = revealWords(words, { step });
+    timers.push(window.setTimeout(() => marks.forEach((m, k) => timers.push(window.setTimeout(() => m.classList.add("swept"), k * 180))), words.length * step + 120));
+    timers.push(window.setTimeout(() => delete quote.dataset.streaming, words.length * step + 600));
+    return () => timers.forEach(clearTimeout);
+  }, [index]);
+
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    const n = recommendationsData.length;
+    const to = ["ArrowDown", "ArrowRight"].includes(e.key) ? i + 1 : ["ArrowUp", "ArrowLeft"].includes(e.key) ? i - 1 : null;
+    if (to === null) return;
+    e.preventDefault();
+    const next = (to + n) % n;
+    tabs.current[next]?.focus();
+    setIndex(next);
+  };
+
+  const rec = recommendationsData[shown];
+  return (
+    <section className="block" id="feedback">
+      <div className="wrap">
+        <div className="head">
+          <h2 className="h2">Human feedback.</h2>
+          <p className="lede">From the people who managed me and built alongside me.</p>
+        </div>
+        <div className="fb">
+          <div className="fb__list" role="tablist" aria-label="Testimonials">
+            {recommendationsData.map((r, i) => (
+              <button
+                key={r.id}
+                ref={(el) => {
+                  tabs.current[i] = el;
+                }}
+                id={`fb-${r.id}`}
+                className="fb__tab"
+                type="button"
+                role="tab"
+                aria-selected={shown === i}
+                aria-controls="fb-panel"
+                tabIndex={shown === i ? 0 : -1}
+                onClick={(e) => {
+                  setIndex(i);
+                  // On phones the tabs scroll sideways; bring a partly hidden tab fully into view
+                  e.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+                }}
+                onKeyDown={(e) => onKeyDown(e, i)}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={r.avatar} alt="" width={44} height={44} loading="lazy" />
+                <span>
+                  <strong>{r.name}</strong>
+                  <small>{r.title}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="fb__panel" id="fb-panel" role="tabpanel" aria-labelledby={`fb-${rec.id}`} ref={panelRef}>
+            <blockquote className="quote" ref={quoteRef} key={shown} data-streaming={index === null ? "" : undefined}>
+              &ldquo;
+              {parseHighlights(rec.content).map((run, i) => {
+                const words = run.words.map((w, j) => (/^\s+$/.test(w) || !w ? <Fragment key={j}>{w}</Fragment> : <span key={j} className="w">{w}</span>));
+                return run.marked ? <mark key={i}>{words}</mark> : <Fragment key={i}>{words}</Fragment>;
+              })}
+              &rdquo;
+            </blockquote>
+            <div className="by">
+              <strong>{rec.name}</strong>
+              <span className="muted">
+                {rec.title} · {rec.company}
+              </span>
+              <span className="mono muted">
+                {rec.date} · {rec.relationship}
+              </span>
+            </div>
+            {rec.nickname && (
+              <div className="note">
+                <span className="mono muted">note</span>
+                {rec.nickname}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
