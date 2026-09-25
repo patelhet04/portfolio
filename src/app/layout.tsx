@@ -1,91 +1,67 @@
-"use client";
+import type { Metadata, Viewport } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
-import Loader from "./components/Loader";
-import { useRef, useState } from "react";
-import DownloadButton from "./components/DownloadBtn";
-import AboutRefContext from "./context/AboutRefContext";
-import ThemeController from "./components/ThemeController";
-import { ThemeProvider, useTheme } from "./context/ThemeContext";
-import Head from "next/head";
-import Script from "next/script";
-import SmoothScroll from "./components/SmoothScroll";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { appearanceScript } from "./lib/appearance";
+import { site } from "@/utils/site";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const aboutRef = useRef<HTMLDivElement>(null);
-  const [theme, setTheme] = useState("sunset");
+export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
+  title: site.title,
+  description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
+  alternates: { canonical: "/" },
+  icons: { icon: "/assets/Memoji.png", apple: "/assets/Memoji.png" },
+  openGraph: {
+    title: site.title,
+    description: site.description,
+    url: site.url,
+    siteName: site.name,
+    locale: "en_US",
+    type: "website",
+    images: [site.ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    images: [site.ogImage.url],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2e5cc" },
+    { media: "(prefers-color-scheme: dark)", color: "#170e0a" },
+  ],
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ThemeProvider value={{ theme, setTheme }}>
-      <AboutRefContext.Provider value={aboutRef}>
-        <html lang="en" data-theme={theme}>
-          <head>
-            <title>Het Patel - Software Engineer</title>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-            <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
-            <link rel="canonical" href="https://hetpatel.dev" />
-            <meta
-              name="description"
-              content="Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University."
-            />
-            <meta name="robots" content="index, follow" />
-
-            <meta property="og:title" content="Het Patel - Software Engineer" />
-            <meta
-              property="og:description"
-              content="Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University."
-            />
-            <meta
-              property="og:image"
-              content="/assets/het-patel-software-engineer.jpg"
-            />
-            <meta property="og:url" content="https://hetpatel.dev" />
-            <meta property="og:type" content="website" />
-
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta
-              name="twitter:title"
-              content="Het Patel - Software Engineer"
-            />
-            <meta
-              name="twitter:description"
-              content="Hello, I'm Het Patel, a dedicated software engineer and a graduate student at Northeastern University."
-            />
-            <meta
-              name="twitter:image"
-              content="/assets/het-patel-software-engineer.jpg"
-            />
-
-            <link rel="icon" href="/assets/Memoji.png" type="image/png" />
-          </head>
-          <Script
-            strategy="afterInteractive"
-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.js"
+    <ViewTransitions>
+      <html lang="en" data-theme="light" data-season="fall" suppressHydrationWarning>
+        <head>
+          <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Martian+Mono:wght@300..600&display=swap"
           />
-          <body>
-            <SmoothScroll />
-            <Loader />
-            <Sidebar />
-
-            <div className="grid_layout" data-theme={theme}>
-              <DownloadButton aboutRef={aboutRef} />
-              <ThemeController theme={theme} setTheme={setTheme} />
-              <main className="main xl:ml-64">
-                {/* Content goes here */}
-                {children}
-              </main>
-            </div>
-          </body>
-        </html>
-      </AboutRefContext.Provider>
-    </ThemeProvider>
+        </head>
+        <body>
+          <a className="skip" href="#main">
+            Skip to content
+          </a>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
