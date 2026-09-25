@@ -1,0 +1,120 @@
+/* The first-visit preloader (components/Boot.tsx): token bars that become the header's caret. */
+
+#boot {
+  display: none;
+}
+html[data-loader] #boot {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  /* If the script never finishes, the page appears anyway */
+  animation: boot-fallback 1ms 4.5s forwards;
+}
+@keyframes boot-fallback {
+  to {
+    visibility: hidden;
+  }
+}
+.boot__bg {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+}
+.boot__bars {
+  --u: clamp(8px, 1.35vw, 13px);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 0.9);
+}
+.boot__row {
+  display: flex;
+  gap: calc(var(--u) * 0.5);
+  transition: gap 360ms var(--ease-drawer);
+}
+.boot__tbar {
+  display: block;
+  width: calc(var(--bw) * var(--u));
+  height: calc(var(--u) * 2.4);
+  border-radius: calc(var(--u) * 0.35);
+  opacity: 0;
+  scale: 0.6 1;
+  transform-origin: left;
+  transition:
+    opacity 320ms var(--ease-out),
+    scale 420ms var(--spring-smooth),
+    background-color 520ms ease,
+    border-radius 360ms var(--ease-drawer);
+}
+.boot__tbar.on {
+  opacity: 1;
+  scale: 1;
+}
+/* The tokenizer's alternating fills, as in the stack section */
+.boot__tbar:nth-child(4n + 1) {
+  background-color: var(--signal-soft);
+}
+.boot__tbar:nth-child(4n + 2) {
+  background-color: var(--paper-3);
+}
+.boot__tbar:nth-child(4n + 3) {
+  background-color: color-mix(in srgb, var(--signal-soft) 45%, transparent);
+}
+.boot__tbar:nth-child(4n + 4) {
+  background-color: var(--paper-2);
+}
+/* Each token flashes as it arrives */
+.boot__tbar.fresh {
+  background-color: var(--signal);
+  transition-duration: 320ms, 420ms, 120ms, 360ms;
+}
+.boot__caret {
+  width: calc(var(--u) * 1.2);
+  height: calc(var(--u) * 2.4);
+  border-radius: calc(var(--u) * 0.25);
+  background: var(--signal);
+  box-shadow: inset 0 0 0 1px rgba(var(--shadow-rgb), 0.15);
+  opacity: 0;
+}
+#boot[data-caret] .boot__caret {
+  opacity: 1;
+  animation: blink 1.1s steps(1) infinite;
+}
+/* The gaps close and every token takes the signal color */
+#boot[data-merge] .boot__row {
+  gap: 0;
+}
+#boot[data-merge] .boot__tbar {
+  background-color: var(--signal);
+  border-radius: 0;
+}
+#boot[data-merge] .boot__tbar:first-child {
+  border-radius: calc(var(--u) * 0.35) 0 0 calc(var(--u) * 0.35);
+}
+#boot[data-merge] .boot__tbar:last-child {
+  border-radius: 0 calc(var(--u) * 0.35) calc(var(--u) * 0.35) 0;
+}
+#boot[data-merge] .boot__caret {
+  animation: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+/* One bar takes over from the row and flies into the header's caret */
+#boot .boot__merged {
+  position: fixed;
+  opacity: 0;
+  background: var(--signal);
+  border-radius: calc(var(--u) * 0.35);
+  box-shadow: inset 0 0 0 1px rgba(var(--shadow-rgb), 0.15);
+}
+#boot[data-handoff] .boot__bars {
+  visibility: hidden;
+}
+/* The header's caret waits under the loader and shows the moment the bar lands on it */
+html[data-loader] .top .brand__cursor {
+  opacity: 0;
+}

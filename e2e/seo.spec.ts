@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 /** Every page carries its own title, description, canonical URL and share tags; crawlers get robots and a sitemap. */
 

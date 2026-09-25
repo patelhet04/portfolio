@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 /** Fall is the default palette; a saved choice is kept; the retired "auto" falls back to Fall. */
 

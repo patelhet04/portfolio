@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, skipLoader, test } from "./fixtures";
 
 /** Every page fits every screen: no sideways scrolling, and comfortable touch targets on touch screens. */
 
@@ -18,6 +18,7 @@ for (const s of screens) {
   for (const path of pages) {
     test(`${path} fits the ${s.name} screen`, async ({ browser }) => {
       const context = await browser.newContext({ viewport: { width: s.width, height: s.height }, isMobile: s.touch, hasTouch: s.touch });
+      await skipLoader(context);
       const page = await context.newPage();
       await page.goto(path);
       await page.evaluate(async () => {

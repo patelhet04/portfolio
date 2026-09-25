@@ -160,6 +160,9 @@ Session 2 (mobile, spacing, cleanup) is committed as `0383e22`. Everything below
 - Reduced motion, Regenerate, return from a detail page, and a resize mid-stream (it lands the finished answer) are all handled.
 - The token flash fade was shortened to 520ms so the glow stays with the newest words.
 
+### First-visit preloader (owner approved)
+`components/Boot.tsx` and `styles/boot.css`. On the first page of a visit (once per tab session, never with reduced motion), token bars stream in like a tokenized sentence while the fonts and Memoji video load, close into one lime bar, and that bar flies into the header's caret beside the wordmark as the page appears; then the hero streams. It lasts as long as the real loading (at least 1.4s, at most 3s, plus the ~1s handoff). All colors are palette roles, so it follows all ten palettes. A CSS-only fallback hides it at 4.5s if the app's script never runs. The pre-paint script in `lib/appearance.ts` turns it on (`html[data-loader]`). Rejected before this: a "prefill" hero intro, a "cold start" model card, a trace-recording loader, and the owner's name as tokens.
+
 ### Motion system (session 3, after the hero)
 - **Page transitions are true crossfades:** old and new fade on the same curve with the browser's additive blend, so the page never dims. The span bar is the only thing that travels, and it stays solid. Spans without a partner fade with the page. With reduced motion the bar doesn't travel.
 - **Two springs:** `--spring` (bouncy) is only for presses springing back, at `--spring-ms`. `--spring-smooth` (critically damped, any duration) is for things that land on a real position: the palette menu, the filter pill, and the before/after bars (clipped, so the end caps stay round and never dip past the value).

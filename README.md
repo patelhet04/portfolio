@@ -41,7 +41,7 @@ NEXT_PUBLIC_EMAILJS_USER_ID=
 | `src/app/page.tsx` | The home page sections and the schema.org Person data |
 | `src/app/experience/[slug]/` | One static page per career span, with its own metadata |
 | `src/app/robots.ts`, `src/app/sitemap.ts` | `robots.txt` and `sitemap.xml`, generated at build |
-| `src/app/components/` | Header, Hero, Trace, About, Testimonials, Outputs, Contact, Footer |
+| `src/app/components/` | Header, Hero, Trace, About, Testimonials, Outputs, Contact, Footer, and Boot (the first-visit preloader) |
 | `src/app/styles/` | The CSS, one file per area; `globals.css` sets their order (it matters: later files refine earlier ones) |
 | `src/app/lib/` | Palette and theme state (`appearance.ts`), scroll-driven motion (`scrub.ts`), word streaming (`stream.ts`), the shared time axis (`timeline.ts`) |
 | `src/utils/` | All content: `site.ts` (name, links, social image), `experience.ts` (spans and measurements), `portfolio.ts` (outputs), `recommendations.ts` (testimonials; brackets mark highlighted phrases) |
@@ -58,6 +58,7 @@ Content changes (a new role, output or testimonial) only touch `src/utils/`. New
 - **layout:** no sideways scrolling at eight screen sizes, and touch targets of at least 40px
 - **transitions:** pages never dim mid-transition, the span bar stays solid, it doesn't travel with reduced motion, and the first click on "Open the full span" opens it
 - **palette:** Fall is the default and saved choices are kept
+- **loader:** the preloader shows once per visit, lands on the header's caret, skips reduced motion, and never leaves the page covered if the script fails (every other suite starts past it, see `e2e/fixtures.ts`)
 - **seo:** per-page metadata, structured data, `robots.txt`, `sitemap.xml` and the share image
 
 Run it before merging anything that touches layout or motion.

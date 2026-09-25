@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, skipLoader, test } from "./fixtures";
 
 /**
  * Page transitions are true crossfades: the old and new pages always add up to full opacity,
@@ -56,6 +56,7 @@ test("the first click on Open the full span opens it, and Back returns to the tr
 
 test("with reduced motion the span bar doesn't travel between pages", async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: "reduce" });
+  await skipLoader(context);
   const page = await context.newPage();
   await page.goto("/");
   await page.locator("#experience").scrollIntoViewIfNeeded();
