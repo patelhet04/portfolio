@@ -18,7 +18,7 @@ The portfolio was rebuilt around one idea: **the site reads like a streamed AI r
 
 - **Format and layout** of every section and the detail pages, including section order.
 - **Fonts:** Host Grotesk (sans) and Martian Mono (mono), loaded from Google Fonts in `layout.tsx`.
-- **Colors:** all 10 palettes in `globals.css` (5 seasons × light/dark), and which role gets which color.
+- **Colors:** all 10 palettes in `styles/tokens.css` (5 seasons × light/dark), and which role gets which color.
 - **Highlights:** the highlighter marks (the lime sweep under "hold up in production", highlighted phrases in testimonials, the attention flash on each new token).
 - **Corner language:** the `--r-*` radius tokens and the `corner-shape: squircle` enhancement.
 - **Copy and content:** headings, the About text, span summaries and measurements. These came from the owner's resume and LinkedIn and were reviewed.
@@ -104,7 +104,9 @@ The Impeccable launcher downloads a small binary the first time it runs; that's 
 
 | Path | What it holds |
 | --- | --- |
-| `src/app/globals.css` | All design tokens, palettes, squircles, springs, view transitions and component styles |
+| `src/app/globals.css` | The stylesheet entry: imports `styles/*.css` in cascade order |
+| `src/app/styles/` | One CSS file per area (tokens, base, header, hero, trace, about, testimonials, outputs, contact, footer, span-page, transitions), each ending with its own breakpoints and motion |
+| `e2e/`, `playwright.config.ts` | End-to-end checks (`npm run test:e2e`) |
 | `src/app/layout.tsx` | Fonts, metadata, pre-paint appearance script, `<ViewTransitions>` |
 | `src/app/lib/appearance.ts` | Theme and season state, the default palette (Fall), the circular reveal |
 | `src/app/lib/timeline.ts` | Shared time axis for the trace and the detail pages |
@@ -135,7 +137,7 @@ Page transitions use the `next-view-transitions` package: its `Link` and `useTra
 Session 2 (mobile, spacing, cleanup) is committed as `0383e22`. Everything below is **uncommitted** on `redesign/inference-trace`.
 
 ### Done and liked (keep)
-- **Page transitions:** a short crossfade between pages. Only the span bar travels (no title stretch). Detail pages get one quick entrance. Prev/next slides in the direction of travel. Going back re-selects the span you came from so its bar shrinks back into its row. (`globals.css` view-transition block, `SpanPage.tsx`, `Trace.tsx`.)
+- **Page transitions:** a short crossfade between pages. Only the span bar travels (no title stretch). Detail pages get one quick entrance. Prev/next slides in the direction of travel. Going back re-selects the span you came from so its bar shrinks back into its row. (`styles/transitions.css`, `SpanPage.tsx`, `Trace.tsx`.)
 - **Trace:** keyboard selection swaps instantly; the hover scrub no longer re-renders the whole trace.
 - **Outputs:** a filter change animates only rows that weren't already showing.
 - **Home anchors:** smooth scrolling.

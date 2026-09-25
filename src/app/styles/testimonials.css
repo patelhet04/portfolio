@@ -1,0 +1,154 @@
+/* Testimonials ("human feedback"): the tabs and the streamed quote. */
+
+/* ───────── Testimonials ───────── */
+.fb {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.fb__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: sticky;
+  top: 100px;
+}
+.fb__tab {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform var(--spring-ms) var(--spring);
+}
+.fb__tab:active {
+  transform: scale(0.97);
+  transition-duration: 200ms, 200ms, 200ms, 120ms;
+  transition-timing-function: ease, ease, ease, var(--ease-out);
+}
+.fb__tab img {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-sm);
+  object-fit: cover;
+  background: var(--paper-2);
+}
+.fb__tab strong {
+  display: block;
+  font-weight: 500;
+  font-size: 15px;
+}
+.fb__tab small {
+  display: block;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+.fb__tab[aria-selected="true"] {
+  background: var(--card);
+  border-color: var(--rule);
+  box-shadow: var(--shadow);
+}
+@media (hover: hover) and (pointer: fine) {
+  .fb__tab:hover {
+    background: var(--paper-2);
+  }
+  .fb__tab[aria-selected="true"]:hover {
+    background: var(--card);
+  }
+}
+.fb__panel {
+  min-height: 420px;
+}
+.quote {
+  margin: 0;
+  font-size: clamp(1.3rem, 0.95rem + 1vw, 1.9rem);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+/* Streamed words arrive in small bursts, the way a response comes off the wire */
+.quote[data-streaming] .w {
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+}
+.quote[data-streaming] .w.on {
+  opacity: 1;
+}
+.quote mark {
+  color: inherit;
+  background-color: transparent;
+  background-image: linear-gradient(var(--signal-soft), var(--signal-soft));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  border-radius: 0.12em;
+  padding: 0 0.06em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size 650ms var(--ease-out);
+}
+.quote mark.swept {
+  background-size: 100% 100%;
+}
+/* First reveal: each marked phrase is swept by the scroll position (--m, 0 to 1) */
+.quote[data-scrub] mark {
+  background-size: calc(var(--m, 0) * 100%) 100%;
+  transition: background-size 160ms linear;
+}
+.by {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: baseline;
+}
+.by strong {
+  font-weight: 500;
+  font-size: 17px;
+}
+.note {
+  margin-top: 18px;
+  display: inline-flex;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  background: var(--paper-2);
+  font-size: 15px;
+}
+/* ── Breakpoints, touch, scroll-linked motion and reduced motion for this area ── */
+@media (max-width: 960px) {
+  .fb {
+    grid-template-columns: 1fr;
+  }
+  .fb__list {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 0 calc(var(--pad) * -1);
+    padding: 2px var(--pad) 8px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--pad);
+  }
+  .fb__tab {
+    flex: 0 0 250px;
+    scroll-snap-align: start;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb__tab {
+    transition-property: background-color, border-color, color, opacity !important;
+  }
+}

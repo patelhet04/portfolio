@@ -1,0 +1,267 @@
+/* Base elements, buttons, and the shared section layout. */
+
+/* ───────── Base ───────── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 88px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-2) transparent;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule-2);
+  border-radius: 10px;
+  border: 3px solid var(--paper);
+}
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+p a,
+.lede a {
+  text-decoration-color: var(--rule-2);
+  transition: text-decoration-color 200ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  p a:hover,
+  .lede a:hover {
+    text-decoration-color: currentColor;
+  }
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+input,
+textarea {
+  caret-color: var(--ink);
+}
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+.mono {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.muted {
+  color: var(--muted);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 14px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+}
+.skip:focus {
+  top: 12px;
+}
+/* ───────── Buttons ─────────
+Press is quick and linear-feeling; release springs back. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid var(--rule-2);
+  background: transparent;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 15px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform var(--spring-ms) var(--spring),
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+}
+.btn:active {
+  transform: scale(0.96);
+  transition-duration: 120ms, 200ms, 200ms, 200ms;
+  transition-timing-function: var(--ease-out), ease, ease, ease;
+}
+.btn svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.btn--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+.btn--sm {
+  height: 38px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+.arr {
+  transition: transform 220ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    border-color: var(--ink);
+  }
+  .btn--primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+  }
+  .btn:hover .arr--down {
+    transform: translateY(2px);
+  }
+  .btn:hover .arr--out {
+    transform: translate(2px, -2px);
+  }
+  .btn:hover .arr--back {
+    transform: translateX(-3px);
+  }
+}
+.icon-btn {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 999px;
+  border: 1px solid var(--rule-2);
+  display: grid;
+  place-items: center;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    transform var(--spring-ms) var(--spring),
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+.icon-btn:active {
+  transform: scale(0.92);
+  transition-duration: 120ms, 200ms, 200ms;
+  transition-timing-function: var(--ease-out), ease, ease;
+}
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .icon-btn:hover {
+    border-color: var(--ink);
+  }
+}
+/* ───────── Sections ───────── */
+.block {
+  padding: var(--space-section) 0;
+  border-top: 1px solid var(--rule);
+}
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: 24px 48px;
+  align-items: end;
+  margin-bottom: var(--space-head);
+}
+.h2 {
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(2.2rem, 1.2rem + 3vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+/* Scroll-driven reading reveal: each word's ink level follows --r (1 without JS or with reduced motion) */
+[data-reveal] .rw {
+  opacity: calc(0.18 + 0.82 * var(--r, 1));
+  transition: opacity 120ms linear;
+}
+.lede {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 17px;
+  max-width: 46ch;
+}
+/* ── Breakpoints, touch, scroll-linked motion and reduced motion for this area ── */
+@media (max-width: 960px) {
+  .head {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+}
+/* Touch: 16px inputs so iOS doesn't zoom on focus, and invisible hit areas
+that bring small controls up to about 44px without changing how they look */
+@media (pointer: coarse) {
+  .btn--sm {
+    position: relative;
+  }
+  .btn--sm::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+  .btn,
+  .icon-btn {
+    transition-property: background-color, border-color, color, opacity !important;
+  }
+}
