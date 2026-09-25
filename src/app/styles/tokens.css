@@ -59,15 +59,24 @@ paper (grounds), ink (text), signal (highlighter), primary
   --shadow-pop: 0 1px 2px rgba(var(--shadow-rgb), 0.06), 0 18px 40px -16px rgba(var(--shadow-rgb), 0.35);
   color-scheme: light;
 }
-/* Squircles where the browser can draw them. Superellipse corners read
-smaller than circular ones, so the radii grow to keep the same presence. */
+/* Squircle radii: superellipse corners read smaller than circular ones, so they're larger than
+   the round --r-* radii to keep the same presence. Used natively below, and by the Safari and
+   Firefox fallback in squircle-fallback.css. */
+:root {
+  --sq-xs: 9px;
+  --sq-sm: 14px;
+  --sq-md: 20px;
+  --sq-lg: 28px;
+  --sq-xl: 34px;
+}
+/* Squircles where the browser can draw them */
 @supports (corner-shape: squircle) {
   :root {
-    --r-xs: 9px;
-    --r-sm: 14px;
-    --r-md: 20px;
-    --r-lg: 28px;
-    --r-xl: 34px;
+    --r-xs: var(--sq-xs);
+    --r-sm: var(--sq-sm);
+    --r-md: var(--sq-md);
+    --r-lg: var(--sq-lg);
+    --r-xl: var(--sq-xl);
   }
   *,
   *::before,

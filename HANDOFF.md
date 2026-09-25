@@ -160,6 +160,9 @@ Session 2 (mobile, spacing, cleanup) is committed as `0383e22`. Everything below
 - Reduced motion, Regenerate, return from a detail page, and a resize mid-stream (it lands the finished answer) are all handled.
 - The token flash fade was shortened to 520ms so the glow stays with the newest words.
 
+### Squircles in Safari (owner approved, scoped)
+Chromium draws every element as a squircle natively. Safari and Firefox can't yet, so `styles/squircle-fallback.css` clips plain-fill elements (no border line, no outer shadow) to a squircle with `clip-path: shape()`. Ghost buttons, bordered cards and menus stay rounded there until Safari ships `corner-shape`, which it has in Technology Preview; tokens.css then takes over automatically. A focused control drops the clip so its focus ring isn't cut, and small header buttons stay unclipped on touch screens to keep their 44px tap area. The owner chose this over a full fallback (wrappers for shadows, border rings) or a polyfill.
+
 ### First-visit preloader (owner approved)
 `components/Boot.tsx` and `styles/boot.css`. On the first page of a visit (once per tab session, never with reduced motion), token bars stream in like a tokenized sentence while the fonts and Memoji video load, close into one lime bar, and that bar flies into the header's caret beside the wordmark as the page appears; then the hero streams. It lasts as long as the real loading (at least 1.4s, at most 3s, plus the ~1s handoff). All colors are palette roles, so it follows all ten palettes. A CSS-only fallback hides it at 4.5s if the app's script never runs. The pre-paint script in `lib/appearance.ts` turns it on (`html[data-loader]`). Rejected before this: a "prefill" hero intro, a "cold start" model card, a trace-recording loader, and the owner's name as tokens.
 
