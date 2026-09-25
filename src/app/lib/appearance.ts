@@ -76,5 +76,5 @@ var r=document.documentElement,t=localStorage.getItem("theme"),s=localStorage.ge
 r.dataset.theme=t?t:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
 if(s==="auto"){var m=new Date().getMonth();s=m>=2&&m<=4?"spring":m>=5&&m<=7?"summer":m>=8&&m<=10?"fall":"winter";}
 r.dataset.season=s;
-if(!sessionStorage.getItem("hero-streamed")&&!matchMedia("(prefers-reduced-motion: reduce)").matches){r.dataset.streamPending="";setTimeout(function(){delete r.dataset.streamPending},4000);}
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches){r.dataset.streamPending="";setTimeout(function(){delete r.dataset.streamPending},4000);}
 }catch(e){}})();`;

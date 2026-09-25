@@ -18,8 +18,14 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
   const [measured, setMeasured] = useState(false);
   const measRef = useRef<HTMLUListElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+  // Arriving from the prev/next pager, the page slide is the entrance and the section stagger is skipped
+  const [arrive] = useState(() => (typeof document !== "undefined" && document.documentElement.dataset.vtDir ? "pager" : "direct"));
   const [trackPx, setTrackPx] = useState<number | null>(null);
   useEffect(() => setNow(new Date()), []);
+
+  // The trace re-selects this span when the visitor goes back to it
+  useEffect(() => sessionStorage.setItem("trace-selected", slug), [slug]);
 
   useEffect(() => {
     const ro = new ResizeObserver(([e]) => setTrackPx(e.contentRect.width));
@@ -57,11 +63,23 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
   const years: number[] = [];
   for (let y = t0.getFullYear(); y <= t1.getFullYear(); y += 2) years.push(y);
 
+  // Prev/next move along the time axis: the page slides in that direction. If this bar is on screen,
+  // it takes the neighbour's transition name so it glides to the neighbour's position; scrolled out of
+  // view it would fly in from off-screen, so then the slide alone carries the move.
+  const travel = (dir: "prev" | "next", to: string) => {
+    const root = document.documentElement;
+    root.dataset.vtDir = dir;
+    const bar = barRef.current?.getBoundingClientRect();
+    if (bar && bar.top >= 0 && bar.bottom <= innerHeight) barRef.current!.style.setProperty("view-transition-name", `span-${to}`);
+    else barRef.current?.style.setProperty("view-transition-name", "none");
+    window.setTimeout(() => delete root.dataset.vtDir, 900);
+  };
+
   let d = 0;
   const stagger = () => ({ "--d": d++ }) as React.CSSProperties;
 
   return (
-    <article className="sd">
+    <article className="sd" data-arrive={arrive}>
       <div className="wrap">
         <div className="sd__back sd-in" style={stagger()}>
           <Link className="btn btn--sm" href="/#experience">
@@ -72,7 +90,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
         <p className="sd__kind mono sd-in" style={stagger()}>
           {span.kind === "work" ? "work" : "education"} · {span.where}
         </p>
-        <h1 className="sd__title" style={{ viewTransitionName: `title-${span.slug}`, viewTransitionClass: "title-morph" } as React.CSSProperties}>
+        <h1 className="sd__title">
           {span.name}
         </h1>
         <p className="sd__role sd-in" style={stagger()}>
@@ -88,6 +106,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
               return <span key={s.slug} className="ghost" style={{ left: `${a}%`, width: `${Math.max(b - a, 0.6)}%` }} />;
             })}
           <span
+            ref={barRef}
             className={`span ${span.kind === "education" ? "edu" : ""} ${span.end ? "" : "live"}`}
             style={{ left: `${left}%`, width: `${width}%`, viewTransitionName: `span-${span.slug}` } as React.CSSProperties}
           >
@@ -222,11 +241,11 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
         </div>
 
         <nav className="sd__pager" aria-label="Other spans">
-          <Link href={`/experience/${prev.slug}`}>
+          <Link href={`/experience/${prev.slug}`} onClick={() => travel("prev", prev.slug)}>
             <span className="mono">← previous span</span>
             <strong>{prev.short}</strong>
           </Link>
-          <Link href={`/experience/${next.slug}`}>
+          <Link href={`/experience/${next.slug}`} onClick={() => travel("next", next.slug)}>
             <span className="mono">next span →</span>
             <strong>{next.short}</strong>
           </Link>

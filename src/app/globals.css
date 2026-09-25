@@ -265,6 +265,11 @@
 }
 
 /* ───────── Base ───────── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: 88px;
@@ -731,6 +736,7 @@ video {
   border: 1px solid var(--rule);
 }
 .answer {
+  position: relative;
   margin: 0;
   font-weight: 500;
   font-size: clamp(2.6rem, 1.1rem + 4.7vw, 5.6rem);
@@ -739,24 +745,34 @@ video {
   text-wrap: balance;
   max-width: 15ch;
 }
+/* Words are boxes so the attention flash can sit behind each one */
 .tok {
+  display: inline-block;
   border-radius: 0.08em;
+}
+/* The first pass streams without "in production"; it drops in once the rest is written */
+.answer[data-edit] .ins {
+  display: none;
 }
 /* Set before first paint so the answer doesn't flash in full before it streams */
 [data-stream-pending] .answer .tok {
   opacity: 0;
 }
 [data-stream-pending] .answer .caret {
+  opacity: 1;
   animation: blink 1s steps(1) infinite;
 }
+/* Each token sharpens in over longer than the gap between tokens, so neighbours overlap
+   and the answer flows rather than pops. The attention flash fades in fast and out soon,
+   so it stays with the newest words instead of lighting the whole line. */
 .answer[data-streaming] .tok {
   opacity: 0;
-  filter: blur(10px);
+  filter: blur(8px);
   transition:
-    opacity 420ms var(--ease-out),
-    filter 520ms var(--ease-out),
-    background-color 900ms ease,
-    box-shadow 900ms ease;
+    opacity 560ms var(--ease-out),
+    filter 640ms var(--ease-out),
+    background-color 520ms ease,
+    box-shadow 520ms ease;
 }
 .answer[data-streaming] .tok.on {
   opacity: 1;
@@ -766,8 +782,10 @@ video {
   background-color: var(--signal-soft);
   box-shadow: 0 0 0 0.04em var(--signal-soft);
   transition:
-    opacity 420ms var(--ease-out),
-    filter 520ms var(--ease-out);
+    opacity 560ms var(--ease-out),
+    filter 640ms var(--ease-out),
+    background-color 140ms var(--ease-out),
+    box-shadow 140ms var(--ease-out);
 }
 .hl {
   background-image: linear-gradient(var(--signal), var(--signal));
@@ -782,6 +800,8 @@ video {
 [data-theme="dark"] .hl {
   background-image: linear-gradient(var(--signal-soft), var(--signal-soft));
 }
+/* The caret floats over the text and moves with transforms, so it never shifts a line break.
+   Hero.tsx lines it up with a probe styled like the old inline caret. */
 .caret {
   display: inline-block;
   width: 0.42em;
@@ -792,17 +812,23 @@ video {
   border-radius: 0.06em;
   box-shadow: inset 0 0 0 1px rgba(var(--shadow-rgb), 0.12);
 }
+.answer .caret {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(0.065em);
+  pointer-events: none;
+}
+.answer[data-streaming] .caret {
+  opacity: 1;
+}
 .caret.idle {
   animation: blink 1s steps(1) infinite;
 }
-.caret.gone {
+.answer .caret.gone {
   opacity: 0;
-  width: 0;
-  margin-left: 0;
-  transition:
-    opacity 400ms ease,
-    width 0s 400ms,
-    margin 0s 400ms;
   animation: none;
 }
 .meta {
@@ -1002,6 +1028,11 @@ video {
   line-height: 1;
   letter-spacing: -0.035em;
   text-wrap: balance;
+}
+/* Scroll-driven reading reveal: each word's ink level follows --r (1 without JS or with reduced motion) */
+[data-reveal] .rw {
+  opacity: calc(0.18 + 0.82 * var(--r, 1));
+  transition: opacity 120ms linear;
 }
 .lede {
   margin: 0;
@@ -1241,6 +1272,13 @@ video {
 .wf__row.dim {
   opacity: 0.3;
 }
+/* Spans the scroll playhead hasn't reached yet */
+.wf__track {
+  transition: opacity 300ms ease;
+}
+.wf__row.future .wf__track {
+  opacity: 0.3;
+}
 .wf__row.hit .span:not(.next) {
   outline: 3px solid var(--signal-soft);
   outline-offset: 1px;
@@ -1292,13 +1330,13 @@ video {
   flex-direction: column;
 }
 .detail__inner[data-swap] {
-  animation: detail-in var(--spring-soft-ms) var(--spring-soft) both;
+  animation: detail-in 200ms var(--ease-out) both;
 }
 @keyframes detail-in {
   from {
     opacity: 0;
-    transform: translateY(10px);
-    filter: blur(4px);
+    transform: translateY(4px);
+    filter: blur(2px);
   }
 }
 .detail h3 {
@@ -1411,17 +1449,21 @@ video {
     background-color 150ms ease,
     color 150ms ease;
 }
+/* Each token's colour is mixed in by --r, which the tokenizer pass drives from scroll (1 by default) */
+.tokens button {
+  background: color-mix(in srgb, var(--tok-bg) calc(var(--r, 1) * 100%), transparent);
+}
 .tokens button:nth-child(4n + 1) {
-  background: var(--signal-soft);
+  --tok-bg: var(--signal-soft);
 }
 .tokens button:nth-child(4n + 2) {
-  background: var(--paper-3);
+  --tok-bg: var(--paper-3);
 }
 .tokens button:nth-child(4n + 3) {
-  background: color-mix(in srgb, var(--signal-soft) 45%, transparent);
+  --tok-bg: color-mix(in srgb, var(--signal-soft) 45%, transparent);
 }
 .tokens button:nth-child(4n + 4) {
-  background: var(--paper-2);
+  --tok-bg: var(--paper-2);
 }
 .tokens button[data-used] {
   cursor: pointer;
@@ -1442,7 +1484,7 @@ video {
   border-radius: var(--r-lg);
   overflow: hidden;
   clip-path: inset(0 0 100% 0 round var(--r-lg));
-  transition: clip-path 1100ms var(--ease-in-out);
+  transition: clip-path 800ms var(--ease-out);
 }
 [data-seen="true"] .portrait-mask {
   clip-path: inset(0 0 0 0 round var(--r-lg));
@@ -1458,7 +1500,7 @@ video {
   height: 100%;
   object-fit: cover;
   transform: scale(1.08);
-  transition: transform 1400ms var(--ease-arrive);
+  transition: transform 1000ms var(--ease-arrive);
 }
 [data-seen="true"] .portrait img {
   transform: none;
@@ -1576,6 +1618,7 @@ video {
 .fb__tab:active {
   transform: scale(0.97);
   transition-duration: 200ms, 200ms, 200ms, 120ms;
+  transition-timing-function: ease, ease, ease, var(--ease-out);
 }
 .fb__tab img {
   width: 44px;
@@ -1645,6 +1688,11 @@ video {
 .quote mark.swept {
   background-size: 100% 100%;
 }
+/* First reveal: each marked phrase is swept by the scroll position (--m, 0 to 1) */
+.quote[data-scrub] mark {
+  background-size: calc(var(--m, 0) * 100%) 100%;
+  transition: background-size 160ms linear;
+}
 .by {
   margin-top: 28px;
   display: flex;
@@ -1712,9 +1760,9 @@ video {
   padding: 0;
   border-top: 1px solid var(--rule);
 }
-.list[data-swap] .item {
-  animation: row-in 420ms var(--ease-out) both;
-  animation-delay: calc(min(var(--i), 8) * 30ms);
+.item[data-enter] {
+  animation: row-in 360ms var(--ease-out) both;
+  animation-delay: calc(min(var(--j, 0), 8) * 30ms);
 }
 @keyframes row-in {
   from {
@@ -1768,8 +1816,8 @@ video {
     display: none;
   }
   .item[data-new] {
-    animation: row-in 420ms var(--ease-out) both;
-    animation-delay: calc(var(--j) * 30ms);
+    animation: row-in 360ms var(--ease-out) both;
+    animation-delay: calc(var(--k) * 30ms);
   }
   .more {
     display: flex;
@@ -2028,6 +2076,7 @@ video {
 .copy:active {
   transform: scale(0.94);
   transition-duration: 120ms, 200ms, 200ms;
+  transition-timing-function: var(--ease-out), ease, ease;
 }
 .copy[data-copied="true"] {
   background: var(--signal);
@@ -2252,6 +2301,7 @@ video {
 .sd__pager a:active {
   transform: scale(0.98);
   transition-duration: 200ms, 200ms, 120ms;
+  transition-timing-function: ease, ease, var(--ease-out);
 }
 .sd__pager a:last-child {
   text-align: right;
@@ -2279,6 +2329,11 @@ video {
   border: 1px solid var(--rule);
   text-decoration: none;
   transition: border-color 200ms ease;
+}
+.sd__related svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
 }
 .sd__related img {
   width: 72px;
@@ -2367,34 +2422,40 @@ video {
   margin-bottom: var(--space-group);
 }
 .sd-in {
-  animation: sd-in 700ms var(--ease-arrive) both;
-  animation-delay: calc(var(--d, 0) * 70ms + 120ms);
+  animation: sd-in 380ms var(--ease-out) both;
+  animation-delay: calc(min(var(--d, 0), 6) * 40ms + 60ms);
+}
+/* Arriving from a neighbouring span, the page slide is the entrance */
+.sd[data-arrive="pager"] .sd-in {
+  animation: none;
 }
 @keyframes sd-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
 }
 
 /* ─────────────────────────────────────────────────────────────
    View transitions
-   Pages: the old page sinks back (scale + blur), the new one rises in.
-   Shared elements (a span bar, its title) morph between pages.
+   Pages: one short crossfade. The old page settles back a touch, the new one
+   sharpens in; detail pages add their own section stagger on top.
+   Shared element: the span bar travels between the trace and its page.
+   Prev/next: the page slides a little in the direction of travel on the time axis.
    Appearance: the new palette spreads in a circle from the control.
    ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
-    animation: vt-sink 420ms var(--ease-out) both;
+    animation: vt-out 200ms var(--ease-out) both;
   }
   ::view-transition-new(root) {
-    animation: vt-rise 620ms var(--ease-arrive) 80ms both;
+    animation: vt-in 320ms var(--ease-out) 40ms both;
   }
   ::view-transition-group(site-header) {
     animation: none;
   }
   ::view-transition-group(*.span-morph) {
-    animation-duration: 640ms;
+    animation-duration: 560ms;
     animation-timing-function: var(--ease-drawer);
   }
   ::view-transition-old(*.span-morph),
@@ -2404,21 +2465,24 @@ video {
     object-fit: fill;
   }
   ::view-transition-old(*.span-morph) {
-    animation: vt-fade-out 200ms ease both;
+    animation: vt-fade-out 180ms ease both;
   }
   ::view-transition-new(*.span-morph) {
-    animation: vt-fade-in 360ms ease 160ms both;
+    animation: vt-fade-in 300ms ease 120ms both;
   }
-  ::view-transition-group(*.title-morph) {
-    animation-duration: 640ms;
-    animation-timing-function: var(--ease-drawer);
+
+  /* Prev/next along the time axis: next arrives from the right, previous from the left */
+  :root[data-vt-dir="next"]::view-transition-old(root) {
+    animation: vt-out-left 220ms var(--ease-out) both;
   }
-  ::view-transition-old(*.title-morph),
-  ::view-transition-new(*.title-morph) {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-    object-position: left top;
+  :root[data-vt-dir="next"]::view-transition-new(root) {
+    animation: vt-in-right 380ms var(--ease-out) 40ms both;
+  }
+  :root[data-vt-dir="prev"]::view-transition-old(root) {
+    animation: vt-out-right 220ms var(--ease-out) both;
+  }
+  :root[data-vt-dir="prev"]::view-transition-new(root) {
+    animation: vt-in-left 380ms var(--ease-out) 40ms both;
   }
 
   /* Appearance changes replace the page transition entirely */
@@ -2432,18 +2496,41 @@ video {
     view-transition-name: none !important;
   }
 }
-@keyframes vt-sink {
+@keyframes vt-out {
   to {
     opacity: 0;
-    transform: scale(0.965);
-    filter: blur(6px);
+    transform: scale(0.985);
+    filter: blur(2px);
   }
 }
-@keyframes vt-rise {
+@keyframes vt-in {
   from {
     opacity: 0;
-    transform: translateY(28px) scale(1.01);
-    filter: blur(4px);
+    filter: blur(2px);
+  }
+}
+@keyframes vt-out-left {
+  to {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+}
+@keyframes vt-out-right {
+  to {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+@keyframes vt-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+@keyframes vt-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-32px);
   }
 }
 @keyframes vt-fade-out {
@@ -2508,7 +2595,7 @@ video {
     clip-path: inset(0 0 -40px 0);
     visibility: visible;
     transition:
-      clip-path 420ms var(--ease-drawer),
+      clip-path 320ms var(--ease-drawer),
       visibility 0s;
   }
   .sheet nav {
@@ -2532,9 +2619,9 @@ video {
     opacity: 1;
     transform: none;
     transition:
-      opacity 300ms ease,
-      transform var(--spring-soft-ms) var(--spring-soft);
-    transition-delay: calc(var(--i) * 40ms + 60ms);
+      opacity 240ms ease,
+      transform 360ms var(--ease-out);
+    transition-delay: calc(var(--i) * 30ms + 40ms);
   }
   .hero__grid {
     grid-template-columns: 1fr;
@@ -2672,6 +2759,117 @@ video {
   }
 }
 
+/* Scroll-linked touches, where the browser can drive them from the scroll position.
+   The portrait drifts inside its frame (the frame never moves); the reading line
+   in the header fills with the page scroll instead of a JS listener. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The frame clips (overflow: hidden), which would make it the image's scroller; name the
+       timeline on the frame so progress is measured against the page scroll instead */
+    .portrait-mask {
+      view-timeline: --portrait block;
+    }
+    .portrait img {
+      scale: 1.07;
+      animation: portrait-drift linear both;
+      animation-timeline: --portrait;
+      animation-range: cover;
+    }
+  }
+  .top__progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+/* Leaving the hero: its layers separate. The question lifts away fastest, the answer eases back
+   and dims, the model card recedes a touch, and the Memoji drifts inside its plate. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) and (min-width: 961px) {
+    .ask,
+    .answer,
+    .meta,
+    .ctas,
+    .mcard__plate video {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+    }
+    .ask {
+      animation-name: hero-ask;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .answer {
+      animation-name: hero-answer;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .meta,
+    .ctas {
+      animation-name: hero-foot;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+    .mcard {
+      animation:
+        rise 900ms var(--ease-arrive) 250ms both,
+        hero-card linear both;
+      animation-timeline: auto, scroll(root);
+      animation-range: normal, 0 90vh;
+    }
+    .mcard__plate video {
+      animation-name: hero-plate;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+  }
+}
+@keyframes hero-ask {
+  to {
+    translate: 0 -9vh;
+    opacity: 0.4;
+  }
+}
+@keyframes hero-answer {
+  to {
+    translate: 0 5vh;
+    opacity: 0.45;
+  }
+}
+@keyframes hero-foot {
+  to {
+    translate: 0 8vh;
+    opacity: 0.6;
+  }
+}
+@keyframes hero-card {
+  to {
+    translate: 0 10vh;
+    scale: 0.94;
+  }
+}
+@keyframes hero-plate {
+  to {
+    translate: 0 -3vh;
+  }
+}
+@keyframes portrait-drift {
+  from {
+    translate: 0 -14px;
+  }
+  to {
+    translate: 0 14px;
+  }
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* Touch: 16px inputs so iOS doesn't zoom on focus, and invisible hit areas
    that bring small controls up to about 44px without changing how they look */
 @media (pointer: coarse) {
@@ -2746,6 +2944,9 @@ video {
   .quote[data-streaming] .w,
   .reply .w {
     filter: none !important;
+  }
+  .hl {
+    transition: none !important;
   }
   .trace[data-drawn] .span {
     clip-path: none !important;

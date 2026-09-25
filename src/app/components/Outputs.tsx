@@ -2,6 +2,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { outputTags, portfolio, type OutputTag } from "@/utils/portfolio";
 import { ArrowDown, ArrowOut } from "./Icons";
+import RevealText from "./RevealText";
 
 type Filter = OutputTag | "all";
 
@@ -17,6 +18,11 @@ export default function Outputs() {
   const peekRef = useRef<HTMLDivElement>(null);
   const peekImgRef = useRef<HTMLImageElement>(null);
   const items = portfolio.filter((p) => filter === "all" || p.tag === filter);
+  // Rows on screen before the last filter change; only rows that weren't there animate in
+  const shownIds = useRef(new Set(portfolio.map((p) => p.id)));
+  useEffect(() => {
+    shownIds.current = new Set(items.map((p) => p.id));
+  });
   const count = (t: Filter) => (t === "all" ? portfolio.length : portfolio.filter((p) => p.tag === t).length);
 
   // Clip the duplicated "active" row down to the selected pill; clip-path springs between pills
@@ -119,11 +125,12 @@ export default function Outputs() {
     </div>
   );
 
+  let entering = 0;
   return (
     <section className="block" id="work">
       <div className="wrap">
         <div className="head">
-          <h2 className="h2">Outputs.</h2>
+          <RevealText className="h2" runs={["Outputs."]} />
           <p className="lede">Articles, projects, posts and write-ups, from benchmarking LLM runtimes to shipping full-stack products.</p>
         </div>
         <div className="filters" ref={filtersRef} role="group" aria-label="Filter by type">
@@ -132,23 +139,33 @@ export default function Outputs() {
             {pills(false)}
           </div>
         </div>
-        <ul className="list" id="outputs-list" key={swap} data-swap={swap ? "" : undefined}>
-          {items.map((p, i) => (
-            <li
-              key={p.id}
-              className="item"
-              data-extra={i >= limit ? "" : undefined}
-              data-new={i >= limit - PAGE && limit > PAGE ? "" : undefined}
-              style={{ "--i": i, "--j": i - (limit - PAGE) } as React.CSSProperties}
-            >
-              <a href={p.link} target="_blank" rel="noopener noreferrer" data-img={p.image}>
-                <span className="type mono">{p.tag}</span>
-                <span className="t">{p.title}</span>
-                <span className="d">{p.description}</span>
-                <ArrowOut className="" />
-              </a>
-            </li>
-          ))}
+        <ul className="list" id="outputs-list">
+          {items.map((p, i) => {
+            const enter = !shownIds.current.has(p.id);
+            if (enter) entering++;
+            return (
+              <li
+                key={p.id}
+                className="item"
+                data-enter={enter ? "" : undefined}
+                data-extra={i >= limit ? "" : undefined}
+                data-new={i >= limit - PAGE && limit > PAGE ? "" : undefined}
+                style={
+                  {
+                    "--j": entering - 1,
+                    "--k": i - (limit - PAGE),
+                  } as React.CSSProperties
+                }
+              >
+                <a href={p.link} target="_blank" rel="noopener noreferrer" data-img={p.image}>
+                  <span className="type mono">{p.tag}</span>
+                  <span className="t">{p.title}</span>
+                  <span className="d">{p.description}</span>
+                  <ArrowOut className="" />
+                </a>
+              </li>
+            );
+          })}
         </ul>
         {items.length > limit && (
           <div className="more">

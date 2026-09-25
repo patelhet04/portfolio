@@ -4,6 +4,7 @@ import About from "./components/About";
 import Testimonials from "./components/Testimonials";
 import Outputs from "./components/Outputs";
 import Contact from "./components/Contact";
+import RevealText from "./components/RevealText";
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
       <section className="block" id="experience">
         <div className="wrap">
           <div className="head">
-            <h2 className="h2">Career, read as a trace.</h2>
+            <RevealText className="h2" runs={["Career, read as a trace."]} />
             <p className="lede">Every role is a span on one timeline, work above and education below. Hover to scrub through time, and open a span to see what happened inside it.</p>
           </div>
           <Trace />

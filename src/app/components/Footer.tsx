@@ -2,7 +2,7 @@
 import { usePathname } from "next/navigation";
 import { useTransitionRouter } from "next-view-transitions";
 import { Regenerate } from "./Icons";
-import { REGENERATE_EVENT } from "./Hero";
+import { REGENERATE_EVENT, REPLAY_KEY } from "./Hero";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -11,7 +11,7 @@ export default function Footer() {
   const regenerate = () => {
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (pathname !== "/") {
-      sessionStorage.removeItem("hero-streamed");
+      sessionStorage.setItem(REPLAY_KEY, "1");
       router.push("/");
       return;
     }

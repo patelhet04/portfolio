@@ -13,8 +13,10 @@ import {
 } from "@/utils/experience";
 import { ArrowOut } from "./Icons";
 import { axisRange, labelFits, pct, tickEdge } from "../lib/timeline";
+import { front, useScrub } from "../lib/scrub";
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 
 /** Rendered before the visitor's clock is known, so static HTML matches hydration. */
 const FALLBACK_NOW = toDate([2026, 9]);
@@ -22,11 +24,18 @@ const FALLBACK_NOW = toDate([2026, 9]);
 export default function Trace() {
   const [now, setNow] = useState(FALLBACK_NOW);
   const [selected, setSelected] = useState("fuzionx");
-  const [swapKey, setSwapKey] = useState(0);
+  // Remounts the detail pane on each change; only pointer changes animate, keyboard changes swap instantly
+  const [swap, setSwap] = useState({ key: 0, animate: false });
   // "false" hides the bars, "true" draws them in, "instant" shows them with no animation
   const [drawn, setDrawn] = useState<"false" | "true" | "instant">("false");
   const [litToken, setLitToken] = useState<string | null>(null);
-  const [scrub, setScrub] = useState<{ x: number; label: string; flip: boolean; hits: string[] } | null>(null);
+  // The scrub line moves via its ref on every pointer move; state only changes when the month or hits do
+  // `future` dims spans the scroll playhead hasn't reached yet
+  const [scrub, setScrub] = useState<{ label: string; flip: boolean; hits: string[]; future: string[] } | null>(null);
+  const scrubRef = useRef<HTMLDivElement>(null);
+  const scrubKey = useRef("");
+  const pointerScrub = useRef(false);
+  const tokensRef = useRef<HTMLDivElement>(null);
   // Track width in px, so duration labels only render in bars wide enough to hold them
   const [trackPx, setTrackPx] = useState<number | null>(null);
   const traceRef = useRef<HTMLDivElement>(null);
@@ -47,6 +56,9 @@ export default function Trace() {
   // a visit, they come back already drawn so a returning page morph lands on them.
   useIsoLayoutEffect(() => {
     if (sessionStorage.getItem("trace-drawn")) setDrawn("instant");
+    // Coming back from a span page, keep that span selected so its bar morphs back into its row
+    const last = sessionStorage.getItem("trace-selected");
+    if (last && careerSpans.some((s) => s.slug === last)) setSelected(last);
   }, []);
   useEffect(() => {
     if (sessionStorage.getItem("trace-drawn")) return;
@@ -70,10 +82,10 @@ export default function Trace() {
   for (let y = t0.getFullYear(); y <= t1.getFullYear(); y++) years.push(y);
 
   const span = careerSpans.find((s) => s.slug === selected)!;
-  const select = (slug: string) => {
+  const select = (slug: string, animate = true) => {
     if (slug === selected) return;
     setSelected(slug);
-    setSwapKey((k) => k + 1);
+    setSwap((w) => ({ key: w.key + 1, animate }));
   };
 
   // When the trace is stacked, the detail pane sits below all the rows. After a tap,
@@ -94,23 +106,95 @@ export default function Trace() {
     e.preventDefault();
     const next = orderedSpans[(to + orderedSpans.length) % orderedSpans.length];
     rowRefs.current[next.slug]?.focus();
-    select(next.slug);
+    select(next.slug, false);
+  };
+
+  // Moves the scrub line to x (px into the track) and updates its label and the spans it touches
+  const placeScrub = (x: number, playhead: boolean) => {
+    const track = wfRef.current!.querySelector(".wf__track")!.getBoundingClientRect();
+    const box = wfRef.current!.getBoundingClientRect();
+    const d = new Date(t0.getTime() + (x / track.width) * (t1.getTime() - t0.getTime()));
+    scrubRef.current!.style.transform = `translateX(${track.left - box.left + x}px)`;
+    const next = {
+      label: playhead && d >= now ? "now" : d > now ? "not yet" : formatMonth(d),
+      flip: x > track.width - 90,
+      hits: careerSpans.filter((s) => d >= toDate(s.start) && d <= (s.end ? toDate(s.end) : now)).map((s) => s.slug),
+      future: playhead ? careerSpans.filter((s) => toDate(s.start) > d).map((s) => s.slug) : [],
+    };
+    const key = `${next.label}|${next.flip}|${next.hits.join()}|${next.future.join()}`;
+    if (key !== scrubKey.current) {
+      scrubKey.current = key;
+      setScrub(next);
+    }
+  };
+  const clearScrub = () => {
+    scrubKey.current = "";
+    setScrub(null);
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (e.pointerType !== "mouse") return;
     const track = wfRef.current!.querySelector(".wf__track")!.getBoundingClientRect();
-    const box = wfRef.current!.getBoundingClientRect();
     const x = e.clientX - track.left;
-    if (x < 0 || x > track.width) return setScrub(null);
-    const d = new Date(t0.getTime() + (x / track.width) * (t1.getTime() - t0.getTime()));
-    setScrub({
-      x: e.clientX - box.left,
-      label: d > now ? "not yet" : formatMonth(d),
-      flip: x > track.width - 90,
-      hits: careerSpans.filter((s) => d >= toDate(s.start) && d <= (s.end ? toDate(s.end) : now)).map((s) => s.slug),
-    });
+    pointerScrub.current = x >= 0 && x <= track.width;
+    if (!pointerScrub.current) return scrollScrub.current();
+    placeScrub(x, false);
   };
+  const onPointerLeave = () => {
+    pointerScrub.current = false;
+    scrollScrub.current();
+  };
+
+  // Scroll is the playhead: while the trace crosses the screen, the scrub line sweeps from the
+  // start of the axis to today, dimming spans it hasn't reached. A mouse hovering the waterfall
+  // takes over; this is also the only scrub on touch screens.
+  const scrollScrub = useRef<() => void>(() => {});
+  scrollScrub.current = () => {
+    if (pointerScrub.current) return;
+    const r = traceRef.current!.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight * 0.9 - r.top) / (innerHeight * 0.35 + r.height)));
+    if (p <= 0) return clearScrub();
+    const width = wfRef.current!.querySelector(".wf__track")!.getBoundingClientRect().width;
+    placeScrub(p * (pct(now, t0, t1) / 100) * width, true);
+  };
+  useEffect(() => {
+    let frame = 0;
+    const onScroll = () => {
+      if (!frame)
+        frame = requestAnimationFrame(() => {
+          frame = 0;
+          scrollScrub.current();
+        });
+    };
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) {
+        addEventListener("scroll", onScroll, { passive: true });
+        addEventListener("resize", onScroll);
+        onScroll();
+      } else {
+        removeEventListener("scroll", onScroll);
+        removeEventListener("resize", onScroll);
+      }
+    });
+    io.observe(traceRef.current!);
+    return () => {
+      io.disconnect();
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // The tokenizer pass: as the stack scrolls through the reading zone, the token colours fill in
+  // one after another, like watching a tokenizer run, and drain again on the way back up
+  useScrub(
+    tokensRef,
+    (p, el) => {
+      const buttons = el.querySelectorAll<HTMLElement>("button");
+      buttons.forEach((b, i) => b.style.setProperty("--r", String(front(p, i, buttons.length, 8))));
+    },
+    { from: 0.95, to: 0.6, withHeight: 0.4 },
+  );
 
   const tokenUse = (token: string) => careerSpans.filter((s) => s.stack.includes(token)).map((s) => s.slug);
   const lit = litToken ? tokenUse(litToken) : null;
@@ -134,7 +218,7 @@ export default function Trace() {
           </span>
         </div>
         <div className="trace__body">
-          <div className="wf" ref={wfRef} onPointerMove={onPointerMove} onPointerLeave={() => setScrub(null)}>
+          <div className="wf" ref={wfRef} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
             <div className="wf__axis" aria-hidden>
               <div className="lbl mono">span</div>
               <div className="ticks mono">
@@ -165,7 +249,12 @@ export default function Trace() {
                       const width = Math.max(pct(end, t0, t1) - left, 0.9);
                       const duration = formatDuration(start, end);
                       const showLabel = trackPx === null ? width > 5 : labelFits(duration, (width / 100) * trackPx);
-                      const cls = ["wf__row", lit && !lit.includes(s.slug) ? "dim" : "", scrub?.hits.includes(s.slug) ? "hit" : ""].join(" ");
+                      const cls = [
+                        "wf__row",
+                        lit && !lit.includes(s.slug) ? "dim" : "",
+                        scrub?.hits.includes(s.slug) ? "hit" : "",
+                        scrub?.future.includes(s.slug) ? "future" : "",
+                      ].join(" ");
                       return (
                         <button
                           key={s.slug}
@@ -208,13 +297,13 @@ export default function Trace() {
                 </Fragment>
               ))}
             </div>
-            <div className="scrub mono" data-on={!!scrub} data-flip={scrub?.flip} style={{ transform: `translateX(${scrub?.x ?? 0}px)` }} aria-hidden>
+            <div className="scrub mono" ref={scrubRef} data-on={!!scrub} data-flip={scrub?.flip} aria-hidden>
               <span>{scrub?.label}</span>
             </div>
           </div>
 
           <div className="detail" ref={detailRef} aria-live="polite">
-            <SpanSummary key={swapKey} span={span} now={now} animate={swapKey > 0} />
+            <SpanSummary key={swap.key} span={span} now={now} animate={swap.animate} />
           </div>
         </div>
       </div>
@@ -223,7 +312,7 @@ export default function Trace() {
         <h3>
           The stack, tokenized<small>Hover a token to see where it was used.</small>
         </h3>
-        <div className="tokens">
+        <div className="tokens" ref={tokensRef}>
           {vocabulary.map((g) => (
             <p key={g.group} style={{ margin: 0 }}>
               <span className="muted">{g.group.toLowerCase().replace(/ /g, "_")}: </span>
@@ -265,7 +354,7 @@ function SpanSummary({ span, now, animate }: { span: CareerSpan; now: Date; anim
   const end = span.end ? toDate(span.end) : now;
   return (
     <div className="detail__inner" data-swap={animate ? "" : undefined}>
-      <h3 style={{ viewTransitionName: `title-${span.slug}`, viewTransitionClass: "title-morph" } as React.CSSProperties}>{span.name}</h3>
+      <h3>{span.name}</h3>
       <p className="role">{span.role}</p>
       <dl className="attrs mono">
         <dt>start</dt>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/utils/site";
+import RevealText from "./RevealText";
 
 export default function About() {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,13 +33,17 @@ export default function About() {
             </figure>
           </div>
           <div className="about__copy">
-            <h2 className="h2" style={{ marginBottom: 32 }}>
-              Some context.
-            </h2>
-            <p className="big">
-              I&apos;m <strong>Het</strong>, an engineer in Boston who takes AI from demo to dependable. Right now I lead innovation at FuzionX, helping
-              early-stage founders take their products from ideation to production and their first pilots.
-            </p>
+            <RevealText className="h2" style={{ marginBottom: 32 }} runs={["Some context."]} />
+            <RevealText
+              as="p"
+              className="big"
+              range={{ from: 0.85, to: 0.5, withHeight: 0.6 }}
+              runs={[
+                "I'm ",
+                { strong: "Het" },
+                ", an engineer in Boston who takes AI from demo to dependable. Right now I lead innovation at FuzionX, helping early-stage founders take their products from ideation to production and their first pilots.",
+              ]}
+            />
             <p className="lede" style={{ maxWidth: "58ch" }}>
               Before that I spent a year at Northeastern&apos;s AI Strategic Hub shipping things people actually used: a grading platform 67% of faculty
               adopted, a voice coach with 500+ daily users, and the GPU infrastructure underneath both. And before <em>that</em>, three years at Silver

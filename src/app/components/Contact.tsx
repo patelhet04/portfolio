@@ -4,6 +4,7 @@ import emailjs from "@emailjs/browser";
 import { site } from "@/utils/site";
 import { ArrowOut, ArrowUp } from "./Icons";
 import { revealWords } from "../lib/stream";
+import RevealText from "./RevealText";
 
 const emailjsKeys = {
   service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
@@ -69,7 +70,7 @@ export default function Contact() {
     <section className="block" id="contact">
       <div className="wrap">
         <div className="head">
-          <h2 className="h2">Send a prompt.</h2>
+          <RevealText className="h2" runs={["Send a prompt."]} />
           <p className="lede">Pitch a role, ask about an agent build, or just say hi. It lands straight in my inbox.</p>
         </div>
         <div className="contact">

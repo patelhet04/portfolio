@@ -16,8 +16,9 @@ export default function Header() {
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  // Reading progress
+  // Reading progress. Browsers with scroll-driven animations fill the line from CSS instead.
   useEffect(() => {
+    if (CSS.supports("animation-timeline: scroll()")) return;
     let frame = 0;
     const update = () => {
       frame = 0;

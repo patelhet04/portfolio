@@ -2,6 +2,8 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { recommendationsData } from "@/utils/recommendations";
 import { revealWords } from "../lib/stream";
+import RevealText from "./RevealText";
+import { front, useScrub } from "../lib/scrub";
 
 /** Splits "[highlighted] text" into marked and plain runs of words. */
 export function parseHighlights(content: string) {
@@ -17,6 +19,8 @@ export default function Testimonials() {
   const quoteRef = useRef<HTMLQuoteElement>(null);
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
   const first = useRef(true);
+  // The first quote's highlights follow the scroll until they're complete or another tab is chosen
+  const scrubbing = useRef(true);
   const shown = index ?? 0;
 
   // Stream the first quote when the section scrolls into view
@@ -44,13 +48,37 @@ export default function Testimonials() {
       return;
     }
     const step = first.current ? 16 : 9;
+    const scrubbed = first.current && scrubbing.current;
     first.current = false;
+    if (!scrubbed) scrubbing.current = false;
     quote.dataset.streaming = "";
     const timers = revealWords(words, { step });
-    timers.push(window.setTimeout(() => marks.forEach((m, k) => timers.push(window.setTimeout(() => m.classList.add("swept"), k * 180))), words.length * step + 120));
+    if (scrubbed) {
+      quote.dataset.scrub = "";
+      dispatchEvent(new Event("scroll"));
+    } else {
+      timers.push(window.setTimeout(() => marks.forEach((m, k) => timers.push(window.setTimeout(() => m.classList.add("swept"), k * 180))), words.length * step + 120));
+    }
     timers.push(window.setTimeout(() => delete quote.dataset.streaming, words.length * step + 600));
     return () => timers.forEach(clearTimeout);
   }, [index]);
+
+  // Scrolling through the panel sweeps the highlighter over each marked phrase in turn
+  useScrub(
+    panelRef,
+    (p, panel) => {
+      const quote = panel.querySelector<HTMLElement>(".quote[data-scrub]");
+      if (!scrubbing.current || !quote) return;
+      const marks = quote.querySelectorAll<HTMLElement>("mark");
+      marks.forEach((m, i) => m.style.setProperty("--m", String(front(p, i, marks.length, 1))));
+      if (p >= 1) {
+        scrubbing.current = false;
+        marks.forEach((m) => m.classList.add("swept"));
+        delete quote.dataset.scrub;
+      }
+    },
+    { from: 0.8, to: 0.35, withHeight: 0.3 },
+  );
 
   const onKeyDown = (e: React.KeyboardEvent, i: number) => {
     const n = recommendationsData.length;
@@ -67,7 +95,7 @@ export default function Testimonials() {
     <section className="block" id="feedback">
       <div className="wrap">
         <div className="head">
-          <h2 className="h2">Human feedback.</h2>
+          <RevealText className="h2" runs={["Human feedback."]} />
           <p className="lede">From the people who managed me and built alongside me.</p>
         </div>
         <div className="fb">

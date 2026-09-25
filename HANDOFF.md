@@ -130,3 +130,37 @@ Page transitions use the `next-view-transitions` package: its `Link` and `useTra
   - every season in dark mode
   - Safari and Firefox fallbacks
   - reduced motion
+
+## Session 3: motion work done so far, and the open hero problem
+
+Session 2 (mobile, spacing, cleanup) is committed as `0383e22`. Everything below is **uncommitted** on `redesign/inference-trace`.
+
+### Done and liked (keep)
+- **Page transitions:** a short crossfade between pages. Only the span bar travels (no title stretch). Detail pages get one quick entrance. Prev/next slides in the direction of travel. Going back re-selects the span you came from so its bar shrinks back into its row. (`globals.css` view-transition block, `SpanPage.tsx`, `Trace.tsx`.)
+- **Trace:** keyboard selection swaps instantly; the hover scrub no longer re-renders the whole trace.
+- **Outputs:** a filter change animates only rows that weren't already showing.
+- **Home anchors:** smooth scrolling.
+- **Scroll motion, driven by scroll position:** it moves with the scroll and reverses when you scroll back. Built with `lib/scrub.ts` (`useScrub`, `front`).
+  - `RevealText.tsx`: headings and the About intro fill from faint to full ink.
+  - Trace scroll playhead: sweeps '16 to now, dims spans it hasn't reached.
+  - Tokenizer pass on the stack tokens.
+  - Testimonial highlights swept by scroll.
+  - Layered hero depth on desktop (CSS scroll timelines).
+  - About photo drift.
+  - Header progress line driven by CSS.
+- **Polish:** snappier presses, faster mobile menu, faster photo reveal.
+- **Hero:** streams on every full page load (`streamedThisLoad` module flag), with the smoother token timing.
+
+### Hero "in production" moment: solved, owner approved
+`Hero.tsx` streams "…that hold up: agents, retrieval, and the GPUs underneath.", then the words part (a FLIP glide) and "in production" drops in from above with three decaying bounces (a ball keeping 35% of its height per bounce), each word flashing on its first landing. The lime sweep draws once "production" settles.
+- **Nothing around the answer moves:** the `.answer` box is held at the finished sentence's height (fractional px) from the first frame, so the reflow happens inside it. Verified 0px movement at 1440, 430, 390 and 360 wide, light and dark.
+- **The caret is out of the flow:** absolutely positioned, moved with transforms, and lined up with a probe styled like the old inline caret.
+- React renders the finished markup once; the stream only toggles classes and styles. "in production" sits in `.ins`, hidden with `[data-edit]` during the first pass. The colon sits outside `.hl`, so the sweep needs no `--tail`.
+- Reduced motion, Regenerate, return from a detail page, and a resize mid-stream (it lands the finished answer) are all handled.
+- The token flash fade was shortened to 520ms so the glow stays with the newest words.
+
+**Rejected hero ideas (don't bring back):** a typewriter, a letter wave, a "demos → production" rewrite, hatched `[MASK]` tokens, an attention-map dim, a sampling or odometer reel, a calm edit into a dashed gap. A continuous "pen" stroke drawing the sweep was built and replaced by the drop.
+
+**Dev notes:**
+- Another session's dev server holds port 3000 and shares `.next`, which corrupts the cache. If the dev server serves stale code, restart it (`autoPort` is on in `.claude/launch.json`).
+- Playwright lives in the old session's scratchpad, so reinstall it in the new scratchpad for screenshots and recordings.
