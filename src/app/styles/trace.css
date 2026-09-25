@@ -1,0 +1,487 @@
+/* The career trace waterfall, its detail pane, and the tokenized stack. */
+
+/* ───────── Trace ───────── */
+.trace {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.trace__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--muted);
+}
+.trace__bar b {
+  color: var(--ink);
+  font-weight: 500;
+}
+.trace__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+}
+.wf {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--rule);
+  min-width: 0;
+  overflow: hidden;
+}
+.wf__axis,
+.wf__row,
+.wf__group {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+}
+.wf__axis {
+  height: 36px;
+  border-bottom: 1px solid var(--rule);
+}
+.wf__axis .lbl {
+  padding: 11px 16px;
+  color: var(--muted);
+}
+.ticks {
+  position: relative;
+}
+.ticks span {
+  position: absolute;
+  top: 11px;
+  transform: translateX(-50%);
+  color: var(--muted);
+}
+/* The home axis starts beside the name column, so only its right end needs pulling in */
+.sd__ticks span[data-edge="start"] {
+  transform: none;
+}
+.ticks span[data-edge="end"],
+.sd__ticks span[data-edge="end"] {
+  transform: translateX(-100%);
+}
+.ticks span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  width: 1px;
+  height: 900px;
+  background: var(--rule);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.ticks span[data-edge="end"]::after {
+  left: 100%;
+}
+.wf__rows {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.wf__group {
+  align-items: center;
+  height: 34px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
+}
+.wf__group span {
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wf__group i {
+  width: 14px;
+  height: 8px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.wf__group i.edu {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.wf__row {
+  position: relative;
+  flex: 1;
+  min-height: 62px;
+  width: 100%;
+  align-items: center;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition:
+    background-color 200ms ease,
+    opacity 250ms ease;
+}
+.wf__row:last-child {
+  border-bottom: 0;
+}
+.wf__row:focus-visible {
+  outline-offset: -2px;
+  border-radius: 0;
+}
+.wf__name {
+  padding: 12px 16px;
+  min-width: 0;
+}
+.wf__name strong {
+  display: block;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wf__name small {
+  display: block;
+  color: var(--muted);
+  font-size: 12.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wf__track {
+  position: relative;
+  height: 100%;
+}
+.span {
+  position: absolute;
+  top: 50%;
+  height: 26px;
+  margin-top: -13px;
+  border-radius: var(--r-xs);
+  background: var(--accent);
+  color: var(--on-accent);
+  display: flex;
+  align-items: center;
+  padding: 0 9px;
+  overflow: hidden;
+  white-space: nowrap;
+  view-transition-class: span-morph;
+}
+.span .mono {
+  position: relative;
+  font-size: 10.5px;
+}
+.span.edu {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  background-image: repeating-linear-gradient(135deg, var(--rule) 0 1px, transparent 1px 7px);
+}
+.span.live::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  background: linear-gradient(90deg, transparent, var(--signal));
+  animation: live 1.8s ease-in-out infinite;
+}
+@keyframes live {
+  50% {
+    opacity: 0.35;
+  }
+}
+.span.next {
+  background: transparent;
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--rule-2);
+  background-image: repeating-linear-gradient(90deg, var(--rule-2) 0 6px, transparent 6px 12px);
+  background-size: 100% 1px;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+}
+/* The draw-in runs once, on first view, via clip-path so the element keeps its
+real geometry for the shared-element morph into the detail page. */
+.trace[data-drawn="false"] .span {
+  clip-path: inset(0 100% 0 0 round var(--r-xs));
+}
+.trace[data-drawn="true"] .span {
+  clip-path: inset(0 0 0 0 round var(--r-xs));
+  transition: clip-path 900ms var(--ease-arrive);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+.wf__row[aria-selected="true"] {
+  background: var(--paper-2);
+}
+.wf__row[aria-selected="true"] .span:not(.edu):not(.next) {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+.wf__row[aria-selected="true"] .span.edu {
+  box-shadow: inset 0 0 0 2px var(--ink);
+  background-color: var(--signal-soft);
+}
+.wf__row.dim {
+  opacity: 0.3;
+}
+/* Spans the scroll playhead hasn't reached yet */
+.wf__track {
+  transition: opacity 300ms ease;
+}
+.wf__row.future .wf__track {
+  opacity: 0.3;
+}
+.wf__row.hit .span:not(.next) {
+  outline: 3px solid var(--signal-soft);
+  outline-offset: 1px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .wf__row:hover {
+    background: var(--paper-2);
+  }
+}
+.scrub {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--ink);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+  z-index: 3;
+}
+.scrub span {
+  position: absolute;
+  top: 8px;
+  left: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 3px 7px;
+  border-radius: var(--r-xs);
+  white-space: nowrap;
+}
+.scrub[data-on="true"] {
+  opacity: 1;
+}
+.scrub[data-flip="true"] span {
+  left: auto;
+  right: 6px;
+}
+.detail {
+  padding: 20px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.detail__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.detail__inner[data-swap] {
+  animation: detail-in 200ms var(--ease-out) both;
+}
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.detail h3 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.detail .role {
+  margin: 0 0 16px;
+  color: var(--ink-2);
+  font-size: 15px;
+}
+.attrs {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 4px 22px;
+  margin: 0 0 16px;
+}
+.attrs dt {
+  color: var(--muted);
+  grid-row: 1;
+}
+.attrs dd {
+  margin: 0;
+  font-size: 14px;
+  grid-row: 2;
+}
+.detail p.sum {
+  margin: 0 0 16px;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+.events {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  border-left: 1px solid var(--rule-2);
+}
+.events li {
+  position: relative;
+  padding: 4px 0 4px 16px;
+  font-size: 14.5px;
+}
+.events li::before {
+  content: "";
+  position: absolute;
+  left: -3.5px;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.chip {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 4px 7px;
+  border-radius: var(--r-xs);
+  background: var(--paper-2);
+  color: var(--ink-2);
+}
+.detail__open {
+  margin-top: auto;
+  padding-top: 20px;
+}
+/* Vocabulary */
+.vocab {
+  margin-top: var(--space-head);
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 16px 32px;
+  align-items: start;
+}
+.vocab h3 {
+  margin: 4px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+.vocab h3 small {
+  display: block;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 13px;
+  margin-top: 2px;
+}
+.tokens {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 2.1;
+}
+.tokens button {
+  border: 0;
+  padding: 3px 1px;
+  margin: 0;
+  border-radius: 4px;
+  cursor: default;
+  font: inherit;
+  color: var(--ink);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+/* Each token's colour is mixed in by --r, which the tokenizer pass drives from scroll (1 by default) */
+.tokens button {
+  background: color-mix(in srgb, var(--tok-bg) calc(var(--r, 1) * 100%), transparent);
+}
+.tokens button:nth-child(4n + 1) {
+  --tok-bg: var(--signal-soft);
+}
+.tokens button:nth-child(4n + 2) {
+  --tok-bg: var(--paper-3);
+}
+.tokens button:nth-child(4n + 3) {
+  --tok-bg: color-mix(in srgb, var(--signal-soft) 45%, transparent);
+}
+.tokens button:nth-child(4n + 4) {
+  --tok-bg: var(--paper-2);
+}
+.tokens button[data-used] {
+  cursor: pointer;
+}
+.tokens button[data-active="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+/* ── Breakpoints, touch, scroll-linked motion and reduced motion for this area ── */
+@media (max-width: 1180px) {
+  .trace__body {
+    grid-template-columns: 1fr;
+  }
+  .wf {
+    border-right: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+}
+@media (max-width: 960px) {
+  .vocab {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .wf__axis,
+  .wf__row,
+  .wf__group {
+    grid-template-columns: 132px minmax(0, 1fr);
+  }
+  .wf__name {
+    padding: 10px 10px 10px 12px;
+  }
+  .wf__name strong {
+    font-size: 13.5px;
+  }
+  /* Two lines instead of an ellipsis in the narrow name column */
+  .wf__name small {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  /* Keep the shortest spans visible as a tappable mark */
+  .wf__track .span {
+    min-width: 10px;
+  }
+  .wf__group span {
+    padding: 0 12px;
+  }
+  .ticks span:nth-child(even) {
+    display: none;
+  }
+  .sd__ticks span:nth-child(even) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trace[data-drawn] .span {
+    clip-path: none !important;
+    transition: none !important;
+  }
+  .span.live::after {
+    animation: none !important;
+  }
+}

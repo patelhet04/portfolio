@@ -1,0 +1,178 @@
+/* About: the portrait, the copy and the facts grid. */
+
+/* ───────── About ───────── */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+.portrait-mask {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  clip-path: inset(0 0 100% 0 round var(--r-lg));
+  transition: clip-path 800ms var(--ease-out);
+}
+[data-seen="true"] .portrait-mask {
+  clip-path: inset(0 0 0 0 round var(--r-lg));
+}
+.portrait {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  background: var(--paper-2);
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  transition: transform 1000ms var(--ease-arrive);
+}
+[data-seen="true"] .portrait img {
+  transform: none;
+}
+/* Side by side, the facts sit under the portrait and the portrait takes whatever height
+the copy leaves, so both columns start and end together. The image is positioned
+absolutely so it never sets the row height itself. */
+@media (min-width: 961px) {
+  .about {
+    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "photo copy"
+      "facts copy";
+    row-gap: 28px;
+  }
+  .portrait-mask {
+    grid-area: photo;
+    display: flex;
+  }
+  .about__copy {
+    grid-area: copy;
+  }
+  .about .facts {
+    grid-area: facts;
+  }
+  .portrait {
+    flex: 1;
+    min-height: 240px;
+    aspect-ratio: auto;
+  }
+  .portrait img {
+    position: absolute;
+    inset: 0;
+    object-position: 50% 42%;
+  }
+}
+.portrait figcaption {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  background: var(--card);
+  color: var(--ink);
+  padding: 5px 9px;
+  border-radius: var(--r-sm);
+}
+.about__copy .big {
+  margin: 0 0 28px;
+  font-size: clamp(1.5rem, 1rem + 1.4vw, 2.25rem);
+  line-height: 1.22;
+  letter-spacing: -0.022em;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+.about__copy .big strong {
+  font-weight: 600;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+.facts div {
+  padding: 16px 16px 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.facts div:nth-child(odd) {
+  border-right: 1px solid var(--rule);
+}
+.facts div:nth-child(even) {
+  padding-left: 16px;
+}
+.facts dt {
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.facts dd {
+  margin: 0;
+  font-size: 15.5px;
+}
+/* ── Breakpoints, touch, scroll-linked motion and reduced motion for this area ── */
+@media (max-width: 960px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+  .portrait-mask {
+    max-width: 440px;
+  }
+}
+@media (max-width: 640px) {
+  .facts {
+    grid-template-columns: 1fr;
+  }
+  .facts div:nth-child(odd) {
+    border-right: 0;
+  }
+  .facts div:nth-child(even) {
+    padding-left: 0;
+  }
+}
+/* Scroll-linked touches, where the browser can drive them from the scroll position.
+The portrait drifts inside its frame (the frame never moves); the reading line
+in the header fills with the page scroll instead of a JS listener. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* The frame clips (overflow: hidden), which would make it the image's scroller; name the
+    timeline on the frame so progress is measured against the page scroll instead */
+    .portrait-mask {
+      view-timeline: --portrait block;
+    }
+    .portrait img {
+      scale: 1.07;
+      animation: portrait-drift linear both;
+      animation-timeline: --portrait;
+      animation-range: cover;
+    }
+  }
+}
+/* …and the About portrait becomes a wide crop where the About section is one column */
+@media (min-width: 641px) and (max-width: 960px) {
+  .portrait-mask {
+    max-width: none;
+  }
+  .portrait {
+    aspect-ratio: 3 / 2;
+  }
+  .portrait img {
+    object-position: 50% 28%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portrait-mask {
+    clip-path: none !important;
+  }
+  .portrait img {
+    transform: none !important;
+  }
+}
+@keyframes portrait-drift {
+  from {
+    translate: 0 -14px;
+  }
+  to {
+    translate: 0 14px;
+  }
+}

@@ -1,0 +1,261 @@
+/* Design tokens: the ten palettes, radii, easing and springs, and the squircle enhancement. */
+
+/* ─────────────────────────────────────────────────────────────
+Tokens. Every palette resolves to the same small set of roles:
+paper (grounds), ink (text), signal (highlighter), primary
+(main button), accent (work spans).
+───────────────────────────────────────────────────────────── */
+:root {
+  --paper: #f3f4f0;
+  --paper-2: #e8eae3;
+  --paper-3: #dfe2d8;
+  --card: #fbfbf8;
+  --ink: #10120d;
+  --ink-2: #3d4138;
+  --muted: #62675c;
+  --rule: rgba(16, 18, 13, 0.12);
+  --rule-2: rgba(16, 18, 13, 0.22);
+  --signal: #c6f53a;
+  --signal-2: #b4e21f;
+  --signal-soft: rgba(198, 245, 58, 0.55);
+  --on-signal: #10120d;
+  --primary: #10120d;
+  --primary-hover: #2b2f26;
+  --on-primary: #f3f4f0;
+  --accent: #10120d;
+  --on-accent: #f3f4f0;
+  --plate: #ffffff;
+  --shadow-rgb: 16, 18, 13;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  /* An Apple-style spring sampled into linear(): duration 0.4s, bounce 0.28. It overshoots, so it's
+     for presses springing back; it only keeps its shape at --spring-ms. */
+  --spring: linear(0, 0.0288, 0.1014, 0.2004, 0.3123, 0.427, 0.5376, 0.6392, 0.7291, 0.8061, 0.8699, 0.9211, 0.9609, 0.9905, 1.0116, 1.0255, 1.0338, 1.0377, 1.0383, 1.0367, 1.0336, 1.0296, 1.0252, 1.0209, 1.0167, 1.0129, 1.0096, 1.0068, 1.0044, 1.0026, 1.0012, 1.0001, 0.9994, 0.9989, 0.9986, 0.9985, 0.9985, 0.9986, 0.9987, 0.9989, 1);
+  --spring-ms: 650ms;
+  /* A critically damped spring: it arrives as fast as possible without overshooting, so it suits
+     things that land on a real position (a selected pill, a measured value, a menu). The shape is
+     the same at any duration; 90% of the motion is done by 42% of it. */
+  --spring-smooth: linear(0, 0.0229, 0.0788, 0.1532, 0.2361, 0.3208, 0.403, 0.4802, 0.5509, 0.6146, 0.6711, 0.7207, 0.7638, 0.801, 0.8329, 0.8601, 0.8832, 0.9027, 0.9191, 0.9329, 0.9445, 0.9541, 0.9621, 0.9688, 0.9743, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9965, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
+
+  --sans: "Host Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --mono: "Martian Mono", ui-monospace, "SF Mono", monospace;
+
+  --r-xs: 6px;
+  --r-sm: 9px;
+  --r-md: 13px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+
+  --pad: clamp(20px, 4vw, 48px);
+  /* Vertical rhythm: space around each section, between a section head and its content, and between groups inside a section */
+  --space-section: clamp(72px, 4vw + 56px, 120px);
+  --space-head: clamp(36px, 2vw + 28px, 56px);
+  --space-group: 40px;
+  --max: 1320px;
+  --shadow: 0 1px 1px rgba(var(--shadow-rgb), 0.04), 0 8px 24px -12px rgba(var(--shadow-rgb), 0.2);
+  --shadow-pop: 0 1px 2px rgba(var(--shadow-rgb), 0.06), 0 18px 40px -16px rgba(var(--shadow-rgb), 0.35);
+  color-scheme: light;
+}
+/* Squircles where the browser can draw them. Superellipse corners read
+smaller than circular ones, so the radii grow to keep the same presence. */
+@supports (corner-shape: squircle) {
+  :root {
+    --r-xs: 9px;
+    --r-sm: 14px;
+    --r-md: 20px;
+    --r-lg: 28px;
+    --r-xl: 34px;
+  }
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+  }
+}
+[data-theme="dark"] {
+  --paper: #0d0e0b;
+  --paper-2: #171913;
+  --paper-3: #21241c;
+  --card: #121410;
+  --ink: #eef0e8;
+  --ink-2: #c3c7b9;
+  --muted: #8f9486;
+  --rule: rgba(238, 240, 232, 0.1);
+  --rule-2: rgba(238, 240, 232, 0.2);
+  --signal-soft: rgba(198, 245, 58, 0.3);
+  --primary: #eef0e8;
+  --primary-hover: #d6d9ce;
+  --on-primary: #0d0e0b;
+  --accent: #eef0e8;
+  --on-accent: #0d0e0b;
+  --plate: #f3f4f0;
+  --shadow-rgb: 0, 0, 0;
+  color-scheme: dark;
+}
+/* Spring: cherry blossom and new leaf */
+[data-season="spring"] {
+  --paper: #f7f1ef;
+  --paper-2: #efe5e2;
+  --paper-3: #e5d9d5;
+  --card: #fcf9f8;
+  --ink: #1d2a1b;
+  --ink-2: #3e4a3b;
+  --muted: #5f6a5a;
+  --rule: rgba(29, 42, 27, 0.12);
+  --rule-2: rgba(29, 42, 27, 0.22);
+  --signal: #f4afc3;
+  --signal-2: #ee97b0;
+  --signal-soft: rgba(244, 175, 195, 0.6);
+  --on-signal: #1d2a1b;
+  --primary: #1d2a1b;
+  --primary-hover: #34432f;
+  --on-primary: #f7f1ef;
+  --accent: #457c2d;
+  --on-accent: #ffffff;
+  --shadow-rgb: 29, 42, 27;
+}
+[data-season="spring"][data-theme="dark"] {
+  --paper: #0f130e;
+  --paper-2: #181d16;
+  --paper-3: #222920;
+  --card: #141912;
+  --ink: #f2ecea;
+  --ink-2: #cfc8c5;
+  --muted: #969d90;
+  --rule: rgba(242, 236, 234, 0.1);
+  --rule-2: rgba(242, 236, 234, 0.2);
+  --signal-soft: rgba(244, 175, 195, 0.3);
+  --primary: #f2ecea;
+  --primary-hover: #dcd4d1;
+  --on-primary: #0f130e;
+  --accent: #7db85c;
+  --on-accent: #0f130e;
+  --plate: #f7f1ef;
+  --shadow-rgb: 0, 0, 0;
+}
+/* Summer: sun, sand and open water */
+[data-season="summer"] {
+  --paper: #fff6e6;
+  --paper-2: #f6ead3;
+  --paper-3: #eddcbf;
+  --card: #fffbf3;
+  --ink: #0e2436;
+  --ink-2: #2f4556;
+  --muted: #56646e;
+  --rule: rgba(14, 36, 54, 0.12);
+  --rule-2: rgba(14, 36, 54, 0.22);
+  --signal: #ffc62e;
+  --signal-2: #f5b70f;
+  --signal-soft: rgba(255, 198, 46, 0.5);
+  --on-signal: #0e2436;
+  --primary: #0e2436;
+  --primary-hover: #213a4f;
+  --on-primary: #fff6e6;
+  --accent: #1a6fa8;
+  --on-accent: #ffffff;
+  --shadow-rgb: 14, 36, 54;
+}
+[data-season="summer"][data-theme="dark"] {
+  --paper: #08141f;
+  --paper-2: #0f1d2a;
+  --paper-3: #172838;
+  --card: #0c1925;
+  --ink: #fff4e0;
+  --ink-2: #d8ccb6;
+  --muted: #8f9aa1;
+  --rule: rgba(255, 244, 224, 0.1);
+  --rule-2: rgba(255, 244, 224, 0.2);
+  --signal-soft: rgba(255, 198, 46, 0.26);
+  --primary: #fff4e0;
+  --primary-hover: #eadcc2;
+  --on-primary: #08141f;
+  --accent: #4aa3e0;
+  --on-accent: #08141f;
+  --plate: #fff6e6;
+  --shadow-rgb: 0, 0, 0;
+}
+/* Fall: brick, cream and pumpkin */
+[data-season="fall"] {
+  --paper: #f2e5cc;
+  --paper-2: #e9d8b9;
+  --paper-3: #dfcba6;
+  --card: #f8eedc;
+  --ink: #2b1812;
+  --ink-2: #4d362c;
+  --muted: #6a5345;
+  --rule: rgba(43, 24, 18, 0.13);
+  --rule-2: rgba(43, 24, 18, 0.24);
+  --signal: #f0a043;
+  --signal-2: #e68f2a;
+  --signal-soft: rgba(240, 160, 67, 0.45);
+  --on-signal: #2b1812;
+  --primary: #a4493d;
+  --primary-hover: #8f3d32;
+  --on-primary: #fbf3e6;
+  --accent: #a4493d;
+  --on-accent: #fbf3e6;
+  --shadow-rgb: 43, 24, 18;
+}
+[data-season="fall"][data-theme="dark"] {
+  --paper: #170e0a;
+  --paper-2: #22150f;
+  --paper-3: #2e1d15;
+  --card: #1c120d;
+  --ink: #f2e5cc;
+  --ink-2: #d4c3a6;
+  --muted: #a38e7b;
+  --rule: rgba(242, 229, 204, 0.1);
+  --rule-2: rgba(242, 229, 204, 0.2);
+  --signal-soft: rgba(240, 160, 67, 0.3);
+  --primary: #e07a62;
+  --primary-hover: #ea8f79;
+  --on-primary: #170e0a;
+  --accent: #d9705a;
+  --on-accent: #170e0a;
+  --plate: #f2e5cc;
+  --shadow-rgb: 0, 0, 0;
+}
+/* Winter: snow, frost and evergreen */
+[data-season="winter"] {
+  --paper: #edf2f6;
+  --paper-2: #e1e8ee;
+  --paper-3: #d4dde5;
+  --card: #f6f9fb;
+  --ink: #0f1b2e;
+  --ink-2: #2f3c4e;
+  --muted: #566272;
+  --rule: rgba(15, 27, 46, 0.12);
+  --rule-2: rgba(15, 27, 46, 0.22);
+  --signal: #b7daf2;
+  --signal-2: #9ccbec;
+  --signal-soft: rgba(150, 200, 235, 0.55);
+  --on-signal: #0f1b2e;
+  --primary: #0f1b2e;
+  --primary-hover: #243248;
+  --on-primary: #edf2f6;
+  --accent: #1e4b42;
+  --on-accent: #edf2f6;
+  --shadow-rgb: 15, 27, 46;
+}
+[data-season="winter"][data-theme="dark"] {
+  --paper: #09101b;
+  --paper-2: #101a28;
+  --paper-3: #182435;
+  --card: #0d1622;
+  --ink: #e8eff6;
+  --ink-2: #c1ccd8;
+  --muted: #8b97a6;
+  --rule: rgba(232, 239, 246, 0.1);
+  --rule-2: rgba(232, 239, 246, 0.2);
+  --signal-soft: rgba(183, 218, 242, 0.25);
+  --primary: #e8eff6;
+  --primary-hover: #cfd9e4;
+  --on-primary: #09101b;
+  --accent: #52a38f;
+  --on-accent: #09101b;
+  --plate: #edf2f6;
+  --shadow-rgb: 0, 0, 0;
+}

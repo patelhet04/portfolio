@@ -179,7 +179,7 @@ The layout is spacious at section level and dense inside instruments. Sections b
 
 ## Colors
 
-Every palette resolves to the same roles: paper (grounds), ink (text), signal (highlighter), primary (the main button), and accent (work spans). The frontmatter lists the Default palette. `src/app/globals.css` is the source of truth for all ten palettes, and they are locked.
+Every palette resolves to the same roles: paper (grounds), ink (text), signal (highlighter), primary (the main button), and accent (work spans). The frontmatter lists the Default palette. `src/app/styles/tokens.css` is the source of truth for all ten palettes, and they are locked.
 
 ### Primary
 - **Ink Button** (`primary`): the solid pill for the single most important action in a view ("Read the trace", "Resume", the active filter). In Default, Spring, Summer and Winter it matches ink. Fall is the exception: brick red (`#a4493d` light, `#e07a62` dark).

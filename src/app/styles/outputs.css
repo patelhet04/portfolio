@@ -1,0 +1,193 @@
+/* Outputs: the filters, the list and the cursor preview. */
+
+/* ───────── Outputs ───────── */
+.filters {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  margin-bottom: 20px;
+}
+.filters__row {
+  display: flex;
+}
+.filters button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.filters button .n {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  margin-left: 6px;
+  opacity: 0.75;
+}
+.filters__active {
+  position: absolute;
+  inset: 4px;
+  pointer-events: none;
+  transition: clip-path 480ms var(--spring-smooth);
+}
+.filters__active button {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+.item[data-enter] {
+  animation: row-in 360ms var(--ease-out) both;
+  animation-delay: calc(min(var(--j, 0), 8) * 30ms);
+}
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.item a {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) minmax(0, 0.9fr) 28px;
+  gap: 20px;
+  align-items: center;
+  padding: 20px 4px;
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+}
+.item .type {
+  color: var(--muted);
+}
+.item .t {
+  font-size: clamp(1.1rem, 0.9rem + 0.6vw, 1.45rem);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: transform 250ms var(--ease-out);
+}
+.item .d {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.item svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 250ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .item a:hover .t {
+    transform: translateX(6px);
+  }
+  .item a:hover svg {
+    transform: translate(3px, -3px);
+  }
+}
+/* Phone paging: rows past the limit stay hidden until "Show more" */
+.more {
+  display: none;
+}
+@media (max-width: 640px) {
+  .item[data-extra] {
+    display: none;
+  }
+  .item[data-new] {
+    animation: row-in 360ms var(--ease-out) both;
+    animation-delay: calc(var(--k) * 30ms);
+  }
+  .more {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-top: 20px;
+  }
+}
+.peek {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  width: 300px;
+  aspect-ratio: 5 / 3.4;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: var(--shadow-pop);
+  background: var(--paper-2);
+  transition: opacity 200ms ease;
+}
+.peek img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.peek[data-on="true"] {
+  opacity: 1;
+}
+/* ── Breakpoints, touch, scroll-linked motion and reduced motion for this area ── */
+@media (max-width: 960px) {
+  .item a {
+    grid-template-columns: 1fr 24px;
+    gap: 4px 16px;
+  }
+  .item .type {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .item .t {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .item .d {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .item svg {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+  }
+  .filters {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+}
+@media (max-width: 640px) {
+  .filters button {
+    padding: 8px 9px;
+  }
+  .filters button .n {
+    margin-left: 4px;
+  }
+}
+/* Touch: 16px inputs so iOS doesn't zoom on focus, and invisible hit areas
+that bring small controls up to about 44px without changing how they look */
+@media (pointer: coarse) {
+  .filters > .filters__row button {
+    position: relative;
+  }
+  .filters > .filters__row button::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+  }
+  .filters > .filters__row button::before {
+    inset: -4px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .item .t,
+  .item svg {
+    transition-property: background-color, border-color, color, opacity !important;
+  }
+}

@@ -1,0 +1,134 @@
+/* View transitions between pages and the palette circle. */
+
+/* ─────────────────────────────────────────────────────────────
+View transitions
+Pages: a true crossfade. The old page fades out on exactly the curve the new one fades in
+on, and the browser adds the two (plus-lighter), so the page never dims in between.
+Shared element: the span bar is the one thing that moves between the trace and its page,
+and its two snapshots crossfade the same way, so it stays solid the whole way.
+Prev/next: both pages slide a little along the time axis as they crossfade.
+Appearance: the new palette spreads in a circle from the control.
+───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation: vt-fade-out 320ms ease both;
+  }
+  ::view-transition-new(root) {
+    animation: vt-fade-in 320ms ease both;
+  }
+  ::view-transition-group(site-header) {
+    animation: none;
+  }
+  ::view-transition-group(*.span-morph) {
+    animation-duration: 560ms;
+    animation-timing-function: var(--ease-drawer);
+  }
+  ::view-transition-old(*.span-morph),
+  ::view-transition-new(*.span-morph) {
+    height: 100%;
+    width: 100%;
+    object-fit: fill;
+  }
+  ::view-transition-old(*.span-morph) {
+    animation: vt-fade-out 560ms ease-in-out both;
+  }
+  ::view-transition-new(*.span-morph) {
+    animation: vt-fade-in 560ms ease-in-out both;
+  }
+  /* Spans with no partner on the other page (the rest of the trace) fade with the page itself */
+  ::view-transition-old(*.span-morph):only-child {
+    animation: vt-fade-out 320ms ease both;
+  }
+  ::view-transition-new(*.span-morph):only-child {
+    animation: vt-fade-in 320ms ease both;
+  }
+  /* Prev/next along the time axis: next arrives from the right, previous from the left */
+  :root[data-vt-dir="next"]::view-transition-old(root) {
+    animation:
+      vt-fade-out 360ms ease both,
+      vt-to-left 520ms var(--ease-drawer) both;
+  }
+  :root[data-vt-dir="next"]::view-transition-new(root) {
+    animation:
+      vt-fade-in 360ms ease both,
+      vt-from-right 520ms var(--ease-drawer) both;
+  }
+  :root[data-vt-dir="prev"]::view-transition-old(root) {
+    animation:
+      vt-fade-out 360ms ease both,
+      vt-to-right 520ms var(--ease-drawer) both;
+  }
+  :root[data-vt-dir="prev"]::view-transition-new(root) {
+    animation:
+      vt-fade-in 360ms ease both,
+      vt-from-left 520ms var(--ease-drawer) both;
+  }
+  /* Appearance changes replace the page transition entirely. The circle is drawn over the old
+  palette (no additive blend), leaves the control at full speed, and its edge is feathered. */
+  .vt-appearance::view-transition-old(root) {
+    animation: none;
+  }
+  .vt-appearance::view-transition-new(root) {
+    mix-blend-mode: normal;
+    -webkit-mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-rr) - 40px), transparent var(--vt-rr));
+    mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-rr) - 40px), transparent var(--vt-rr));
+    animation: vt-reveal 620ms var(--ease-drawer) both;
+  }
+  .vt-appearance * {
+    view-transition-name: none !important;
+  }
+  /* The palette menu closes with the click instead of freezing open in the old snapshot */
+  .vt-appearance .season__pop {
+    visibility: hidden;
+    transition: none;
+  }
+}
+/* Without motion the bar doesn't travel; the pages just crossfade */
+@media (prefers-reduced-motion: reduce) {
+  .span {
+    view-transition-name: none !important;
+  }
+}
+@property --vt-rr {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes vt-to-left {
+  to {
+    transform: translateX(-28px);
+  }
+}
+@keyframes vt-to-right {
+  to {
+    transform: translateX(28px);
+  }
+}
+@keyframes vt-from-right {
+  from {
+    transform: translateX(28px);
+  }
+}
+@keyframes vt-from-left {
+  from {
+    transform: translateX(-28px);
+  }
+}
+@keyframes vt-reveal {
+  from {
+    --vt-rr: 0px;
+  }
+  to {
+    --vt-rr: calc(var(--vt-r) + 40px);
+  }
+}
