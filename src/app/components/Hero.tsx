@@ -130,7 +130,12 @@ export default function Hero() {
       timers = [];
       generation++;
       measured = 0;
-      answer.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+      // Only the word animations this effect started; the answer's own CSS (its scroll-driven
+      // depth, the token transitions) must keep running
+      answer
+        .getAnimations({ subtree: true })
+        .filter((a) => !(a instanceof CSSAnimation) && !(a instanceof CSSTransition))
+        .forEach((a) => a.cancel());
     };
 
     // The sweep stops short of the colon, which shares a no-wrap group with "production"
