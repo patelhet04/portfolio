@@ -32,11 +32,14 @@
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  /* Apple-style springs sampled into linear(): duration 0.4s bounce 0.28, and 0.5s bounce 0.2 */
+  /* An Apple-style spring sampled into linear(): duration 0.4s, bounce 0.28. It overshoots, so it's
+     for presses springing back; it only keeps its shape at --spring-ms. */
   --spring: linear(0, 0.0288, 0.1014, 0.2004, 0.3123, 0.427, 0.5376, 0.6392, 0.7291, 0.8061, 0.8699, 0.9211, 0.9609, 0.9905, 1.0116, 1.0255, 1.0338, 1.0377, 1.0383, 1.0367, 1.0336, 1.0296, 1.0252, 1.0209, 1.0167, 1.0129, 1.0096, 1.0068, 1.0044, 1.0026, 1.0012, 1.0001, 0.9994, 0.9989, 0.9986, 0.9985, 0.9985, 0.9986, 0.9987, 0.9989, 1);
   --spring-ms: 650ms;
-  --spring-soft: linear(0, 0.0204, 0.0725, 0.1453, 0.23, 0.3197, 0.4097, 0.4964, 0.5774, 0.6512, 0.717, 0.7747, 0.8244, 0.8664, 0.9015, 0.9301, 0.9532, 0.9714, 0.9854, 0.9959, 1.0036, 1.0089, 1.0123, 1.0142, 1.0151, 1.0151, 1.0145, 1.0136, 1.0123, 1.011, 1.0096, 1.0083, 1.007, 1.0058, 1.0048, 1.0038, 1.003, 1.0023, 1.0018, 1.0013, 1);
-  --spring-soft-ms: 680ms;
+  /* A critically damped spring: it arrives as fast as possible without overshooting, so it suits
+     things that land on a real position (a selected pill, a measured value, a menu). The shape is
+     the same at any duration; 90% of the motion is done by 42% of it. */
+  --spring-smooth: linear(0, 0.0229, 0.0788, 0.1532, 0.2361, 0.3208, 0.403, 0.4802, 0.5509, 0.6146, 0.6711, 0.7207, 0.7638, 0.801, 0.8329, 0.8601, 0.8832, 0.9027, 0.9191, 0.9329, 0.9445, 0.9541, 0.9621, 0.9688, 0.9743, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9965, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
 
   --sans: "Host Grotesk", ui-sans-serif, system-ui, sans-serif;
   --mono: "Martian Mono", ui-monospace, "SF Mono", monospace;
@@ -641,7 +644,7 @@ video {
   visibility: visible;
   transition:
     opacity 180ms ease,
-    transform var(--spring-ms) var(--spring),
+    transform 420ms var(--spring-smooth),
     visibility 0s;
 }
 .season__label {
@@ -681,10 +684,6 @@ video {
 .season__opt[aria-checked="true"] .check {
   opacity: 1;
   transform: none;
-}
-.season__opt small {
-  color: var(--muted);
-  font-size: 12.5px;
 }
 @media (hover: hover) and (pointer: fine) {
   .season__opt:hover {
@@ -750,9 +749,19 @@ video {
   display: inline-block;
   border-radius: 0.08em;
 }
-/* The first pass streams without "in production"; it drops in once the rest is written */
-.answer[data-edit] .ins {
+/* A colon shares a no-wrap group with the word before it, so it never starts a line */
+.answer .nb {
+  white-space: nowrap;
+}
+/* The first pass streams without "in production" and with its own colon after "up";
+   the colon fades as the words part, and the real one lands with "production" */
+.answer[data-edit] .ins,
+.answer:not([data-edit]) .draft {
   display: none;
+}
+.answer .tok.draft.out {
+  opacity: 0;
+  transition: opacity 160ms ease;
 }
 /* Set before first paint so the answer doesn't flash in full before it streams */
 [data-stream-pending] .answer .tok {
@@ -794,8 +803,9 @@ video {
   background-position: 0 88%;
   transition: background-size 700ms var(--ease-out);
 }
+/* The sweep stops short of the colon (its width is measured into --tail) */
 .hl.swept {
-  background-size: 100% 0.34em;
+  background-size: calc(100% - var(--tail, 0em)) 0.34em;
 }
 [data-theme="dark"] .hl {
   background-image: linear-gradient(var(--signal-soft), var(--signal-soft));
@@ -891,13 +901,13 @@ video {
   border-radius: var(--r-lg);
   box-shadow: var(--shadow);
   overflow: hidden;
-  animation: rise 900ms var(--ease-arrive) 250ms both;
+  animation: rise 640ms var(--ease-arrive) 60ms both;
 }
+/* The model card is up before the answer streams: the model loads, then it answers */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(18px);
-    filter: blur(6px);
+    transform: translateY(14px);
   }
 }
 .mcard__head {
@@ -971,31 +981,13 @@ video {
   gap: 12px;
   padding: 9px 0;
   border-bottom: 1px dashed var(--rule);
-  animation: rowin 500ms var(--ease-out) both;
 }
 .kv div:last-child {
   border-bottom: 0;
 }
-.kv div:nth-child(1) {
-  animation-delay: 700ms;
-}
-.kv div:nth-child(2) {
-  animation-delay: 760ms;
-}
-.kv div:nth-child(3) {
-  animation-delay: 820ms;
-}
-.kv div:nth-child(4) {
-  animation-delay: 880ms;
-}
-.kv div:nth-child(5) {
-  animation-delay: 940ms;
-}
-@keyframes rowin {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
+/* A list of items wraps into even lines rather than leaving one item alone */
+.kv dd.kv__list {
+  text-wrap: balance;
 }
 .kv dt {
   font-family: var(--mono);
@@ -1336,7 +1328,6 @@ video {
   from {
     opacity: 0;
     transform: translateY(4px);
-    filter: blur(2px);
   }
 }
 .detail h3 {
@@ -1662,16 +1653,13 @@ video {
   font-weight: 400;
   text-wrap: pretty;
 }
+/* Streamed words arrive in small bursts, the way a response comes off the wire */
 .quote[data-streaming] .w {
   opacity: 0;
-  filter: blur(6px);
-  transition:
-    opacity 360ms var(--ease-out),
-    filter 420ms var(--ease-out);
+  transition: opacity 240ms var(--ease-out);
 }
 .quote[data-streaming] .w.on {
   opacity: 1;
-  filter: none;
 }
 .quote mark {
   color: inherit;
@@ -1748,7 +1736,7 @@ video {
   position: absolute;
   inset: 4px;
   pointer-events: none;
-  transition: clip-path 420ms var(--spring);
+  transition: clip-path 480ms var(--spring-smooth);
 }
 .filters__active button {
   background: var(--primary);
@@ -1965,10 +1953,17 @@ video {
   width: 18px;
   height: 18px;
 }
+/* While sending, the arrow launches up and comes back from below, again until the message lands.
+   Contact.tsx lets the last loop finish before the button goes back to idle. */
 .send[data-state="sending"] svg {
-  animation: launch 520ms var(--ease-in-out) both;
+  animation: launch 640ms infinite;
 }
 @keyframes launch {
+  0% {
+    transform: none;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.75, 0);
+  }
   45% {
     transform: translateY(-140%);
     opacity: 0;
@@ -1976,6 +1971,7 @@ video {
   46% {
     transform: translateY(140%);
     opacity: 0;
+    animation-timing-function: var(--ease-out);
   }
   100% {
     transform: none;
@@ -2017,14 +2013,10 @@ video {
 }
 .reply .w {
   opacity: 0;
-  filter: blur(4px);
-  transition:
-    opacity 300ms var(--ease-out),
-    filter 360ms var(--ease-out);
+  transition: opacity 240ms var(--ease-out);
 }
 .reply .w.on {
   opacity: 1;
-  filter: none;
 }
 .direct {
   display: flex;
@@ -2085,13 +2077,12 @@ video {
 }
 .copy span {
   display: inline-block;
-  animation: label-in var(--spring-ms) var(--spring);
+  animation: label-in 240ms var(--ease-out);
 }
 @keyframes label-in {
   from {
     opacity: 0;
-    transform: translateY(40%) scale(0.9);
-    filter: blur(2px);
+    transform: translateY(35%);
   }
 }
 
@@ -2120,7 +2111,7 @@ video {
   background: var(--rule-2);
 }
 .regen svg {
-  transition: transform 500ms var(--spring);
+  transition: transform var(--spring-ms) var(--spring);
 }
 @media (hover: hover) and (pointer: fine) {
   .regen:hover svg {
@@ -2381,14 +2372,13 @@ video {
   height: 100%;
   border-radius: inherit;
   background: var(--accent);
-  transform-origin: left;
-  transform: scaleX(1);
+  clip-path: inset(0 0 0 0 round 99px);
 }
 .meas[data-on="true"] .meas__bar i {
-  transform: scaleX(var(--ratio));
+  clip-path: inset(0 calc((1 - var(--ratio)) * 100%) 0 0 round 99px);
   background: var(--signal);
   transition:
-    transform 900ms var(--spring-soft),
+    clip-path 1100ms var(--spring-smooth),
     background-color 500ms ease;
   transition-delay: calc(var(--i) * 90ms + 200ms);
 }
@@ -2421,35 +2411,22 @@ video {
 .sd__group {
   margin-bottom: var(--space-group);
 }
-.sd-in {
-  animation: sd-in 380ms var(--ease-out) both;
-  animation-delay: calc(min(var(--d, 0), 6) * 40ms + 60ms);
-}
-/* Arriving from a neighbouring span, the page slide is the entrance */
-.sd[data-arrive="pager"] .sd-in {
-  animation: none;
-}
-@keyframes sd-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
 
 /* ─────────────────────────────────────────────────────────────
    View transitions
-   Pages: one short crossfade. The old page settles back a touch, the new one
-   sharpens in; detail pages add their own section stagger on top.
-   Shared element: the span bar travels between the trace and its page.
-   Prev/next: the page slides a little in the direction of travel on the time axis.
+   Pages: a true crossfade. The old page fades out on exactly the curve the new one fades in
+   on, and the browser adds the two (plus-lighter), so the page never dims in between.
+   Shared element: the span bar is the one thing that moves between the trace and its page,
+   and its two snapshots crossfade the same way, so it stays solid the whole way.
+   Prev/next: both pages slide a little along the time axis as they crossfade.
    Appearance: the new palette spreads in a circle from the control.
    ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
-    animation: vt-out 200ms var(--ease-out) both;
+    animation: vt-fade-out 320ms ease both;
   }
   ::view-transition-new(root) {
-    animation: vt-in 320ms var(--ease-out) 40ms both;
+    animation: vt-fade-in 320ms ease both;
   }
   ::view-transition-group(site-header) {
     animation: none;
@@ -2465,73 +2442,71 @@ video {
     object-fit: fill;
   }
   ::view-transition-old(*.span-morph) {
-    animation: vt-fade-out 180ms ease both;
+    animation: vt-fade-out 560ms ease-in-out both;
   }
   ::view-transition-new(*.span-morph) {
-    animation: vt-fade-in 300ms ease 120ms both;
+    animation: vt-fade-in 560ms ease-in-out both;
+  }
+  /* Spans with no partner on the other page (the rest of the trace) fade with the page itself */
+  ::view-transition-old(*.span-morph):only-child {
+    animation: vt-fade-out 320ms ease both;
+  }
+  ::view-transition-new(*.span-morph):only-child {
+    animation: vt-fade-in 320ms ease both;
   }
 
   /* Prev/next along the time axis: next arrives from the right, previous from the left */
   :root[data-vt-dir="next"]::view-transition-old(root) {
-    animation: vt-out-left 220ms var(--ease-out) both;
+    animation:
+      vt-fade-out 360ms ease both,
+      vt-to-left 520ms var(--ease-drawer) both;
   }
   :root[data-vt-dir="next"]::view-transition-new(root) {
-    animation: vt-in-right 380ms var(--ease-out) 40ms both;
+    animation:
+      vt-fade-in 360ms ease both,
+      vt-from-right 520ms var(--ease-drawer) both;
   }
   :root[data-vt-dir="prev"]::view-transition-old(root) {
-    animation: vt-out-right 220ms var(--ease-out) both;
+    animation:
+      vt-fade-out 360ms ease both,
+      vt-to-right 520ms var(--ease-drawer) both;
   }
   :root[data-vt-dir="prev"]::view-transition-new(root) {
-    animation: vt-in-left 380ms var(--ease-out) 40ms both;
+    animation:
+      vt-fade-in 360ms ease both,
+      vt-from-left 520ms var(--ease-drawer) both;
   }
 
-  /* Appearance changes replace the page transition entirely */
+  /* Appearance changes replace the page transition entirely. The circle is drawn over the old
+     palette (no additive blend), leaves the control at full speed, and its edge is feathered. */
   .vt-appearance::view-transition-old(root) {
     animation: none;
   }
   .vt-appearance::view-transition-new(root) {
-    animation: vt-reveal 720ms var(--ease-in-out) both;
+    mix-blend-mode: normal;
+    -webkit-mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-rr) - 40px), transparent var(--vt-rr));
+    mask-image: radial-gradient(circle at var(--vt-x) var(--vt-y), #000 calc(var(--vt-rr) - 40px), transparent var(--vt-rr));
+    animation: vt-reveal 620ms var(--ease-drawer) both;
   }
   .vt-appearance * {
     view-transition-name: none !important;
   }
-}
-@keyframes vt-out {
-  to {
-    opacity: 0;
-    transform: scale(0.985);
-    filter: blur(2px);
+  /* The palette menu closes with the click instead of freezing open in the old snapshot */
+  .vt-appearance .season__pop {
+    visibility: hidden;
+    transition: none;
   }
 }
-@keyframes vt-in {
-  from {
-    opacity: 0;
-    filter: blur(2px);
+/* Without motion the bar doesn't travel; the pages just crossfade */
+@media (prefers-reduced-motion: reduce) {
+  .span {
+    view-transition-name: none !important;
   }
 }
-@keyframes vt-out-left {
-  to {
-    opacity: 0;
-    transform: translateX(-32px);
-  }
-}
-@keyframes vt-out-right {
-  to {
-    opacity: 0;
-    transform: translateX(32px);
-  }
-}
-@keyframes vt-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(32px);
-  }
-}
-@keyframes vt-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-32px);
-  }
+@property --vt-rr {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
 }
 @keyframes vt-fade-out {
   to {
@@ -2543,17 +2518,33 @@ video {
     opacity: 0;
   }
 }
-@keyframes vt-reveal {
-  from {
-    clip-path: circle(0 at var(--vt-x) var(--vt-y));
-  }
+@keyframes vt-to-left {
   to {
-    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+    transform: translateX(-28px);
   }
 }
-::view-transition-old(root),
-::view-transition-new(root) {
-  mix-blend-mode: normal;
+@keyframes vt-to-right {
+  to {
+    transform: translateX(28px);
+  }
+}
+@keyframes vt-from-right {
+  from {
+    transform: translateX(28px);
+  }
+}
+@keyframes vt-from-left {
+  from {
+    transform: translateX(-28px);
+  }
+}
+@keyframes vt-reveal {
+  from {
+    --vt-rr: 0px;
+  }
+  to {
+    --vt-rr: calc(var(--vt-r) + 40px);
+  }
 }
 
 /* ───────── Responsive ───────── */
@@ -2564,9 +2555,6 @@ video {
   .wf {
     border-right: 0;
     border-bottom: 1px solid var(--rule);
-  }
-  .hero__grid {
-    grid-template-columns: minmax(0, 1fr) 320px;
   }
 }
 @media (max-width: 960px) {
@@ -2812,7 +2800,7 @@ video {
     }
     .mcard {
       animation:
-        rise 900ms var(--ease-arrive) 250ms both,
+        rise 640ms var(--ease-arrive) 60ms both,
         hero-card linear both;
       animation-timeline: auto, scroll(root);
       animation-range: normal, 0 90vh;
@@ -2878,7 +2866,8 @@ video {
   }
   .brand,
   .top .icon-btn,
-  .top .btn--sm,
+  .btn--sm,
+  .nav a,
   .season__btn,
   .filters > .filters__row button,
   .copy,
@@ -2887,7 +2876,8 @@ video {
   }
   .brand::before,
   .top .icon-btn::before,
-  .top .btn--sm::before,
+  .btn--sm::before,
+  .nav a::before,
   .season__btn::before,
   .filters > .filters__row button::before,
   .copy::before,
@@ -2907,6 +2897,63 @@ video {
   }
   .direct a.v::before {
     inset: -10px -4px;
+  }
+}
+
+/* Tablets in portrait (up to iPad Pro): the hero is one column, and nothing keeps its phone width
+   with empty space beside it. The answer spans the column, sized to fill it in four lines, and the
+   model card goes landscape (Memoji beside its details). */
+@media (min-width: 641px) and (max-width: 1100px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .answer {
+    max-width: none;
+    font-size: clamp(2.6rem, 9vw, 5.6rem);
+  }
+  .mcard {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-areas:
+      "head head"
+      "plate kv";
+  }
+  .mcard__head {
+    grid-area: head;
+  }
+  .mcard__plate {
+    grid-area: plate;
+    aspect-ratio: auto;
+    min-height: 240px;
+    border-bottom: 0;
+    border-right: 1px solid var(--rule);
+  }
+  [data-theme="dark"] .mcard__plate {
+    border-right: 0;
+  }
+  /* In the wide plate the whole Memoji fits, and it holds still (no scroll drift) */
+  .mcard__plate video {
+    inset: 0;
+    height: 100%;
+    object-fit: contain;
+    animation: none;
+  }
+  .mcard .kv {
+    grid-area: kv;
+    align-self: center;
+  }
+}
+/* …and the About portrait becomes a wide crop where the About section is one column */
+@media (min-width: 641px) and (max-width: 960px) {
+  .portrait-mask {
+    max-width: none;
+  }
+  .portrait {
+    aspect-ratio: 3 / 2;
+  }
+  .portrait img {
+    object-position: 50% 28%;
   }
 }
 
@@ -2940,9 +2987,7 @@ video {
   .theme-icon svg {
     transition-property: background-color, border-color, color, opacity !important;
   }
-  .answer[data-streaming] .tok,
-  .quote[data-streaming] .w,
-  .reply .w {
+  .answer[data-streaming] .tok {
     filter: none !important;
   }
   .hl {

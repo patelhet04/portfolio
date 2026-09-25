@@ -1,10 +1,10 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { applyAppearance, readPrefs, resolveSeason, seasonForDate, seasonOptions, syncThemeColor, type Season, type SeasonPref } from "../lib/appearance";
+import { applyAppearance, DEFAULT_SEASON, readPrefs, seasonOptions, syncThemeColor, type Season } from "../lib/appearance";
 import { Check } from "./Icons";
 
-const labelFor = (v: SeasonPref) => (v === "auto" ? "Auto" : seasonOptions.find((o) => o.value === v)?.label ?? "Default");
-const swatchFor = (v: SeasonPref) => seasonOptions.find((o) => o.value === resolveSeason(v))!.swatch;
+const optionFor = (v: Season) => seasonOptions.find((o) => o.value === v)!;
+const options = seasonOptions.map((o) => o.value);
 
 function Swatch({ colors }: { colors: [string, string, string] }) {
   return (
@@ -18,17 +18,13 @@ function Swatch({ colors }: { colors: [string, string, string] }) {
 
 export default function SeasonPicker() {
   const [open, setOpen] = useState(false);
-  const [pref, setPref] = useState<SeasonPref>("default");
+  const [pref, setPref] = useState<Season>(DEFAULT_SEASON);
   const btnRef = useRef<HTMLButtonElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
   const items = useRef<(HTMLButtonElement | null)[]>([]);
-  const options: SeasonPref[] = ["default", "auto", "spring", "summer", "fall", "winter"];
-  // Resolved after mount so the static HTML never disagrees with the visitor's clock
-  const [current, setCurrent] = useState<Season>("default");
 
   useEffect(() => {
     setPref(readPrefs().season);
-    setCurrent(seasonForDate());
     syncThemeColor();
     const sync = () => setPref(readPrefs().season);
     addEventListener("appearancechange", sync);
@@ -53,14 +49,11 @@ export default function SeasonPicker() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  const choose = (value: SeasonPref) => {
+  const choose = (value: Season) => {
     const r = btnRef.current!.getBoundingClientRect();
     close();
+    if (value === pref) return;
     setPref(value);
-    if (resolveSeason(value) === resolveSeason(pref)) {
-      localStorage.setItem("season", value);
-      return;
-    }
     applyAppearance({ theme: readPrefs().theme, season: value }, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
   };
 
@@ -89,16 +82,16 @@ export default function SeasonPicker() {
         aria-haspopup="menu"
         aria-expanded={open}
         aria-controls="season-menu"
-        aria-label={`Color palette: ${labelFor(pref)}`}
+        aria-label={`Color palette: ${optionFor(pref).label}`}
         onClick={() => setOpen((o) => !o)}
       >
-        <Swatch colors={swatchFor(pref)} />
-        <span className="season__name">{labelFor(pref)}</span>
+        <Swatch colors={optionFor(pref).swatch} />
+        <span className="season__name">{optionFor(pref).label}</span>
       </button>
       <div ref={popRef} className="season__pop" id="season-menu" role="menu" aria-label="Color palette" data-open={open} onKeyDown={onKeyDown}>
         <div className="season__label mono">palette</div>
         {options.map((value, i) => {
-          const opt = seasonOptions.find((o) => o.value === (value === "auto" ? current : value))!;
+          const opt = optionFor(value);
           return (
             <div key={value} role="none">
               {value === "spring" && <div className="season__rule" role="separator" />}
@@ -114,10 +107,7 @@ export default function SeasonPicker() {
                 onClick={() => choose(value)}
               >
                 <Swatch colors={opt.swatch} />
-                <span>
-                  {value === "auto" ? "Auto" : opt.label}
-                  {value === "auto" && <small> · {labelFor(current)} right now</small>}
-                </span>
+                <span>{opt.label}</span>
                 <Check className="check" />
               </button>
             </div>

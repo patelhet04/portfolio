@@ -212,7 +212,7 @@ Every palette resolves to the same roles: paper (grounds), ink (text), signal (h
 **Character:** Host Grotesk is warm, slightly condensed at display sizes with tight negative tracking, and it carries the human voice. Martian Mono is small, wide and tabular, and it is the machine talking: ids, dates, durations, token counts and field labels.
 
 ### Hierarchy
-- **Display** (500, clamp 2.6rem → 5.6rem, line-height 0.98, tracking -0.038em): the streamed hero answer, 15ch max.
+- **Display** (500, clamp 2.6rem → 5.6rem, line-height 0.98, tracking -0.038em): the streamed hero answer, 15ch max beside the model card; on portrait tablets (641–1100px) it spans the column at 9vw so it fills it in four lines.
 - **Display Detail** (500, clamp 2.6rem → 5.5rem, 0.98, -0.04em): the span name on each detail page, 16ch max.
 - **Headline** (500, clamp 2.2rem → 4rem, 1.0, -0.035em): section headings ("Career, read as a trace.", "Outputs.").
 - **Lead** (400, clamp 1.5rem → 2.25rem, 1.22): the About opener. The detail-page summary (clamp 1.35rem → 2rem) and the testimonial quote (clamp 1.3rem → 1.9rem) sit in the same size band.
@@ -229,9 +229,10 @@ Every palette resolves to the same roles: paper (grounds), ink (text), signal (h
 
 - **Container:** max width 1320px with a fluid side gutter of `clamp(20px, 4vw, 48px)`.
 - **Section rhythm:** three spacing tokens, sized by viewport width (never height), shared by the home page and the detail pages. `--space-section` (72 → 120px) pads every section above and below its hairline, including the hero's bottom and the detail page's end. `--space-head` (36 → 56px) separates a section head from its content, and also the trace from the tokenized stack, and the detail page's back link, track and grid. `--space-group` (40px) separates groups inside a detail page. Section heads are a two-column grid (headline and a lede capped at 420px, bottom-aligned).
-- **Two-column bodies:** Hero (answer and a 380px model card, bottom-aligned), About (even columns: portrait with the facts grid under it, beside the copy; the portrait fills whatever height the copy leaves, so both columns start and end together), Testimonials (a 300px sticky tab list and the quote panel), Contact (composer and a 340px direct-contact list), and the detail page (7fr story and 5fr facts). All of them collapse to one column at 960px.
+- **Two-column bodies:** Hero (answer and a 380px model card, bottom-aligned), About (even columns: portrait with the facts grid under it, beside the copy; the portrait fills whatever height the copy leaves, so both columns start and end together), Testimonials (a 300px sticky tab list and the quote panel), Contact (composer and a 340px direct-contact list), and the detail page (7fr story and 5fr facts). All of them collapse to one column at 960px, except the hero, which goes to one column at 1100px so iPads in portrait get the full-width answer.
 - **The trace:** a two-column instrument (waterfall and a 380px detail pane) that stacks at 1180px. Inside the waterfall, a name column (220px, or 124px under 640px) sits beside a shared time axis.
-- **Breakpoints:** 1180px (trace stacks, hero card narrows to 320px), 960px (nav becomes a sheet and grids go to one column), 640px (compact top bar, 16px body, narrower trace name column, facts in one column).
+- **Breakpoints:** 1180px (trace stacks), 1100px (hero goes to one column), 960px (nav becomes a sheet and grids go to one column), 640px (compact top bar, 16px body, narrower trace name column, facts in one column).
+- **Tablets (641–1100px):** nothing keeps its phone width with empty space beside it. The model card goes landscape (Memoji beside its details) and, up to 960px, the About portrait becomes a 3:2 crop at full width.
 - **Density:** generous between sections, dense inside instruments. Panel header bars use a 12×16px inset; panel content areas use 20px; chips and rows sit 4–10px apart.
 - **Outputs on phones:** the list pages in batches of 6 behind a "Show more" button with a mono "showing 6 of 15" count; tablet and desktop show every row.
 - **Side-by-side columns** line up at the top. Contact also lines up at the bottom: the composer grows to match the direct-contact list.

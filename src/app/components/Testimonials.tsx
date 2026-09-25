@@ -52,14 +52,11 @@ export default function Testimonials() {
     first.current = false;
     if (!scrubbed) scrubbing.current = false;
     quote.dataset.streaming = "";
-    const timers = revealWords(words, { step });
-    if (scrubbed) {
-      quote.dataset.scrub = "";
-      dispatchEvent(new Event("scroll"));
-    } else {
-      timers.push(window.setTimeout(() => marks.forEach((m, k) => timers.push(window.setTimeout(() => m.classList.add("swept"), k * 180))), words.length * step + 120));
-    }
-    timers.push(window.setTimeout(() => delete quote.dataset.streaming, words.length * step + 600));
+    if (scrubbed) quote.dataset.scrub = "";
+    // While scrubbing, each burst lets the highlights catch up to the words that have arrived
+    const { timers, end } = revealWords(words, { step, onBurst: scrubbed ? () => dispatchEvent(new Event("scroll")) : undefined });
+    if (!scrubbed) timers.push(window.setTimeout(() => marks.forEach((m, k) => timers.push(window.setTimeout(() => m.classList.add("swept"), k * 180))), end + 120));
+    timers.push(window.setTimeout(() => delete quote.dataset.streaming, end + 600));
     return () => timers.forEach(clearTimeout);
   }, [index]);
 
@@ -70,7 +67,9 @@ export default function Testimonials() {
       const quote = panel.querySelector<HTMLElement>(".quote[data-scrub]");
       if (!scrubbing.current || !quote) return;
       const marks = quote.querySelectorAll<HTMLElement>("mark");
-      marks.forEach((m, i) => m.style.setProperty("--m", String(front(p, i, marks.length, 1))));
+      // A highlight never runs ahead of its words: it covers at most the share that has streamed in
+      const arrived = (m: HTMLElement) => (quote.hasAttribute("data-streaming") ? m.querySelectorAll(".w.on").length / m.querySelectorAll(".w").length : 1);
+      marks.forEach((m, i) => m.style.setProperty("--m", String(Math.min(front(p, i, marks.length, 1), arrived(m)))));
       if (p >= 1) {
         scrubbing.current = false;
         marks.forEach((m) => m.classList.add("swept"));
@@ -131,12 +130,13 @@ export default function Testimonials() {
           </div>
           <div className="fb__panel" id="fb-panel" role="tabpanel" aria-labelledby={`fb-${rec.id}`} ref={panelRef}>
             <blockquote className="quote" ref={quoteRef} key={shown} data-streaming={index === null ? "" : undefined}>
-              &ldquo;
+              {/* The quote marks stream too: the closing one arrives with the last word */}
+              <span className="w">&ldquo;</span>
               {parseHighlights(rec.content).map((run, i) => {
                 const words = run.words.map((w, j) => (/^\s+$/.test(w) || !w ? <Fragment key={j}>{w}</Fragment> : <span key={j} className="w">{w}</span>));
                 return run.marked ? <mark key={i}>{words}</mark> : <Fragment key={i}>{words}</Fragment>;
               })}
-              &rdquo;
+              <span className="w">&rdquo;</span>
             </blockquote>
             <div className="by">
               <strong>{rec.name}</strong>

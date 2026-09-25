@@ -4,6 +4,8 @@ export const site = {
   description:
     "Het Patel is an AI software engineer in Boston building LangGraph agents, retrieval systems and GPU inference infrastructure.",
   url: "https://hetpatel.dev",
+  /** The social preview (1200×630): the hero answer in the default Fall palette, with the Memoji */
+  ogImage: { url: "/og.png", width: 1200, height: 630, alt: "Het Patel: I build AI systems that hold up in production." },
   email: "patelhet04@gmail.com",
   phone: "+1 (857) 544-9003",
   phoneHref: "tel:+18575449003",

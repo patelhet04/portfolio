@@ -11,10 +11,14 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const span = getSpan(params.slug);
   if (!span) return {};
+  const title = `${span.name} — ${site.name}`;
+  const url = `/experience/${span.slug}`;
   return {
-    title: `${span.name} — ${site.name}`,
+    title,
     description: span.summary,
-    alternates: { canonical: `/experience/${span.slug}` },
+    alternates: { canonical: url },
+    openGraph: { title, description: span.summary, url, siteName: site.name, type: "article", images: [site.ogImage] },
+    twitter: { card: "summary_large_image", title, description: span.summary, images: [site.ogImage.url] },
   };
 }
 

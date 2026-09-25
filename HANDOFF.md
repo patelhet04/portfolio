@@ -11,7 +11,7 @@ The portfolio was rebuilt around one idea: **the site reads like a streamed AI r
 - **Experience:** a trace waterfall with separate Work and Education lanes on one time axis. Hover to scrub through time; each span opens a detail page at `/experience/[slug]`.
 - **Stack:** the skills are shown as tokenizer output. Hovering a token highlights the spans that used it.
 - **About**, **Testimonials** ("Human feedback"), **Outputs** (work and writing, with a cursor-following preview), and **Contact** as a chat composer sent through EmailJS.
-- **Palettes:** Default (lime) plus Spring, Summer, Fall and Winter, each with a light and dark version. The top bar has a palette menu with an Auto option that picks the season by date.
+- **Palettes:** Default (lime) plus Spring, Summer, Fall and Winter, each with a light and dark version. The top bar has a palette menu. First-time visitors get Fall; the old Auto option was removed at the owner's request.
 - **Motion:** page-to-page view transitions (the span bar and title morph into the detail page), a circular reveal when the palette or theme changes, spring easing on presses and popovers, and squircle corners where the browser supports `corner-shape`.
 
 ## Locked: the owner loves these, do not change
@@ -106,7 +106,7 @@ The Impeccable launcher downloads a small binary the first time it runs; that's 
 | --- | --- |
 | `src/app/globals.css` | All design tokens, palettes, squircles, springs, view transitions and component styles |
 | `src/app/layout.tsx` | Fonts, metadata, pre-paint appearance script, `<ViewTransitions>` |
-| `src/app/lib/appearance.ts` | Theme and season state, the Auto season rule, the circular reveal |
+| `src/app/lib/appearance.ts` | Theme and season state, the default palette (Fall), the circular reveal |
 | `src/app/lib/timeline.ts` | Shared time axis for the trace and the detail pages |
 | `src/app/components/` | Header, SeasonPicker, ThemeToggle, Hero, Trace, About, Testimonials, Outputs, Contact, Footer, Icons |
 | `src/app/experience/[slug]/` | Span detail pages (static params plus the client page) |
@@ -119,13 +119,12 @@ Page transitions use the `next-view-transitions` package: its `Link` and `useTra
 
 ## Known open items for the owner
 
-- **OG image missing:** `metadata` points to `/assets/het-patel-software-engineer.jpg`, which doesn't exist (the old site had the same broken reference).
+- **OG image:** fixed. `public/og.png` (1200×630, the hero answer in Fall) is the social preview for every page; `robots.txt`, `sitemap.xml` and schema.org Person data are generated too.
 - **Email changed** to `patelhet04@gmail.com` (from the resume). The old site used `hetpatel0499@gmail.com`. Needs confirming.
 - **Brevity** links to `github.com/patelhet04/Brevity-UI` (there's also `Brevity-Server`). It has no preview image.
 - **CGPA values** (3.61, 8.11) come from the old site. They aren't on the current resume.
 - **GTU degree:** the resume says "Computer Science" and LinkedIn says "Computer Engineering". The site uses Computer Engineering.
 - **Not yet verified:**
-  - the production build (`npm run build`)
   - mobile layouts
   - every season in dark mode
   - Safari and Firefox fallbacks
@@ -158,6 +157,13 @@ Session 2 (mobile, spacing, cleanup) is committed as `0383e22`. Everything below
 - React renders the finished markup once; the stream only toggles classes and styles. "in production" sits in `.ins`, hidden with `[data-edit]` during the first pass. The colon sits outside `.hl`, so the sweep needs no `--tail`.
 - Reduced motion, Regenerate, return from a detail page, and a resize mid-stream (it lands the finished answer) are all handled.
 - The token flash fade was shortened to 520ms so the glow stays with the newest words.
+
+### Motion system (session 3, after the hero)
+- **Page transitions are true crossfades:** old and new fade on the same curve with the browser's additive blend, so the page never dims. The span bar is the only thing that travels, and it stays solid. Spans without a partner fade with the page. With reduced motion the bar doesn't travel.
+- **Two springs:** `--spring` (bouncy) is only for presses springing back, at `--spring-ms`. `--spring-smooth` (critically damped, any duration) is for things that land on a real position: the palette menu, the filter pill, and the before/after bars (clipped, so the end caps stay round and never dip past the value).
+- **No blur on streamed words** outside the hero: testimonials and the contact reply stream in small bursts with an opacity fade. The quote marks stream too, and a highlight never runs ahead of its words.
+- **Palette circle:** leaves the control at full speed (`--ease-drawer`) with a feathered edge. The menu closes with the click.
+- **One entrance per page:** the detail-page section stagger is gone; the crossfade and the travelling bar are the entrance. The model card is up before the answer streams.
 
 **Rejected hero ideas (don't bring back):** a typewriter, a letter wave, a "demos → production" rewrite, hatched `[MASK]` tokens, an attention-map dim, a sampling or odometer reel, a calm edit into a dashed gap. A continuous "pen" stroke drawing the sweep was built and replaced by the drop.
 

@@ -19,12 +19,13 @@ export default function Contact() {
   const [reply, setReply] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const replyRef = useRef<HTMLParagraphElement>(null);
+  const sendRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!reply) return;
     const words = Array.from(replyRef.current!.querySelectorAll<HTMLElement>(".w"));
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timers = revealWords(words, reduce ? { step: 0 } : { delay: 60, step: 45 });
+    const { timers } = revealWords(words, reduce ? { step: 0 } : { delay: 60, step: 45 });
     return () => timers.forEach(clearTimeout);
   }, [reply]);
 
@@ -45,15 +46,25 @@ export default function Contact() {
     setError("");
     setState("sending");
     (form.elements.namedItem("subject") as HTMLInputElement).value = `Portfolio message from ${name}`;
+    let settle: () => void;
     try {
       await emailjs.sendForm(emailjsKeys.service, emailjsKeys.template, form, { publicKey: emailjsKeys.publicKey });
-      setReply(`Received, thanks ${name.split(" ")[0]}. I'll reply to ${email} soon.`);
-      form.reset();
+      settle = () => {
+        setReply(`Received, thanks ${name.split(" ")[0]}. I'll reply to ${email} soon.`);
+        form.reset();
+      };
     } catch {
-      setError(failed);
-    } finally {
-      setState("idle");
+      settle = () => setError(failed);
     }
+    // The arrow finishes the launch it's in before the button settles, so it never snaps mid-flight
+    await new Promise<void>((done) => {
+      const svg = sendRef.current?.querySelector("svg");
+      if (!svg?.getAnimations().length) return done();
+      svg.addEventListener("animationiteration", () => done(), { once: true });
+      window.setTimeout(done, 700);
+    });
+    settle();
+    setState("idle");
   };
 
   const copy = async () => {
@@ -98,7 +109,7 @@ export default function Contact() {
                   </label>
                   <input id="email" name="from_email" type="email" autoComplete="email" onInput={() => error && setError("")} />
                 </div>
-                <button className="send" type="submit" data-state={state} aria-label={state === "sending" ? "Sending" : "Send message"}>
+                <button className="send" type="submit" ref={sendRef} data-state={state} aria-label={state === "sending" ? "Sending" : "Send message"}>
                   <ArrowUp />
                 </button>
               </div>

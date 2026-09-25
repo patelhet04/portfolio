@@ -10,34 +10,39 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: site.title,
   description: site.description,
+  applicationName: site.name,
+  authors: [{ name: site.name, url: site.url }],
+  creator: site.name,
   alternates: { canonical: "/" },
   icons: { icon: "/assets/Memoji.png", apple: "/assets/Memoji.png" },
   openGraph: {
     title: site.title,
     description: site.description,
     url: site.url,
+    siteName: site.name,
+    locale: "en_US",
     type: "website",
-    images: ["/assets/het-patel-software-engineer.jpg"],
+    images: [site.ogImage],
   },
   twitter: {
     card: "summary_large_image",
     title: site.title,
     description: site.description,
-    images: ["/assets/het-patel-software-engineer.jpg"],
+    images: [site.ogImage.url],
   },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3f4f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0e0b" },
+    { media: "(prefers-color-scheme: light)", color: "#f2e5cc" },
+    { media: "(prefers-color-scheme: dark)", color: "#170e0a" },
   ],
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ViewTransitions>
-      <html lang="en" data-theme="light" data-season="default" suppressHydrationWarning>
+      <html lang="en" data-theme="light" data-season="fall" suppressHydrationWarning>
         <head>
           <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
           <link rel="preconnect" href="https://fonts.googleapis.com" />

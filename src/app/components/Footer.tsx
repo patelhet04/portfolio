@@ -16,7 +16,10 @@ export default function Footer() {
       return;
     }
     window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-    window.setTimeout(() => dispatchEvent(new Event(REGENERATE_EVENT)), reduce ? 0 : 500);
+    // Replay once the page is back at the top, however long the scroll from here takes
+    const t0 = performance.now();
+    const replay = () => (scrollY <= 1 || performance.now() - t0 > 1500 ? dispatchEvent(new Event(REGENERATE_EVENT)) : requestAnimationFrame(replay));
+    requestAnimationFrame(replay);
   };
 
   return (

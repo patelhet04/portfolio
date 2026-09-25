@@ -28,6 +28,7 @@ const WORDS: { t: string; hl?: boolean }[] = [
 ];
 const idx = (t: string) => WORDS.findIndex((w) => w.t === t);
 const HOLD = idx("hold");
+const UP = idx("up");
 const IN = idx("in");
 const PRODUCTION = idx("production");
 const COLON = idx(":");
@@ -112,7 +113,9 @@ export default function Hero() {
     const hl = hlRef.current!;
     const caret = caretRef.current!;
     const meta = metaRef.current!;
-    const words = Array.from(answer.querySelectorAll<HTMLElement>(".tok"));
+    const words = Array.from(answer.querySelectorAll<HTMLElement>(".tok:not(.draft)"));
+    // The first pass has its own colon after "up"; the real one arrives with "production"
+    const draft = answer.querySelector<HTMLElement>(".tok.draft")!;
     const state = meta.querySelector<HTMLSpanElement>("[data-state]")!;
     const [nTok, nTime, nRate] = ["tok", "time", "rate"].map((k) => meta.querySelector<HTMLElement>(`[data-m="${k}"]`)!);
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -129,6 +132,9 @@ export default function Hero() {
       measured = 0;
       answer.getAnimations({ subtree: true }).forEach((a) => a.cancel());
     };
+
+    // The sweep stops short of the colon, which shares a no-wrap group with "production"
+    const setTail = () => hl.style.setProperty("--tail", `${words[COLON].offsetWidth / parseFloat(getComputedStyle(answer).fontSize)}em`);
 
     const countUp = (el: HTMLElement, to: number, digits: number) => {
       const t0 = performance.now();
@@ -157,8 +163,9 @@ export default function Hero() {
       delete answer.dataset.streaming;
       delete answer.dataset.edit;
       answer.style.removeProperty("min-height");
-      words.forEach((w) => w.classList.remove("on", "fresh"));
+      [...words, draft].forEach((w) => w.classList.remove("on", "fresh", "out"));
       caret.className = "caret gone";
+      setTail();
       hl.classList.add("swept");
       finish(0, false);
       state.textContent = "cached";
@@ -173,7 +180,7 @@ export default function Hero() {
       answer.style.removeProperty("min-height");
       delete meta.dataset.done;
       state.textContent = "streaming";
-      words.forEach((w) => w.classList.remove("on", "fresh"));
+      [...words, draft].forEach((w) => w.classList.remove("on", "fresh", "out"));
       hl.classList.remove("swept");
       caret.className = "caret idle";
       caret.style.transition = "none";
@@ -196,10 +203,12 @@ export default function Hero() {
         const gap = p.left - w0.right;
         probe.remove();
 
+        let drafting = true;
+        const el = (i: number) => (drafting && i === COLON ? draft : words[i]);
         const layout = () => {
           const box = answer.getBoundingClientRect();
-          return words.map((w) => {
-            const r = w.getBoundingClientRect();
+          return words.map((_, i) => {
+            const r = el(i).getBoundingClientRect();
             return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top };
           });
         };
@@ -223,8 +232,9 @@ export default function Hero() {
           flash(i);
         };
         const flash = (i: number) => {
-          words[i].classList.add("on", "fresh");
-          later(170, () => words[i].classList.remove("fresh"));
+          const w = el(i);
+          w.classList.add("on", "fresh");
+          later(170, () => w.classList.remove("fresh"));
         };
         place(at[0].l, at[0].t + dy);
 
@@ -240,12 +250,14 @@ export default function Hero() {
         // The edit: the words part to make room (FLIP), the caret rides along with the last word,
         // and "in production" drops into the space
         t += 520;
+        later(t - 160, () => draft.classList.add("out"));
         later(t, () => {
           const before = at;
+          drafting = false;
           delete answer.dataset.edit;
           at = layout();
           words.forEach((w, i) => {
-            if (i === IN || i === PRODUCTION) return;
+            if (i === IN || i === PRODUCTION || i === COLON) return;
             const dx = before[i].l - at[i].l;
             const dyy = before[i].t - at[i].t;
             if (Math.abs(dx) + Math.abs(dyy) > 0.5) w.animate([{ transform: `translate(${dx}px, ${dyy}px)` }, { transform: "none" }], PART);
@@ -260,9 +272,14 @@ export default function Hero() {
           });
           later(start + DROP_MS * IMPACT, () => flash(i));
         });
+        // The colon comes back with "production", on its first landing
+        later(t + DROP_AT[1] + DROP_MS * IMPACT, () => flash(COLON));
         // The sweep draws once "production" has settled
         const settled = t + DROP_AT[1] + DROP_MS;
-        later(settled - 120, () => hl.classList.add("swept"));
+        later(settled - 120, () => {
+          setTail();
+          hl.classList.add("swept");
+        });
         later(settled + 600, () => {
           // Only a finished stream counts; an interrupted one (or React's dev double-run) streams again
           streamedThisLoad = true;
@@ -282,6 +299,7 @@ export default function Hero() {
     // Measured positions only hold for one layout, so a resize mid-stream lands the finished answer
     const ro = new ResizeObserver(() => {
       if (measured && answer.offsetWidth !== measured) showInstantly();
+      else setTail();
     });
     ro.observe(answer);
 
@@ -313,15 +331,26 @@ export default function Hero() {
           </div>
           <h1 className="answer" ref={answerRef} aria-label={ANSWER}>
             {phrase(0, HOLD)}{" "}
-            {/* The colon sits right after the sweep with no space, so it never starts a line */}
+            {/* Words are separate boxes, and a line may break after any box, so each colon sits in a
+                no-wrap group with the word before it: "up:" in the first pass, then "production:" */}
             <span className="hl" ref={hlRef}>
-              {phrase(HOLD, IN)}
+              {word(HOLD)}{" "}
+              <span className="nb">
+                {word(UP)}
+                <span className="tok draft" aria-hidden>
+                  :
+                </span>
+              </span>
               <span className="ins">
                 {" "}
-                {phrase(IN, COLON)}
+                {word(IN)}{" "}
+                <span className="nb">
+                  {word(PRODUCTION)}
+                  {word(COLON)}
+                </span>
               </span>
-            </span>
-            {word(COLON)} {phrase(COLON + 1, WORDS.length)}
+            </span>{" "}
+            {phrase(COLON + 1, WORDS.length)}
             <span className="caret" ref={caretRef} aria-hidden />
           </h1>
           <div className="meta mono" ref={metaRef} aria-hidden>
@@ -390,7 +419,7 @@ export default function Hero() {
             </div>
             <div>
               <dt>stack</dt>
-              <dd>LangGraph · vLLM · RAG · Next.js · AWS</dd>
+              <dd className="kv__list">{"Agentic\u00a0AI\u00a0· Python\u00a0· AWS\u00a0· Terraform\u00a0· Distributed\u00a0systems"}</dd>
             </div>
           </dl>
         </aside>

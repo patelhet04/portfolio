@@ -19,8 +19,6 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
   const measRef = useRef<HTMLUListElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
-  // Arriving from the prev/next pager, the page slide is the entrance and the section stagger is skipped
-  const [arrive] = useState(() => (typeof document !== "undefined" && document.documentElement.dataset.vtDir ? "pager" : "direct"));
   const [trackPx, setTrackPx] = useState<number | null>(null);
   useEffect(() => setNow(new Date()), []);
 
@@ -75,25 +73,22 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
     window.setTimeout(() => delete root.dataset.vtDir, 900);
   };
 
-  let d = 0;
-  const stagger = () => ({ "--d": d++ }) as React.CSSProperties;
-
   return (
-    <article className="sd" data-arrive={arrive}>
+    <article className="sd">
       <div className="wrap">
-        <div className="sd__back sd-in" style={stagger()}>
+        <div className="sd__back">
           <Link className="btn btn--sm" href="/#experience">
             <ArrowBack />
             Back to the trace
           </Link>
         </div>
-        <p className="sd__kind mono sd-in" style={stagger()}>
+        <p className="sd__kind mono">
           {span.kind === "work" ? "work" : "education"} · {span.where}
         </p>
         <h1 className="sd__title">
           {span.name}
         </h1>
-        <p className="sd__role sd-in" style={stagger()}>
+        <p className="sd__role">
           {span.role}
         </p>
 
@@ -123,12 +118,12 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
 
         <div className="sd__grid">
           <div>
-            <p className="sd__summary sd-in" style={stagger()}>
+            <p className="sd__summary">
               {span.summary}
             </p>
 
             {comparisons.length > 0 && (
-              <section className="sd-in" style={stagger()}>
+              <section>
                 <h2>Measured</h2>
                 <ul className="meas" ref={measRef} data-on={measured}>
                   {comparisons.map((m, i) => (
@@ -149,7 +144,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
             )}
 
             {values.length > 0 && (
-              <dl className="vals sd-in" style={stagger()}>
+              <dl className="vals">
                 {values.map((m) => (
                   <div key={m.label}>
                     <dt>{m.to}</dt>
@@ -159,7 +154,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
               </dl>
             )}
 
-            <section className="sd-in" style={stagger()}>
+            <section>
               <h2>Inside this span</h2>
               <ul className="sd__events">
                 {span.events.map((e, i) => (
@@ -173,7 +168,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
           </div>
 
           <aside>
-            <dl className="sd__attrs mono sd-in" style={stagger()}>
+            <dl className="sd__attrs mono">
               <div>
                 <dt>start</dt>
                 <dd>{formatMonth(start)}</dd>
@@ -193,7 +188,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
             </dl>
 
             {span.stack.length > 0 && (
-              <section className="sd__group sd-in" style={stagger()}>
+              <section className="sd__group">
                 <h2>Stack</h2>
                 <div className="chips">
                   {span.stack.map((s) => (
@@ -206,7 +201,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
             )}
 
             {rec && (
-              <section className="sd__group sd-in" style={stagger()}>
+              <section className="sd__group">
                 <h2>Human feedback</h2>
                 <blockquote className="sd__quote">
                   &ldquo;
@@ -225,7 +220,7 @@ export default function SpanPage({ slug, prevSlug, nextSlug }: { slug: string; p
             )}
 
             {related.length > 0 && (
-              <section className="sd__related sd-in" style={stagger()}>
+              <section className="sd__related">
                 <h2>Related writing</h2>
                 {related.map((p) => (
                   <a key={p.id} href={p.link} target="_blank" rel="noopener noreferrer">
