@@ -16,7 +16,11 @@ export default defineConfig({
   workers: process.env.CI ? 2 : 4,
   reporter: process.env.CI ? "github" : "list",
   use: { baseURL: `http://127.0.0.1:${port}`, trace: "retain-on-failure" },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
+    // Safari's engine, for what only Safari does differently (the squircle fallback)
+    { name: "webkit", use: { ...devices["Desktop Safari"] }, testMatch: /squircle\.spec\.ts/ },
+  ],
   webServer: {
     command: `NEXT_DIST_DIR=.next-e2e npx next build && node scripts/serve-out.mjs .next-e2e ${port}`,
     url: `http://127.0.0.1:${port}`,

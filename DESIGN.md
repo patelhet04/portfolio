@@ -251,7 +251,8 @@ Paper and hairlines. Surfaces are mostly flat and separate by tone (paper → pa
 
 ## Shapes
 
-- **Corner language:** five radius tokens, `--r-xs` to `--r-xl` (6 / 9 / 13 / 18 / 22px). Where `corner-shape: squircle` is supported, every element becomes a squircle and the radii grow (9 / 14 / 20 / 28 / 34px) so the superellipse keeps the same visual weight. This pairing is locked.
+- **Corner language:** five radius tokens, `--r-xs` to `--r-xl` (6 / 9 / 13 / 18 / 22px). Where `corner-shape: squircle` is supported, every element becomes a squircle and the radii grow to the `--sq-*` tokens (9 / 14 / 20 / 28 / 34px) so the superellipse keeps the same visual weight. This pairing is locked.
+- **Safari and Firefox:** until they ship `corner-shape` (Safari has it in Technology Preview), `styles/squircle-fallback.css` clips plain-fill elements to a squircle (primary buttons, the send button, status pills, the question bubble, the filter track, palette options, notes, chips, fields, avatars, the portrait, the dark-mode Memoji plate). Bordered and shadowed elements keep rounded corners there, because a clip would cut the border line and the shadow.
 - **Pills:** buttons, icon buttons, the season button, nav links, filters, status pills and the send button are full pills (999px).
 - **Assignment:** `xs` for span bars, chips and the scrub label. `sm` for avatars, season options and figcaptions. `md` for testimonial tabs, fields, the preview card, notes and the detail track. `lg` for panels (model card, trace, portrait, quote card, value grid, pager, season menu). `xl` for the composer only.
 - **Borders:** 1px `rule` for separators and panel outlines, 1px `rule-2` for interactive outlines, a 1px dashed `rule` between model-card rows, and a 1.5px inset ink outline for education spans.

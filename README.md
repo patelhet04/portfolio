@@ -60,6 +60,7 @@ Content changes (a new role, output or testimonial) only touch `src/utils/`. New
 - **palette:** Fall is the default and saved choices are kept
 - **loader:** the preloader shows on every full page load (not on in-site navigation), lands on the header's caret, skips reduced motion, and never leaves the page covered if the script fails (every other suite starts past it, see `e2e/fixtures.ts`)
 - **seo:** per-page metadata, structured data, `robots.txt`, `sitemap.xml` and the share image
+- **squircle** (also runs in WebKit): Chromium draws squircles natively; Safari gets the clip fallback on plain-fill elements, and focus rings aren't cut
 
 Run it before merging anything that touches layout or motion.
 

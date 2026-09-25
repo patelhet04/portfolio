@@ -20,3 +20,4 @@
 @import "./styles/span-page.css"; /* span detail pages */
 @import "./styles/transitions.css"; /* view transitions between pages, the palette circle */
 @import "./styles/boot.css"; /* the preloader, on every full page load */
+@import "./styles/squircle-fallback.css"; /* squircles in Safari and Firefox, until they ship corner-shape */

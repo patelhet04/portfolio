@@ -1,0 +1,103 @@
+/*
+  Squircles in Safari and Firefox, until they ship corner-shape (Safari has it in Technology
+  Preview; when it lands, tokens.css takes over and this file stops applying).
+
+  The squircle is drawn as a clip. A clip also cuts away anything at or outside the edge, so it's
+  only used where that's safe: elements that are a plain fill with no border line and no outer
+  shadow. Ghost buttons, bordered cards and floating menus keep their rounded corners here, and
+  so do elements whose clip-path is already an animation (trace spans, the before/after bars,
+  the filter's sliding pill).
+
+  --sq is the corner size. The element's own rounding drops to half of it, which still contains
+  the squircle, so the clip alone shapes the corner. Each corner is one cubic curve whose control
+  points sit 9.09% of --sq in from the corner, which matches the true squircle at its midpoint.
+*/
+@supports (not (corner-shape: squircle)) and (clip-path: shape(from 0 0, line to 100% 0)) {
+  .btn--primary,
+  .send,
+  .pill,
+  .ask__bubble,
+  .filters,
+  .season__opt,
+  .note,
+  .chip,
+  .field,
+  .fb__tab img,
+  .reply__who,
+  [data-theme="dark"] .mcard__plate,
+  .portrait {
+    --k: calc(var(--sq) * 0.0909);
+    border-radius: calc(var(--sq) * 0.5);
+    clip-path: shape(
+      from var(--sq) 0,
+      hline to calc(100% - var(--sq)),
+      curve to 100% var(--sq) with calc(100% - var(--k)) 0 / 100% var(--k),
+      vline to calc(100% - var(--sq)),
+      curve to calc(100% - var(--sq)) 100% with 100% calc(100% - var(--k)) / calc(100% - var(--k)) 100%,
+      hline to var(--sq),
+      curve to 0 calc(100% - var(--sq)) with var(--k) 100% / 0 calc(100% - var(--k)),
+      vline to var(--sq),
+      curve to var(--sq) 0 with 0 var(--k) / var(--k) 0,
+      close
+    );
+  }
+
+  /* Pills: the corner is half the height, so the ends are squircles rather than stretched */
+  .btn--primary {
+    --sq: 23px; /* 46px tall */
+  }
+  .btn--primary.btn--sm {
+    --sq: 19px; /* 38px */
+  }
+  .send {
+    --sq: 21px; /* 42px */
+  }
+  .pill {
+    --sq: 12px; /* 24px */
+  }
+  .ask__bubble {
+    --sq: 21px; /* 42px */
+  }
+  .filters {
+    --sq: 23px; /* 46px */
+  }
+  .season__opt,
+  .fb__tab img,
+  .reply__who {
+    --sq: var(--sq-sm);
+  }
+  .note,
+  .field,
+  [data-theme="dark"] .mcard__plate {
+    --sq: var(--sq-md);
+  }
+  .chip {
+    --sq: var(--sq-xs);
+  }
+  .portrait {
+    --sq: var(--sq-lg);
+  }
+  /* The portrait's frame (which also runs its reveal) rounds less, so the squircle fits inside it */
+  .portrait-mask {
+    border-radius: calc(var(--sq-lg) * 0.5);
+    clip-path: inset(0 0 100% 0 round calc(var(--sq-lg) * 0.5));
+  }
+  [data-seen="true"] .portrait-mask {
+    clip-path: inset(0 0 0 0 round calc(var(--sq-lg) * 0.5));
+  }
+
+  /* A clip would cut off the focus ring, so a focused control shows its normal ring instead */
+  :is(.btn--primary, .send, .season__opt):focus-visible,
+  .field:focus-within {
+    clip-path: none;
+    border-radius: var(--sq);
+  }
+  /* On touch screens small header buttons reach past their edges for a 44px tap area (a
+     ::before); a clip would cut that off, so they stay unclipped */
+  @media (pointer: coarse) {
+    .btn--primary.btn--sm {
+      clip-path: none;
+      border-radius: 999px;
+    }
+  }
+}
