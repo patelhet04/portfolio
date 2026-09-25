@@ -3,6 +3,7 @@ import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Boot from "./components/Boot";
 import { appearanceScript } from "./lib/appearance";
 import { site } from "@/utils/site";
 
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <a className="skip" href="#main">
             Skip to content
           </a>
+          <Boot />
           <Header />
           <main id="main">{children}</main>
           <Footer />

@@ -19,3 +19,4 @@
 @import "./styles/footer.css";
 @import "./styles/span-page.css"; /* span detail pages */
 @import "./styles/transitions.css"; /* view transitions between pages, the palette circle */
+@import "./styles/boot.css"; /* the first-visit preloader */

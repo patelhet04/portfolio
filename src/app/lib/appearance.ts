@@ -62,10 +62,14 @@ export function applyAppearance(next: { theme: Theme; season: Season }, origin?:
   transition.finished.finally(() => root.classList.remove("vt-appearance"));
 }
 
-/** Runs before first paint so the page never flashes the wrong palette. */
+/**
+ * Runs before first paint so the page never flashes the wrong palette. It also turns on the
+ * preloader for the first page of a visit (html[data-loader]) and holds the hero's answer hidden
+ * until it streams (html[data-stream-pending]), each with a timeout in case the app never starts.
+ */
 export const appearanceScript = `(function(){try{
 var r=document.documentElement,t=localStorage.getItem("theme"),s=localStorage.getItem("season");
 r.dataset.theme=t?t:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
 r.dataset.season=/^(default|spring|summer|fall|winter)$/.test(s)?s:"fall";
-if(!matchMedia("(prefers-reduced-motion: reduce)").matches){r.dataset.streamPending="";setTimeout(function(){delete r.dataset.streamPending},4000);}
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches){var b=!sessionStorage.getItem("booted");if(b){sessionStorage.setItem("booted","1");r.dataset.loader="";}r.dataset.streamPending="";setTimeout(function(){delete r.dataset.streamPending},b?6000:4000);}
 }catch(e){}})();`;

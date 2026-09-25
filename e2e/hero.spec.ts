@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, skipLoader, test, type Page } from "./fixtures";
 
 /**
  * The hero answer streams in, then "in production" drops into place. Nothing around it may move
@@ -85,6 +85,7 @@ test("the colon never starts a line, in the first pass or the finished sentence"
 
 test("reduced motion shows the finished answer at once", async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: "reduce" });
+  await skipLoader(context);
   const page = await context.newPage();
   await page.goto("/");
   await expect(page.locator(".meta [data-state]")).toHaveText("cached");

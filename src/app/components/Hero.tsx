@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { ArrowDown } from "./Icons";
+import { BOOT_DONE } from "./Boot";
 
 const ANSWER = "I build AI systems that hold up in production: agents, retrieval, and the GPUs underneath.";
 
@@ -296,10 +297,16 @@ export default function Hero() {
       });
     };
 
+    // Cleared on unmount, so a late preloader handoff doesn't start a stream on a gone page
+    let live = true;
     const replay = sessionStorage.getItem(REPLAY_KEY);
     sessionStorage.removeItem(REPLAY_KEY);
     if (reduce || (streamedThisLoad && !replay)) showInstantly();
-    else stream();
+    else if (document.documentElement.dataset.loader !== undefined) {
+      // The preloader is up: the answer starts streaming the moment it hands off to the page
+      state.textContent = "streaming";
+      addEventListener(BOOT_DONE, () => live && stream(), { once: true });
+    } else stream();
 
     // Measured positions only hold for one layout, so a resize mid-stream lands the finished answer
     const ro = new ResizeObserver(() => {
@@ -311,6 +318,7 @@ export default function Hero() {
     const regenerate = () => (reduce ? showInstantly() : stream());
     addEventListener(REGENERATE_EVENT, regenerate);
     return () => {
+      live = false;
       clear();
       cancelAnimationFrame(raf);
       ro.disconnect();
