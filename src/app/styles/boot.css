@@ -1,4 +1,4 @@
-/* The first-visit preloader (components/Boot.tsx): token bars that become the header's caret. */
+/* The preloader (components/Boot.tsx), on every full page load: token bars that become the header's caret. */
 
 #boot {
   display: none;
