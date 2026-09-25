@@ -1,7 +1,7 @@
 import { test as base, expect, type BrowserContext } from "@playwright/test";
 
-/** Marks the visit as already started, so the first-visit preloader stays out of the way */
-export const skipLoader = (context: BrowserContext) => context.addInitScript(() => sessionStorage.setItem("booted", "1"));
+/** Starts every page past the preloader (the pre-paint script checks this flag) */
+export const skipLoader = (context: BrowserContext) => context.addInitScript(() => sessionStorage.setItem("skip-loader", "1"));
 
 /** Every test starts past the preloader; e2e/loader.spec.ts tests the preloader itself */
 export const test = base.extend({
