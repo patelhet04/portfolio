@@ -2,8 +2,8 @@
 import { useEffect, useRef } from "react";
 
 /**
- * The first-visit preloader. It's in the static HTML and the pre-paint script turns it on
- * (`html[data-loader]`) once per visit, so it covers the page from the first paint. Token bars
+ * The preloader. It's in the static HTML and the pre-paint script turns it on
+ * (`html[data-loader]`) on every full page load, so it covers the page from the first paint. Token bars
  * stream in like a tokenized sentence while the page loads, then close into one bar that becomes
  * the header's caret beside the wordmark, and the page appears. It lasts as long as the real
  * loading (three font faces and the Memoji video), at least MIN and at most MAX.

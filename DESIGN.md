@@ -295,7 +295,7 @@ Quiet and tactile. Pills that press down and spring back.
 A dev-tools waterfall. A mono header bar (trace_id, spans, duration, status), a year axis with faint gridlines, Work and Education group rows on `paper-2`, and one button row per span holding a positioned bar. Work spans fill with `accent`; education spans are hatched outlines; the current role has a pulsing signal tail. A 1px ink scrub line follows the mouse with a month label and outlines every span active at that date. The selected row turns `paper-2` and its span turns signal. The detail pane swaps content with a soft spring and links to the full span page, where the bar and title morph across with a view transition.
 
 ### Preloader (signature)
-The first page of a visit opens on plain paper: token bars in the tokenizer's alternating fills stream in with a lime flash each, a lime caret blinks after them while the page loads, then the bars close into one lime bar that flies into the header wordmark's caret as the page fades in. Palette roles only; once per visit; none with reduced motion.
+Every full page load opens on plain paper: token bars in the tokenizer's alternating fills stream in with a lime flash each, a lime caret blinks after them while the page loads, then the bars close into one lime bar that flies into the header wordmark's caret as the page fades in. Palette roles only; on every full page load, not on in-site navigation; none with reduced motion.
 
 ### Model Card (signature)
 The hero's profile panel: a mono header with the status pill, the Memoji video on a plate, and a dashed key/value list (role, building, previously, trained on, stack) with mono keys.

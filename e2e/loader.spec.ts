@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * The first-visit preloader: token bars that become the header's caret. It shows once per visit,
- * never with reduced motion, hands off to the page within a few seconds, and can never leave the
- * page covered if the app's script doesn't run.
+ * The preloader: token bars that become the header's caret. It shows on every full page load
+ * (but not when moving between pages inside the site), never with reduced motion, hands off to
+ * the page within a few seconds, and can never leave the page covered if the script doesn't run.
  */
 
-test("the first page of a visit shows the preloader, which hands off to the page", async ({ page }) => {
+test("a page load shows the preloader, which hands off to the page", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#boot")).toBeVisible();
   await expect(page.locator(".boot__tbar.on").first()).toBeVisible();
@@ -33,16 +33,21 @@ test("the bar lands on the header's caret", async ({ page }) => {
   for (const k of ["left", "top", "width", "height"] as const) expect(Math.abs(bar[k] - cursor[k])).toBeLessThan(1.5);
 });
 
-test("it shows once per visit: a reload and the next page skip it", async ({ page }) => {
+test("it shows on every reload, but not when moving between pages inside the site", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).not.toHaveAttribute("data-loader", /.*/, { timeout: 5_000 });
   await page.reload();
+  await expect(page.locator("#boot")).toBeVisible();
+  await expect(page.locator("html")).not.toHaveAttribute("data-loader", /.*/, { timeout: 5_000 });
+  // An in-site link swaps the page without reloading, so the preloader stays away
+  await page.locator("#experience").scrollIntoViewIfNeeded();
+  await page.locator(".detail__open a").click();
+  await expect(page).toHaveURL(/\/experience\//);
   expect(await page.evaluate(() => document.documentElement.hasAttribute("data-loader"))).toBe(false);
-  await page.goto("/experience/dash");
-  expect(await page.evaluate(() => document.documentElement.hasAttribute("data-loader"))).toBe(false);
+  await expect(page.locator("#boot")).toBeHidden();
 });
 
-test("a visit that starts on a span page gets it too", async ({ page }) => {
+test("a span page gets it too", async ({ page }) => {
   await page.goto("/experience/dash");
   await expect(page.locator("#boot")).toBeVisible();
   await expect(page.locator("#boot")).toBeHidden({ timeout: 5_000 });
